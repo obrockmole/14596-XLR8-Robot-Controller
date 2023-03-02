@@ -185,21 +185,35 @@ public class Motor {
      *
      * @return the target power
      */
-    public double getTargetPower() {
+    public double getTargetPower(double power) {
+        if (targetPowerIndex == -1) return power;
         return powers.get(targetPowerIndex);
     }
 
     /**
-     * Sets the target power level for the motor. If the specified power is not in the list of available powers this method does nothing.
+     * Sets the target power level for the motor.
+     * If the specified power is not in the list of available powers this method does nothing.
      *
      * @param power the target power level to set
      * @return the updated Motor object
      */
     public Motor setTargetPower(double power) {
-        if (!powers.contains(power)) return this;
+        if (!powers.contains(power)) addPower(power);
 
-        targetPowerIndex = powers.indexOf(power);
+        setTargetPowerIndex(getPowerIndex(power));
         return this;
+    }
+
+    /**
+     * Gets the index of a desired power.
+     *
+     * @param power the desired power
+     * @return the index of the desired power
+     */
+    public int getPowerIndex(double power) {
+        if (!powers.contains(power)) addPower(power);
+
+        return powers.indexOf(power);
     }
 
     /**
@@ -212,13 +226,15 @@ public class Motor {
     }
 
     /**
-     * Sets the index of the target power level in the list of available powers. If the specified index is outside of the range for the list of available powers this method does nothing.
+     * Sets the index of the target power level in the list of available powers.
+     * If the specified index is above the range for the list of available powers this method does nothing.
+     * If the index is -1 the motor will set its speed based on an inputted value.
      *
      * @param index the index of the target power level
      * @return the updated Motor object
      */
     public Motor setTargetPowerIndex(int index) {
-        if (index < 0|| index > powers.size()) return this;
+        if (index > powers.size()) return this;
 
         targetPowerIndex = index;
         return this;
@@ -293,7 +309,7 @@ public class Motor {
     }
 
     /**
-     * Gets the current position applied to the motor.
+     * Gets the current position of the motor.
      *
      * @return the motor's current position
      */
@@ -307,20 +323,34 @@ public class Motor {
      * @return the target position
      */
     public int getTargetPosition() {
-        return positions.get(targetPositionIndex);
+        if (targetPositionIndex == -1) return positions.get(0);
+        return positions.get(targetPositionIndex) * (reversed ? -1 : 1);
     }
 
     /**
-     * Sets the target position level for the motor. If the specified position is not in the list of available positions this method does nothing.
+     * Sets the target position level for the motor.
+     * If the specified position is not in the list of available positions this method does nothing.
      *
      * @param position the target position level to set
      * @return the updated Motor object
      */
     public Motor setTargetPosition(int position) {
-        if (!positions.contains(position)) return this;
+        if (!positions.contains(position)) addPosition(position);
 
-        targetPositionIndex = positions.indexOf(position);
+        setTargetPositionIndex(getPositionIndex(position));
         return this;
+    }
+
+    /**
+     * Gets the index of a desired position.
+     *
+     * @param position the desired position
+     * @return the index of the desired position
+     */
+    public int getPositionIndex(int position) {
+        if (!positions.contains(position)) addPosition(position);
+
+        return positions.indexOf(position);
     }
 
     /**
@@ -333,13 +363,15 @@ public class Motor {
     }
 
     /**
-     * Sets the index of the target position level in the list of available positions. If the specified index is outside of the range for the list of available positions this method does nothing.
+     * Sets the index of the target position level in the list of available positions.
+     * If the specified index is above the range for the list of available positions this method does nothing.
+     * If the index is -1 the motor will set its speed based on an inputted value.
      *
      * @param index the index of the target position level
      * @return the updated Motor object
      */
     public Motor setTargetPositionIndex(int index) {
-        if (index < 0|| index > positions.size()) return this;
+        if (index > positions.size()) return this;
 
         targetPositionIndex = index;
         return this;
@@ -497,16 +529,17 @@ public class Motor {
     /**
      * Update the motor and sets its power based on its current mode and travel direction.
      */
-    public void update() {
+    public void update(double input) {
         double power;
 
         switch (mode) {
             case POWER:
-                power = getTargetPower();
+                power = getTargetPower(input) * (reversed ? -1 : 1);
                 break;
 
             case POSITION:
                 power = calculatePID();
+                if (getTargetPositionIndex() == -1) power = input;
                 break;
 
             default:
@@ -514,6 +547,6 @@ public class Motor {
                 break;
         }
 
-        setPower(power * (reversed ? -1 : 1));
+        setPower(power);
     }
 }
