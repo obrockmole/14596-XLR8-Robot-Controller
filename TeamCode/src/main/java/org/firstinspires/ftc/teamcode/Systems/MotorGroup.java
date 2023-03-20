@@ -3,16 +3,13 @@ package org.firstinspires.ftc.teamcode.Systems;
 import androidx.annotation.NonNull;
 
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.Arrays;
 
 public class MotorGroup {
-    Motor leader;
-    ArrayList<Motor> followers;
+    ArrayList<Motor> motors;
 
-    public MotorGroup(@NonNull Motor leader, Motor... followers) {
-        this.leader = leader;
-        this.followers = new ArrayList<>();
-        Collections.addAll(this.followers, followers);
+    public MotorGroup(@NonNull Motor... motors) {
+        this.motors.addAll(Arrays.asList(motors));
     }
 
     /**
@@ -21,33 +18,28 @@ public class MotorGroup {
      * @return the list of motor
      */
     public ArrayList<Motor> getMotors() {
-        ArrayList<Motor> motors = new ArrayList<>();
-        motors.add(leader);
-        motors.addAll(followers);
         return motors;
     }
 
     /**
-     * Sets the controlled list of motors starting with the leader and followed by the followers.
+     * Sets the controlled list of motors.
      *
-     * @param leader the DcMotorEx object that represents the lead motor
-     * @param followers list of follower motors
+     * @param motors the DcMotorEx objects
      * @return the updated MotorGroup object
      */
-    public MotorGroup setMotors(@NonNull Motor leader, Motor... followers) {
-        this.leader = leader;
-        this.followers.clear();
-        Collections.addAll(this.followers, followers);
+    public MotorGroup setMotors(@NonNull Motor... motors) {
+        this.motors.clear();
+        this.motors.addAll(Arrays.asList(motors));
         return this;
     }
 
     /**
      * Gets the current mode of operation for the motors.
      *
-     * @return the lead motor's current mode
+     * @return the motor's current mode
      */
     public Motor.Mode getMode() {
-        return leader.getMode();
+        return motors.get(0).getMode();
     }
 
     /**
@@ -57,146 +49,60 @@ public class MotorGroup {
      * @return the updated MotorGroup object
      */
     public MotorGroup setMode(Motor.Mode mode) {
-        leader.setMode(mode);
+        for (Motor motor : motors) motor.setMode(mode);
         return this;
     }
 
-    /*---------------------------------------Power Motor---------------------------------------*/
     /**
-     * Gets the list of power values for the motors.
+     * Gets the reverse state of a motor at an index.
      *
-     * @return the list of power values for the lead motor
+     * @param motor the index of a motor
+     * @return if the motor is reversed or not
      */
-    public ArrayList<Double> getPowers() {
-        return leader.getPowers();
+    public boolean isReversed(int motor) {
+        return motors.get(motor).isReversed();
     }
 
     /**
-     * Sets the list of power values for the motor.
+     * Sets whether a motor at an index should be reversed or not.
      *
-     * @param powers the array of power values to set
+     * @param motor the target motor index
+     * @param reversed the new reverse state of the motor
      * @return the updated MotorGroup object
      */
-    public MotorGroup setPowers(@NonNull double... powers) {
-        leader.setPowers(powers);
+    public MotorGroup setRevered(int motor, boolean reversed) {
+        motors.get(motor).setRevered(reversed);
         return this;
     }
 
     /**
-     * Adds a power value to the list of power values for the lead motor.
+     * Gets the current speed scale for the motor.
      *
-     * @param power the power value to add
-     * @return the updated MotorGroup object
+     * @return the current speed scale
      */
-    public MotorGroup addPower(double power) {
-        leader.addPower(power);
+    public double getSpeedScale() {
+        return motors.get(0).getSpeedScale();
+    }
+
+    /**
+     * Sets the current speed scale for the motor.
+     *
+     * @param speedScale the new speed scale
+     * @return the updated Motor object
+     */
+    public MotorGroup setSpeedScale(double speedScale) {
+        for (Motor motor : motors) motor.setSpeedScale(speedScale);
         return this;
-    }
-
-    /**
-     * Gets the current power applied to the motors.
-     *
-     * @return the lead motor's current power
-     */
-    public double getPower() {
-        return leader.getPower();
-    }
-
-    /**
-     * Sets the power level of the motors.
-     *
-     * @param power the new power level
-     * @return the updated MotorGroup object
-     */
-    public MotorGroup setPower(double power) {
-        leader.setPower(power);
-        for (Motor motor : followers) motor.setPower(power);
-        return this;
-    }
-
-    /**
-     * Gets the target power for the motors.
-     *
-     * @return the target power of the lead motor
-     */
-    public double getTargetPower(double power) {
-        return leader.getTargetPower(power);
     }
 
     /**
      * Sets the target power level for the motors.
-     * If the specified power is not in the list of available powers this method does nothing.
      *
      * @param power the target power level to set
      * @return the updated MotorGroup object
      */
     public MotorGroup setTargetPower(double power) {
-        leader.setTargetPower(power);
-        return this;
-    }
-
-    /**
-     * Gets the index of a desired power.
-     *
-     * @param power the desired power
-     * @return the index of the desired power
-     */
-    public int getPowerIndex(double power) {
-        return leader.getPowerIndex(power);
-    }
-
-    /**
-     * Gets the index of the target power level in the list of available powers.
-     *
-     * @return the target power index
-     */
-    public int getTargetPowerIndex() {
-        return leader.getTargetPowerIndex();
-    }
-
-    /**
-     * Sets the index of the target power level in the list of available powers.
-     * If the specified index is above the range for the list of available powers this method does nothing.
-     * If the index is -1 the motors speed will be set based on an inputted value.
-     *
-     * @param index the index of the target power level
-     * @return the updated MotorGroup object
-     */
-    public MotorGroup setTargetPowerIndex(int index) {
-        leader.setTargetPowerIndex(index);
-        return this;
-    }
-    /*-----------------------------------------------------------------------------------------*/
-
-    /*--------------------------------------Position Motor-------------------------------------*/
-    /**
-     * Gets the list of position values for the motors.
-     *
-     * @return the list of position values
-     */
-    public ArrayList<Integer> getPositions() {
-        return leader.getPositions();
-    }
-
-    /**
-     * Sets the list of position values for the motors.
-     *
-     * @param positions the array of position values to set
-     * @return the updated MotorGroup object
-     */
-    public MotorGroup setPositions(@NonNull int... positions) {
-        leader.setPositions(positions);
-        return this;
-    }
-
-    /**
-     * Adds a position value to the list of power values for the motors.
-     *
-     * @param position the position value to add
-     * @return the updated MotorGroup object
-     */
-    public MotorGroup addPosition(int position) {
-        leader.addPosition(position);
+        for (Motor motor : motors) motor.setTargetPower(power);
         return this;
     }
 
@@ -206,7 +112,7 @@ public class MotorGroup {
      * @return the lead motor's current position
      */
     public int getCurrentPosition() {
-        return leader.getCurrentPosition();
+        return motors.get(0).getCurrentPosition();
     }
 
     /**
@@ -215,50 +121,17 @@ public class MotorGroup {
      * @return the target position of the lead motor
      */
     public int getTargetPosition() {
-        return leader.getTargetPosition();
+        return motors.get(0).getTargetPosition();
     }
 
     /**
      * Sets the target position level for the motors.
-     * If the specified position is not in the list of available positions this method does nothing.
      *
      * @param position the target position level to set
      * @return the updated MotorGroup object
      */
     public MotorGroup setTargetPosition(int position) {
-        leader.setTargetPosition(position);
-        return this;
-    }
-
-    /**
-     * Gets the index of a desired position.
-     *
-     * @param position the desired position
-     * @return the index of the desired position
-     */
-    public int getPositionIndex(int position) {
-        return leader.getPositionIndex(position);
-    }
-
-    /**
-     * Gets the index of the target position level in the list of available positions.
-     *
-     * @return the target position index
-     */
-    public int getTargetPositionIndex() {
-        return leader.getTargetPositionIndex();
-    }
-
-    /**
-     * Sets the index of the target position level in the list of available positions.
-     * If the specified index is above the range for the list of available positions this method does nothing.
-     * If the index is -1 the motors speed will be set based on an inputted value.
-     *
-     * @param index the index of the target position level
-     * @return the updated MotorGroup object
-     */
-    public MotorGroup setTargetPositionIndex(int index) {
-        leader.setTargetPositionIndex(index);
+        for (Motor motor : motors) motor.setTargetPosition(position);
         return this;
     }
 
@@ -268,11 +141,11 @@ public class MotorGroup {
      * @return list containing the p, i, d, and f values of the lead motor
      */
     public ArrayList<Double> getPIDF() {
-        return leader.getPIDF();
+        return motors.get(0).getPIDF();
     }
 
     /**
-     * Set the PIDF function's p, i, d, and f values.
+     * Set the PIDF function's p, i, d, and f values for the motors.
      *
      * @param p the new p value
      * @param i the new i value
@@ -281,17 +154,17 @@ public class MotorGroup {
      * @return the updated MotorGroup object
      */
     public MotorGroup setPIDF(double p, double i, double d, double f) {
-        leader.setPIDF(p, i, d, f);
+        for (Motor motor : motors) motor.setPIDF(p, i, d, f);
         return this;
     }
 
     /**
      * Gets the current PIDF p value.
      *
-     * @return the current p value of the lead motor
+     * @return the current p value of the motors
      */
     public double getP() {
-        return leader.getP();
+        return motors.get(0).getP();
     }
 
     /**
@@ -301,17 +174,17 @@ public class MotorGroup {
      * @return the updated MotorGroup object
      */
     public MotorGroup setP(double p) {
-        leader.setP(p);
+        for (Motor motor : motors) motor.setP(p);
         return this;
     }
 
     /**
      * Gets the current PIDF i value.
      *
-     * @return the current i value of the lead motor
+     * @return the current i value of the motors
      */
     public double getI() {
-        return leader.getI();
+        return motors.get(0).getI();
     }
 
     /**
@@ -321,17 +194,17 @@ public class MotorGroup {
      * @return the updated MotorGroup object
      */
     public MotorGroup setI(double i) {
-        leader.setI(i);
+        for (Motor motor : motors) motor.setI(i);
         return this;
     }
 
     /**
      * Gets the current PIDF d value.
      *
-     * @return the current d value of the lead motor
+     * @return the current d value of the motors
      */
     public double getD() {
-        return leader.getD();
+        return motors.get(0).getD();
     }
 
     /**
@@ -341,17 +214,17 @@ public class MotorGroup {
      * @return the updated MotorGroup object
      */
     public MotorGroup setD(double d) {
-        leader.setD(d);
+        for (Motor motor : motors) motor.setD(d);
         return this;
     }
 
     /**
      * Gets the current PIDF f value.
      *
-     * @return the current f value of the lead motor
+     * @return the current f value of the motors
      */
     public double getF() {
-        return leader.getF();
+        return motors.get(0).getF();
     }
 
     /**
@@ -361,17 +234,17 @@ public class MotorGroup {
      * @return the updated MotorGroup object
      */
     public MotorGroup setF(double f) {
-        leader.setF(f);
+        for (Motor motor : motors) motor.setF(f);
         return this;
     }
 
     /**
      * Get the current encoder ticks per degree value for the motors.
      *
-     * @return the ticks per degree of the lead motor
+     * @return the ticks per degree of the motors
      */
     public double getTicksPerDegree() {
-        return leader.getTicksPerDegree();
+        return motors.get(0).getTicksPerDegree();
     }
 
     /**
@@ -381,7 +254,7 @@ public class MotorGroup {
      * @return the updated MotorGroup object
      */
     public MotorGroup setTicksPerDegree(double ticksPerDegree) {
-        leader.setTicksPerDegree(ticksPerDegree);
+        for (Motor motor : motors) motor.setTicksPerDegree(ticksPerDegree);
         return this;
     }
 
@@ -389,32 +262,13 @@ public class MotorGroup {
      * Stop the motor and resets the encoder back to zero for every motor.
      */
     public void resetEncoder() {
-        leader.resetEncoder();
-        for (Motor motor : followers) motor.resetEncoder();
+        for (Motor motor : motors) motor.resetEncoder();
     }
-    /*-----------------------------------------------------------------------------------------*/
 
     /**
      * Update the motor group and sets its power based on its current mode and travel direction of the leader.
      */
     public void update(double input) {
-        double power;
-
-        switch (leader.mode) {
-            case POWER:
-                power = getTargetPower(input) * (leader.isReversed() ? -1 : 1);
-                break;
-
-            case POSITION:
-                power = leader.calculatePID();
-                if (getTargetPositionIndex() == -1) power = input;
-                break;
-
-            default:
-                power = 0;
-                break;
-        }
-
-        setPower(power);
+        for (Motor motor : motors) motor.update();
     }
 }

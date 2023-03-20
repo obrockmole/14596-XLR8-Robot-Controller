@@ -1,7 +1,5 @@
 package org.firstinspires.ftc.teamcode.Systems;
 
-import androidx.annotation.NonNull;
-
 import com.arcrobotics.ftclib.controller.PIDController;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
@@ -21,12 +19,11 @@ public class Motor {
     DcMotorEx motor;
     boolean reversed = false;
 
-    ArrayList<Double> powers;
-    int targetPowerIndex = 0;
+    double targetPower = 0;
+    double speedScale = 1;
 
-    ArrayList<Integer> positions;
     PIDController pidController;
-    int targetPositionIndex = 0;
+    int targetPosition = 0;
     double p, i, d, f, ticksPerDegree;
 
     /**
@@ -99,65 +96,55 @@ public class Motor {
         return this;
     }
 
-    /*---------------------------------------Power Motor---------------------------------------*/
     /**
-     * Constructor for a Motor object in power mode.
+     * Gets the current speed scale for the motor.
+     *
+     * @return the current speed scale
+     */
+    public double getSpeedScale() {
+        return speedScale;
+    }
+
+    /**
+     * Sets the current speed scale for the motor.
+     *
+     * @param speedScale the new speed scale
+     * @return the updated Motor object
+     */
+    public Motor setSpeedScale(double speedScale) {
+        this.speedScale = speedScale;
+        return this;
+    }
+
+    /**
+     * Constructor for a Motor object.
      *
      * @param motor the DcMotorEx object to be controlled
-     * @param powers the array of power values the motor will cycle through
+     * @param mode the motor's mode
+     * @param ticksPerDegree the number of encoder ticks per degree
+     * @param reversed is the motor reversed
      */
-    public Motor(DcMotorEx motor, @NonNull double... powers) {
+    public Motor(DcMotorEx motor, Mode mode, double ticksPerDegree, boolean reversed) {
         this.motor = motor;
-        mode = Mode.POWER;
-
-        this.powers = new ArrayList<>();
-        for (double power : powers) this.powers.add(power);
+        this.mode = mode;
+        this.ticksPerDegree = ticksPerDegree;
+        this.reversed = reversed;
     }
 
     /**
-     * Constructor for a Motor object in power mode.
+     * Constructor for a Motor object with hardwareMap.
      *
      * @param hardwareMap the HardwareMap object to be used to retrieve the motor
-     * @param name the name of the motor in the HardwareMap
-     * @param powers the array of power values the motor will cycle through
+     * @param name the name of the motor in the configuration
+     * @param mode the motor's mode
+     * @param ticksPerDegree the number of encoder ticks per degree
+     * @param reversed is the motor reversed
      */
-    public Motor(@NonNull HardwareMap hardwareMap, String name, @NonNull double... powers) {
+    public Motor(HardwareMap hardwareMap, String name, Mode mode, double ticksPerDegree, boolean reversed) {
         this.motor = hardwareMap.get(DcMotorEx.class, name);
-        mode = Mode.POWER;
-
-        this.powers = new ArrayList<>();
-        for (double power : powers) this.powers.add(power);
-    }
-
-    /**
-     * Gets the list of power values for the motor.
-     *
-     * @return the list of power values
-     */
-    public ArrayList<Double> getPowers() {
-        return powers;
-    }
-
-    /**
-     * Sets the list of power values for the motor.
-     *
-     * @param powers the array of power values to set
-     * @return the updated Motor object
-     */
-    public Motor setPowers(@NonNull double... powers) {
-        for (double power : powers) this.powers.add(power);
-        return this;
-    }
-
-    /**
-     * Adds a power value to the list of power values for the motor.
-     *
-     * @param power the power value to add
-     * @return the updated Motor object
-     */
-    public Motor addPower(double power) {
-        powers.add(power);
-        return this;
+        this.mode = mode;
+        this.ticksPerDegree = ticksPerDegree;
+        this.reversed = reversed;
     }
 
     /**
@@ -176,7 +163,7 @@ public class Motor {
      * @return the updated Motor object
      */
     public Motor setPower(double power) {
-        motor.setPower(power);
+        motor.setPower(power * speedScale);
         return this;
     }
 
@@ -185,126 +172,18 @@ public class Motor {
      *
      * @return the target power
      */
-    public double getTargetPower(double power) {
-        if (targetPowerIndex == -1) return power;
-        return powers.get(targetPowerIndex);
+    public double getTargetPower() {
+        return targetPower;
     }
 
     /**
      * Sets the target power level for the motor.
-     * If the specified power is not in the list of available powers this method does nothing.
      *
      * @param power the target power level to set
      * @return the updated Motor object
      */
     public Motor setTargetPower(double power) {
-        if (!powers.contains(power)) addPower(power);
-
-        setTargetPowerIndex(getPowerIndex(power));
-        return this;
-    }
-
-    /**
-     * Gets the index of a desired power.
-     *
-     * @param power the desired power
-     * @return the index of the desired power
-     */
-    public int getPowerIndex(double power) {
-        if (!powers.contains(power)) addPower(power);
-
-        return powers.indexOf(power);
-    }
-
-    /**
-     * Gets the index of the target power level in the list of available powers.
-     *
-     * @return the target power index
-     */
-    public int getTargetPowerIndex() {
-        return targetPowerIndex;
-    }
-
-    /**
-     * Sets the index of the target power level in the list of available powers.
-     * If the specified index is above the range for the list of available powers this method does nothing.
-     * If the index is -1 the motor will set its speed based on an inputted value.
-     *
-     * @param index the index of the target power level
-     * @return the updated Motor object
-     */
-    public Motor setTargetPowerIndex(int index) {
-        if (index > powers.size()) return this;
-
-        targetPowerIndex = index;
-        return this;
-    }
-    /*-----------------------------------------------------------------------------------------*/
-
-    /*--------------------------------------Position Motor-------------------------------------*/
-    /**
-     * Constructor for a Motor object in position mode.
-     *
-     * @param motor the DcMotorEx object to be controlled
-     * @param positions the array of position values the motor will cycle through
-     */
-    public Motor(DcMotorEx motor, @NonNull int... positions) {
-        this.motor = motor;
-        mode = Mode.POSITION;
-
-        this.positions = new ArrayList<>();
-        for (int position : positions) this.positions.add(position);
-
-        resetEncoder();
-    }
-
-    /**
-     * Constructor for a Motor object in position mode.
-     *
-     * @param hardwareMap the HardwareMap object to be used to retrieve the motor
-     * @param name the name of the motor in the HardwareMap
-     * @param positions the array of position values the motor will cycle through
-     */
-    public Motor(@NonNull HardwareMap hardwareMap, String name, @NonNull int... positions) {
-        motor = hardwareMap.get(DcMotorEx.class, name);
-        mode = Mode.POSITION;
-
-        this.positions = new ArrayList<>();
-        for (int position : positions) this.positions.add(position);
-
-        DcMotor.RunMode currentRunMode = motor.getMode();
-        motor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        motor.setMode(currentRunMode);
-    }
-
-    /**
-     * Gets the list of position values for the motor.
-     *
-     * @return the list of position values
-     */
-    public ArrayList<Integer> getPositions() {
-        return positions;
-    }
-
-    /**
-     * Sets the list of position values for the motor.
-     *
-     * @param positions the array of position values to set
-     * @return the updated Motor object
-     */
-    public Motor setPositions(@NonNull int... positions) {
-        for (int position : positions) this.positions.add(position);
-        return this;
-    }
-
-    /**
-     * Adds a position value to the list of power values for the motor.
-     *
-     * @param position the position value to add
-     * @return the updated Motor object
-     */
-    public Motor addPosition(int position) {
-        positions.add(position);
+        targetPower = power;
         return this;
     }
 
@@ -323,57 +202,17 @@ public class Motor {
      * @return the target position
      */
     public int getTargetPosition() {
-        if (targetPositionIndex == -1) return positions.get(0);
-        return positions.get(targetPositionIndex) * (reversed ? -1 : 1);
+        return targetPosition;
     }
 
     /**
      * Sets the target position level for the motor.
-     * If the specified position is not in the list of available positions this method does nothing.
      *
      * @param position the target position level to set
      * @return the updated Motor object
      */
     public Motor setTargetPosition(int position) {
-        if (!positions.contains(position)) addPosition(position);
-
-        setTargetPositionIndex(getPositionIndex(position));
-        return this;
-    }
-
-    /**
-     * Gets the index of a desired position.
-     *
-     * @param position the desired position
-     * @return the index of the desired position
-     */
-    public int getPositionIndex(int position) {
-        if (!positions.contains(position)) addPosition(position);
-
-        return positions.indexOf(position);
-    }
-
-    /**
-     * Gets the index of the target position level in the list of available positions.
-     *
-     * @return the target position index
-     */
-    public int getTargetPositionIndex() {
-        return targetPositionIndex;
-    }
-
-    /**
-     * Sets the index of the target position level in the list of available positions.
-     * If the specified index is above the range for the list of available positions this method does nothing.
-     * If the index is -1 the motor will set its speed based on an inputted value.
-     *
-     * @param index the index of the target position level
-     * @return the updated Motor object
-     */
-    public Motor setTargetPositionIndex(int index) {
-        if (index > positions.size()) return this;
-
-        targetPositionIndex = index;
+        targetPosition = position;
         return this;
     }
 
@@ -509,9 +348,9 @@ public class Motor {
      *
      * @return the desired power
      */
-    public double calculatePID() {
-        double pid = pidController.calculate(getCurrentPosition(), getTargetPosition());
-        double ff = Math.cos(Math.toRadians(getTargetPosition() / getTicksPerDegree())) * f;
+    public double calculatePIDF() {
+        double pid = pidController.calculate(getCurrentPosition(), getTargetPosition() * (reversed ? -1 : 1));
+        double ff = Math.cos(Math.toRadians((getTargetPosition() * (reversed ? -1 : 1)) / getTicksPerDegree())) * f;
 
         return pid + ff;
     }
@@ -524,22 +363,20 @@ public class Motor {
         motor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         motor.setMode(currentRunMode);
     }
-    /*-----------------------------------------------------------------------------------------*/
 
     /**
      * Update the motor and sets its power based on its current mode and travel direction.
      */
-    public void update(double input) {
+    public void update() {
         double power;
 
         switch (mode) {
             case POWER:
-                power = getTargetPower(input) * (reversed ? -1 : 1);
+                power = targetPower * (reversed ? -1 : 1);
                 break;
 
             case POSITION:
-                power = calculatePID();
-                if (getTargetPositionIndex() == -1) power = input;
+                power = calculatePIDF();
                 break;
 
             default:

@@ -6,24 +6,24 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Drivetrain {
-    private SinglePowerMotor frontLeft, backLeft, frontRight, backRight;
+    private Motor frontLeft, backLeft, frontRight, backRight;
 
     int speedScale = 1;
 
     public Drivetrain() {}
 
-    public Drivetrain(SinglePowerMotor frontLeft, SinglePowerMotor backLeft, SinglePowerMotor frontRight, SinglePowerMotor backRight) {
+    public Drivetrain(Motor frontLeft, Motor backLeft, Motor frontRight, Motor backRight) {
         this.frontLeft = frontLeft;
         this.backLeft = backLeft;
         this.frontRight = frontRight;
         this.backRight = backRight;
     }
 
-    public ArrayList<SinglePowerMotor> getMotors() {
-        return (ArrayList<SinglePowerMotor>) Arrays.asList(frontLeft, backLeft, frontRight, backRight);
+    public ArrayList<Motor> getMotors() {
+        return (ArrayList<Motor>) Arrays.asList(frontLeft, backLeft, frontRight, backRight);
     }
 
-    public Drivetrain setMotors(SinglePowerMotor frontLeft, SinglePowerMotor backLeft, SinglePowerMotor frontRight, SinglePowerMotor backRight) {
+    public Drivetrain setMotors(Motor frontLeft, Motor backLeft, Motor frontRight, Motor backRight) {
         this.frontLeft = frontLeft;
         this.backLeft = backLeft;
         this.frontRight = frontRight;
@@ -51,6 +51,13 @@ public class Drivetrain {
         backRight.setTargetPower(brPower * speedScale);
     }
 
+    public void update() {
+        frontLeft.update();
+        backLeft.update();
+        frontRight.update();
+        backRight.update();
+    }
+
     public void log(Telemetry telemetry) {
         telemetry.addLine("-----Motor Powers-----");
         telemetry.addData("Front Left Power: ", frontLeft.getPower());
@@ -60,16 +67,18 @@ public class Drivetrain {
 
         telemetry.addLine();
         telemetry.addLine("-----Current Motor Positions-----");
-        telemetry.addData("Front Left Position: ", frontLeft.getMotor().getCurrentPosition());
-        telemetry.addData("Back Left Position: ", backLeft.getMotor().getCurrentPosition());
-        telemetry.addData("Front Right Position: ", frontRight.getMotor().getCurrentPosition());
-        telemetry.addData("Back Right Position: ", backRight.getMotor().getCurrentPosition());
-    }
+        telemetry.addData("Front Left Position: ", frontLeft.getCurrentPosition());
+        telemetry.addData("Back Left Position: ", backLeft.getCurrentPosition());
+        telemetry.addData("Front Right Position: ", frontRight.getCurrentPosition());
+        telemetry.addData("Back Right Position: ", backRight.getCurrentPosition());
 
-    public void update() {
-        frontLeft.update();
-        backLeft.update();
-        frontRight.update();
-        backRight.update();
+        telemetry.addLine();
+        telemetry.addLine("-----Target Motor Positions-----");
+        telemetry.addData("Front Left Position: ", frontLeft.getTargetPosition());
+        telemetry.addData("Back Left Position: ", backLeft.getTargetPosition());
+        telemetry.addData("Front Right Position: ", frontRight.getTargetPosition());
+        telemetry.addData("Back Right Position: ", backRight.getTargetPosition());
+
+        telemetry.addLine();
     }
 }
