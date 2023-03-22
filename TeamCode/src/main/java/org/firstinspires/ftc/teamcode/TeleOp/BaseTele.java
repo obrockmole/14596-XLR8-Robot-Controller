@@ -17,5 +17,6 @@ public class BaseTele extends OpMode {
         drivetrain = new Drivetrain(frontLeft, backLeft, frontRight, backRight);
     }
 
-    public void loop() {}
+    public void loop() {
+    }
 }
