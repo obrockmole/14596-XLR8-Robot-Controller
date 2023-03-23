@@ -70,8 +70,8 @@ public class MotorGroup {
      * @param reversed the new reverse state of the motor
      * @return the updated MotorGroup object
      */
-    public MotorGroup setRevered(int motor, boolean reversed) {
-        motors.get(motor).setRevered(reversed);
+    public MotorGroup setReversed(int motor, boolean reversed) {
+        motors.get(motor).setReversed(reversed);
         return this;
     }
 

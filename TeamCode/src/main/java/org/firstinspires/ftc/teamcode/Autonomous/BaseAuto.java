@@ -5,12 +5,8 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import org.firstinspires.ftc.teamcode.Systems.MotorGroup;
 
 public class BaseAuto extends OpMode {
-    MotorGroup motorGroup;
-
     @Override
-    public void init() {
-        motorGroup.addPosition(1);
-    }
+    public void init() {}
 
     @Override
     public void loop() {}

@@ -91,7 +91,7 @@ public class Motor {
      * @param reversed the new reverse state of the motor
      * @return the updated Motor object
      */
-    public Motor setRevered(boolean reversed) {
+    public Motor setReversed(boolean reversed) {
         this.reversed = reversed;
         return this;
     }
