@@ -63,6 +63,12 @@ public class Gamepad {
             case RIGHT_STICK:
                 buttonValue = gamepad.right_stick_button;
                 break;
+            case START:
+                buttonValue = gamepad.start;
+                break;
+            case BACK:
+                buttonValue = gamepad.back;
+                break;
             default:
                 break;
         }

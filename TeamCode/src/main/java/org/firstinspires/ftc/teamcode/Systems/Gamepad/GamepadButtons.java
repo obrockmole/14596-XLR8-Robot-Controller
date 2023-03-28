@@ -2,7 +2,7 @@ package org.firstinspires.ftc.teamcode.Systems.Gamepad;
 
 public class GamepadButtons {
     public enum Button {
-        A, B, X, Y, DPAD_UP, DPAD_DOWN, DPAD_LEFT, DPAD_RIGHT, LEFT_BUMPER, RIGHT_BUMPER, LEFT_STICK, RIGHT_STICK
+        A, B, X, Y, DPAD_UP, DPAD_DOWN, DPAD_LEFT, DPAD_RIGHT, LEFT_BUMPER, RIGHT_BUMPER, LEFT_STICK, RIGHT_STICK, START, BACK
     }
 
     public enum Trigger {
