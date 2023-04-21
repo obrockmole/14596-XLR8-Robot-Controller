@@ -4,7 +4,9 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.Systems.Gamepad.Gamepad;
+import org.firstinspires.ftc.teamcode.Systems.Gamepad.GamepadButtons;
 import org.firstinspires.ftc.teamcode.Systems.Gamepad.GamepadButtons.Button;
+import org.firstinspires.ftc.teamcode.Systems.Gamepad.GamepadButtons.Stick;
 
 //@Disabled
 @TeleOp
@@ -21,26 +23,30 @@ public class GamepadSample extends OpMode {
 
     @Override
     public void loop() {
-        if (driver.onPress(Button.A))
-            dPressed++;
-        if (driver.onRelease(Button.A))
-            dReleased++;
-        if (driver.onChange(Button.A))
-            dChanged++;
+        // Driver Gamepad
+        if (driver.onPress(Button.A)) dPressed++;
+        if (driver.onRelease(Button.A)) dReleased++;
+        if (driver.onChange(Button.A)) dChanged++;
 
-        if (manipulator.onPress(Button.A))
-            mPressed++;
-        if (manipulator.onRelease(Button.A))
-            mReleased++;
-        if (manipulator.onChange(Button.A))
-            mChanged++;
+        // Manipulator Gamepad
+        if (manipulator.onPress(Button.A)) mPressed++;
+        if (manipulator.onRelease(Button.A)) mReleased++;
+        if (manipulator.onChange(Button.A)) mChanged++;
 
         telemetry.addLine("Driver A Pressed: " + dPressed);
         telemetry.addLine("Driver A Released: " + dReleased);
         telemetry.addLine("Driver A Changed: " + dChanged);
+        telemetry.addLine("Driver Left Stick X Value: " + driver.getStickX(Stick.LEFT_STICK));
+        telemetry.addLine("Driver Left Stick Y Value: " + driver.getStickY(Stick.LEFT_STICK));
+
         telemetry.addLine();
+        telemetry.addLine("----------------------------------------");
+        telemetry.addLine();
+
         telemetry.addLine("Manipulator A Pressed: " + mPressed);
         telemetry.addLine("Manipulator A Released: " + mReleased);
         telemetry.addLine("Manipulator A Changed: " + mChanged);
+        telemetry.addLine("Manipulator Left Stick X Value: " + manipulator.getStickX(Stick.LEFT_STICK));
+        telemetry.addLine("Manipulator Left Stick Y Value: " + manipulator.getStickY(Stick.LEFT_STICK));
     }
 }

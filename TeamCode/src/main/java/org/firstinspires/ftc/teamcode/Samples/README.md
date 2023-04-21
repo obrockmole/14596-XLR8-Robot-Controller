@@ -1,0 +1,2 @@
+# All Samples will either extend OpMode or LinearOpMode. Extending the custom BaseTele or BaseAuto classes is optional but may help make the process easier.
+## More information on the Base classes can be found in the BaseTeleSample or BaseAutoSample program.

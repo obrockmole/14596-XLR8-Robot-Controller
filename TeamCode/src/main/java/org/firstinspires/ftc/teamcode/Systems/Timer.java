@@ -18,18 +18,20 @@ public class Timer {
         running = false;
     }
 
+    public void restart() {
+        startTime = System.nanoTime();
+        running = true;
+    }
+
     public float getTime() {
         if (running)
-            return (System.nanoTime() - startTime) / 1000000;
+            return (int)((System.nanoTime() - startTime) / 1000000);
         else
-            return (endTime - startTime) / 1000000;
+            return (int)((endTime - startTime) / 1000000);
     }
 
     public float getTimeSeconds() {
-        if (running)
-            return (System.nanoTime() - startTime) / 1000000000;
-        else
-            return (endTime - startTime) / 1000000000;
+        return getTime() / 1000;
     }
 
     public float getStartTime() {
