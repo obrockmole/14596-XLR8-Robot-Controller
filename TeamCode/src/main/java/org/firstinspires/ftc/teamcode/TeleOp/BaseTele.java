@@ -25,8 +25,9 @@ public class BaseTele extends OpMode {
     }
 
     public void loop() {
-        drivetrain.update();
         driver.update();
         manipulator.update();
+
+        drivetrain.log(telemetry);
     }
 }

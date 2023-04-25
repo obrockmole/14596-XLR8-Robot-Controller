@@ -9,7 +9,6 @@ import org.firstinspires.ftc.teamcode.Systems.Gamepad.GamepadButtons.Stick;
 public class RobotCentricDrive extends BaseTele {
     public void loop() {
         drivetrain.standardDrive(driver.getStickY(Stick.LEFT_STICK), driver.getStickX(Stick.LEFT_STICK), driver.getStickX(Stick.RIGHT_STICK));
-
-        drivetrain.log(telemetry);
+        drivetrain.update();
     }
 }

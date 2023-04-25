@@ -14,7 +14,7 @@ public class TriggerHandler {
         this.trigger = trigger;
         this.limit = limit;
 
-        currentState = this.gamepad.getTrigger(trigger) > this.limit;
+        currentState = getValue() > this.limit;
         previousState = currentState;
     }
 
@@ -31,10 +31,10 @@ public class TriggerHandler {
         double triggerValue = 0;
         switch (trigger) {
             case LEFT_TRIGGER:
-                triggerValue = gamepad.gamepad.left_trigger;
+                triggerValue = gamepad.getGamepad().left_trigger;
                 break;
             case RIGHT_TRIGGER:
-                triggerValue = gamepad.gamepad.right_trigger;
+                triggerValue = gamepad.getGamepad().right_trigger;
                 break;
             default:
                 break;
@@ -60,6 +60,6 @@ public class TriggerHandler {
 
     public void update() {
         previousState = currentState;
-        currentState = this.gamepad.getTrigger(trigger) > this.limit;
+        currentState = getValue() > this.limit;
     }
 }

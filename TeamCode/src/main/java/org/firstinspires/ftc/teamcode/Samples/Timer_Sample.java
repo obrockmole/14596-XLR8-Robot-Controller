@@ -9,11 +9,11 @@ import org.firstinspires.ftc.teamcode.Systems.Gamepad.GamepadButtons.Button;
 import org.firstinspires.ftc.teamcode.Systems.Timer;
 
 @Disabled
-@Autonomous
-public class TimerSample extends OpMode {
+@Autonomous(group = "Samples")
+public class Timer_Sample extends OpMode {
     Timer timer;
 
-    Gamepad driver;
+    Gamepad driver; //This example uses custom gamepads. See GamepadSample.java for more information
 
     enum State {
         STATE_1,
@@ -25,18 +25,20 @@ public class TimerSample extends OpMode {
     @Override
     public void init() {
         timer = new Timer();
-        driver = new Gamepad(gamepad1);
         state = State.STATE_1;
+
+        driver = new Gamepad(gamepad1);
     }
 
     @Override
     public void loop() {
-        if (driver.onPress(Button.A)) timer.start();
+        if (driver.onPress(Button.A)) timer.start(); //Start the timer when the A button is pressed
 
+        //Update the state every second and display the current state to telemetry
         switch (state) {
             case STATE_1:
                 telemetry.addLine("State: 1");
-                if (timer.getTime() > 1000) {
+                if (timer.getTime() > 1000) { // getTime() returns the time in milliseconds, to get seconds use getTimeSeconds()
                     state = State.STATE_2;
                     timer.restart();
                 }
@@ -59,6 +61,7 @@ public class TimerSample extends OpMode {
                 break;
         }
 
+        //Display current time on telemetry
         telemetry.addLine("Time: " + timer.getTime() + "ms");
         telemetry.addLine("Time (Seconds):" + timer.getTimeSeconds() + "s");
         telemetry.update();

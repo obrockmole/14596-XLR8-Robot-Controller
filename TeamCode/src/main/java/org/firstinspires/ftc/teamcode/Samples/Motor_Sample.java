@@ -8,13 +8,10 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 import org.firstinspires.ftc.teamcode.Systems.Gamepad.Gamepad;
 import org.firstinspires.ftc.teamcode.Systems.Gamepad.GamepadButtons.Button;
 import org.firstinspires.ftc.teamcode.Systems.Motor;
-import org.firstinspires.ftc.teamcode.Systems.Motor.Mode;
-
-import java.util.ArrayList;
 
 @Disabled
-@TeleOp
-public class MotorSample extends OpMode {
+@TeleOp(group = "Samples")
+public class Motor_Sample extends OpMode {
     Motor powerMotor, positionMotor;
 
     Gamepad driver, manipulator; //This example uses custom gamepads. See GamepadSample.java for more information

@@ -13,7 +13,6 @@ public class FieldCentricDrive extends BaseTele {
             drivetrain.resetIMU();
 
         drivetrain.fieldCentricDrive(driver.getStickY(Stick.LEFT_STICK), driver.getStickX(Stick.LEFT_STICK), driver.getStickX(Stick.RIGHT_STICK));
-
-        drivetrain.log(telemetry);
+        drivetrain.update();
     }
 }

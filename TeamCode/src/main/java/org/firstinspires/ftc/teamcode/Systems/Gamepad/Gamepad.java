@@ -1,8 +1,8 @@
 package org.firstinspires.ftc.teamcode.Systems.Gamepad;
 
 import org.firstinspires.ftc.teamcode.Systems.Gamepad.GamepadButtons.Button;
-import org.firstinspires.ftc.teamcode.Systems.Gamepad.GamepadButtons.Trigger;
 import org.firstinspires.ftc.teamcode.Systems.Gamepad.GamepadButtons.Stick;
+import org.firstinspires.ftc.teamcode.Systems.Gamepad.GamepadButtons.Trigger;
 
 import java.util.HashMap;
 
@@ -22,6 +22,10 @@ public class Gamepad {
 
         for (Trigger trigger : Trigger.values())
             gamepadTriggers.put(trigger, new TriggerHandler(this, trigger, 0.5));
+    }
+
+    public com.qualcomm.robotcore.hardware.Gamepad getGamepad() {
+        return gamepad;
     }
 
     public boolean getButton(Button button) {
@@ -76,9 +80,9 @@ public class Gamepad {
         return buttonValue;
     }
 
-    public double getTrigger(Trigger trigger) {
+    /*public double getTrigger(Trigger trigger) {
         return gamepadTriggers.get(trigger).getValue();
-    }
+    }*/
 
     public double getStickX(Stick stick) {
         double stickValue = 0;
