@@ -12,7 +12,7 @@ public class PositionServo {
 
     public PositionServo(Servo servo, double minScale, double maxScale, boolean reversed) {
         this.servo = servo;
-        this.servo.setDirection(reversed ? Servo.Direction.REVERSE : Servo.Direction.FORWARD);
+        setReversed(reversed);
 
         this.setScaleRange(minScale, maxScale);
     }
@@ -112,7 +112,8 @@ public class PositionServo {
 
     public PositionServo log(Telemetry telemetry, HardwareMap hardwareMap) {
         telemetry.addData("Servo", hardwareMap.getNamesOf(servo));
-        telemetry.addData("Position", getPosition());
+        telemetry.addData("Current Position", getPosition());
+        telemetry.addData("Target Position", getTargetPosition());
         telemetry.addData("Scale Range", getScaleRange());
         telemetry.addData("Reversed", isReversed());
         return this;

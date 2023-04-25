@@ -38,6 +38,28 @@ public class MotorGroup {
     }
 
     /**
+     * Gets the motor at an index.
+     *
+     * @param motor the motor index
+     * @return the motor at the index
+     */
+    public Motor getMotor(int motor) {
+        return motors.get(motor);
+    }
+
+    /**
+     * Sets the motor at an index.
+     *
+     * @param motor the motor index
+     * @param newMotor the new motor object
+     * @return the updated MotorGroup object
+     */
+    public MotorGroup setMotor(int motor, @NonNull Motor newMotor) {
+        motors.set(motor, newMotor);
+        return this;
+    }
+
+    /**
      * Gets the current mode of operation for the motors.
      *
      * @return the motor's current mode

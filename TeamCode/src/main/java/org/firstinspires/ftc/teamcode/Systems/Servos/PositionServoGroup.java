@@ -26,6 +26,15 @@ public class PositionServoGroup {
         return this;
     }
 
+    public PositionServo getServo(int servo) {
+        return servos.get(servo);
+    }
+
+    public PositionServoGroup setServo(int servo, @NonNull PositionServo newServo) {
+        servos.set(servo, newServo);
+        return this;
+    }
+
     public boolean isReversed(int servo) {
         return servos.get(servo).isReversed();
     }

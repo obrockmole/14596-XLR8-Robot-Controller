@@ -19,7 +19,6 @@ import java.util.Arrays;
  */
 public class Motor {
     DcMotorEx motor;
-    boolean reversed = false;
 
     double targetPower = 0;
     double speedScale = 1;
@@ -84,7 +83,7 @@ public class Motor {
      * @return if the motor is reversed or not
      */
     public boolean isReversed() {
-        return reversed;
+        return motor.getDirection() == DcMotor.Direction.REVERSE;
     }
 
     /**
@@ -94,7 +93,7 @@ public class Motor {
      * @return the updated Motor object
      */
     public Motor setReversed(boolean reversed) {
-        this.reversed = reversed;
+        motor.setDirection(reversed ? DcMotor.Direction.REVERSE : DcMotor.Direction.FORWARD);
         return this;
     }
 
@@ -130,7 +129,7 @@ public class Motor {
         this.motor = motor;
         this.mode = mode;
         this.ticksPerDegree = ticksPerDegree;
-        this.reversed = reversed;
+        setReversed(reversed);
     }
 
     /**
@@ -143,10 +142,7 @@ public class Motor {
      * @param reversed is the motor reversed
      */
     public Motor(HardwareMap hardwareMap, String name, Mode mode, double ticksPerDegree, boolean reversed) {
-        this.motor = hardwareMap.get(DcMotorEx.class, name);
-        this.mode = mode;
-        this.ticksPerDegree = ticksPerDegree;
-        this.reversed = reversed;
+        this(hardwareMap.get(DcMotorEx.class, name), mode, ticksPerDegree, reversed);
     }
 
     /**
@@ -351,8 +347,8 @@ public class Motor {
      * @return the desired power
      */
     public double calculatePIDF() {
-        double pid = pidController.calculate(getCurrentPosition(), getTargetPosition() * (reversed ? -1 : 1));
-        double ff = Math.cos(Math.toRadians((getTargetPosition() * (reversed ? -1 : 1)) / getTicksPerDegree())) * f;
+        double pid = pidController.calculate(getCurrentPosition(), getTargetPosition());
+        double ff = Math.cos(Math.toRadians((getTargetPosition()) / getTicksPerDegree())) * f;
 
         return pid + ff;
     }
@@ -374,7 +370,7 @@ public class Motor {
 
         switch (mode) {
             case POWER:
-                power = targetPower * (reversed ? -1 : 1);
+                power = targetPower;
                 break;
 
             case POSITION:
@@ -392,9 +388,11 @@ public class Motor {
     public Motor log(Telemetry telemetry, HardwareMap hardwareMap) {
         telemetry.addData("Motor", hardwareMap.getNamesOf(motor));
         telemetry.addData("Mode", mode);
-        telemetry.addData("Reversed", reversed);
+        telemetry.addData("Reversed", isReversed());
         telemetry.addData("Current Power", getPower());
+        telemetry.addData("Target Power", getTargetPower());
         telemetry.addData("Current Position", getCurrentPosition());
+        telemetry.addData("Target Position", getTargetPosition());
         return this;
     }
 }
