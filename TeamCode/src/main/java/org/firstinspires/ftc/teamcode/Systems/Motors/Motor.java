@@ -1,9 +1,11 @@
-package org.firstinspires.ftc.teamcode.Systems;
+package org.firstinspires.ftc.teamcode.Systems.Motors;
 
 import com.arcrobotics.ftclib.controller.PIDController;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -385,5 +387,14 @@ public class Motor {
         }
 
         setPower(power);
+    }
+
+    public Motor log(Telemetry telemetry, HardwareMap hardwareMap) {
+        telemetry.addData("Motor", hardwareMap.getNamesOf(motor));
+        telemetry.addData("Mode", mode);
+        telemetry.addData("Reversed", reversed);
+        telemetry.addData("Current Power", getPower());
+        telemetry.addData("Current Position", getCurrentPosition());
+        return this;
     }
 }

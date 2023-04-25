@@ -8,7 +8,7 @@ import com.qualcomm.robotcore.hardware.IMU;
 import org.firstinspires.ftc.teamcode.Systems.Drivetrain;
 import org.firstinspires.ftc.teamcode.Systems.Gamepad.Gamepad;
 import org.firstinspires.ftc.teamcode.Systems.Gamepad.GamepadButtons.Stick;
-import org.firstinspires.ftc.teamcode.Systems.Motor;
+import org.firstinspires.ftc.teamcode.Systems.Motors.Motor;
 
 @Disabled
 @TeleOp(group = "Samples")

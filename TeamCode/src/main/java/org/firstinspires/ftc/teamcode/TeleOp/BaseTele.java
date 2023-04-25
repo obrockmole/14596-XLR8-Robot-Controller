@@ -5,7 +5,7 @@ import com.qualcomm.robotcore.hardware.IMU;
 
 import org.firstinspires.ftc.teamcode.Systems.Drivetrain;
 import org.firstinspires.ftc.teamcode.Systems.Gamepad.Gamepad;
-import org.firstinspires.ftc.teamcode.Systems.Motor;
+import org.firstinspires.ftc.teamcode.Systems.Motors.Motor;
 
 public class BaseTele extends OpMode {
     Drivetrain drivetrain;
@@ -29,5 +29,6 @@ public class BaseTele extends OpMode {
         manipulator.update();
 
         drivetrain.log(telemetry);
+        telemetry.update();
     }
 }

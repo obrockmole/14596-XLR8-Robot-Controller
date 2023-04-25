@@ -1,6 +1,10 @@
-package org.firstinspires.ftc.teamcode.Systems;
+package org.firstinspires.ftc.teamcode.Systems.Motors;
 
 import androidx.annotation.NonNull;
+
+import com.qualcomm.robotcore.hardware.HardwareMap;
+
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -270,5 +274,14 @@ public class MotorGroup {
      */
     public void update(double input) {
         for (Motor motor : motors) motor.update();
+    }
+
+    public MotorGroup log(Telemetry telemetry, HardwareMap hardwareMap) {
+        for (Motor motor : motors) {
+            motor.log(telemetry, hardwareMap);
+            telemetry.addLine();
+        }
+
+        return this;
     }
 }
