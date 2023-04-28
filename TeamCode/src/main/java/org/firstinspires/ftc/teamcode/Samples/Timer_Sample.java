@@ -1,14 +1,13 @@
 package org.firstinspires.ftc.teamcode.Samples;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
 import org.firstinspires.ftc.teamcode.Systems.Gamepad.Gamepad;
 import org.firstinspires.ftc.teamcode.Systems.Gamepad.GamepadButtons.Button;
 import org.firstinspires.ftc.teamcode.Systems.Timer;
 
-@Disabled
+//@Disabled
 @Autonomous(group = "Samples")
 public class Timer_Sample extends OpMode {
     Timer timer;

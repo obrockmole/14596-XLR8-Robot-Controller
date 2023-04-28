@@ -14,8 +14,8 @@ public class TriggerHandler {
         this.trigger = trigger;
         this.limit = limit;
 
-        currentState = getValue() > this.limit;
-        previousState = currentState;
+        currentState = false;
+        previousState = false;
     }
 
     public double getLimit() {
@@ -46,16 +46,60 @@ public class TriggerHandler {
         return currentState;
     }
 
+    public boolean isDown(Runnable func) {
+        if (currentState) {
+            func.run();
+            return true;
+        }
+        return false;
+    }
+
+    public boolean isUp() {
+        return !currentState;
+    }
+
+    public boolean isUp(Runnable func) {
+        if (!currentState) {
+            func.run();
+            return true;
+        }
+        return false;
+    }
+
     public boolean onPress() {
         return (!previousState && currentState);
+    }
+
+    public boolean onPress(Runnable func) {
+        if (!previousState && currentState) {
+            func.run();
+            return true;
+        }
+        return false;
     }
 
     public boolean onRelease() {
         return (previousState && !currentState);
     }
 
+    public boolean onRelease(Runnable func) {
+        if (previousState && !currentState) {
+            func.run();
+            return true;
+        }
+        return false;
+    }
+
     public boolean onChange() {
         return (previousState != currentState);
+    }
+
+    public boolean onChange(Runnable func) {
+        if (previousState != currentState) {
+            func.run();
+            return true;
+        }
+        return false;
     }
 
     public void update() {

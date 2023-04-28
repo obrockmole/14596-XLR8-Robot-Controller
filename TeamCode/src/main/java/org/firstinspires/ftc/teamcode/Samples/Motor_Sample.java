@@ -1,6 +1,5 @@
 package org.firstinspires.ftc.teamcode.Samples;
 
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
@@ -9,7 +8,7 @@ import org.firstinspires.ftc.teamcode.Systems.Gamepad.Gamepad;
 import org.firstinspires.ftc.teamcode.Systems.Gamepad.GamepadButtons.Button;
 import org.firstinspires.ftc.teamcode.Systems.Motors.Motor;
 
-@Disabled
+//@Disabled
 @TeleOp(group = "Samples")
 public class Motor_Sample extends OpMode {
     Motor powerMotor, positionMotor;
@@ -21,7 +20,7 @@ public class Motor_Sample extends OpMode {
 
     @Override
     public void init() {
-        //Initializes custom gamepad's. See GamepadSample.java for more information
+        //Initializes custom gamepad's.
         driver =  new Gamepad(gamepad1);
         manipulator = new Gamepad(gamepad2);
 
@@ -29,14 +28,14 @@ public class Motor_Sample extends OpMode {
           Initialize powerMotor as a power motor by specifying the mode as POWER in the constructor.
           This example uses a predefined motor in the constructor.
          */
-        powerMotor = new Motor(hardwareMap.get(DcMotorEx.class, "PowerMotor"), Motor.Mode.POWER, 751.8 / 360, false);
+        powerMotor = new Motor(hardwareMap.get(DcMotorEx.class, "powerMotor1"), Motor.Mode.POWER, 751.8 / 360, false);
         powers = new double[]{0, 0.3, 0.7, 1};
 
         /*
           Initialize positionMotor as a position motor by specifying the mode as POSITION in the constructor.
           This example uses the hardware map and the motors name in the constructor.
          */
-        positionMotor = new Motor(hardwareMap, "PositionMotor", Motor.Mode.POSITION, 751.8 / 360, false);
+        positionMotor = new Motor(hardwareMap, "posMotor1", Motor.Mode.POSITION, 751.8 / 360, false);
         positions = new int[]{0, 400, 750, 1200};
 
         powerMotor.setTargetPower(powers[0]);

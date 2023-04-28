@@ -294,7 +294,7 @@ public class MotorGroup {
     /**
      * Update the motor group and sets its power based on its current mode and travel direction of the leader.
      */
-    public void update(double input) {
+    public void update() {
         for (Motor motor : motors) motor.update();
     }
 

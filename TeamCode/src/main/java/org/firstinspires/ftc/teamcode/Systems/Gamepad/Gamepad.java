@@ -80,9 +80,9 @@ public class Gamepad {
         return buttonValue;
     }
 
-    /*public double getTrigger(Trigger trigger) {
+    public double getTrigger(Trigger trigger) {
         return gamepadTriggers.get(trigger).getValue();
-    }*/
+    }
 
     public double getStickX(Stick stick) {
         double stickValue = 0;
@@ -114,9 +114,34 @@ public class Gamepad {
         return stickValue;
     }
 
+    //Button isDown()
+    public boolean isDown(Button button) {
+        return gamepadButtons.get(button).isDown();
+    }
+
+    //Trigger isDown()
+    public boolean isDown(Trigger trigger) {
+        return gamepadTriggers.get(trigger).isDown();
+    }
+
+    //Button isUp()
+    public boolean isUp(Button button) {
+        return gamepadButtons.get(button).isUp();
+    }
+
+    //Trigger isUp()
+    public boolean isUp(Trigger trigger) {
+        return gamepadTriggers.get(trigger).isUp();
+    }
+
     //Button onPress()
     public boolean onPress(Button button) {
         return gamepadButtons.get(button).onPress();
+    }
+
+    public Gamepad onPress(Button button, Runnable func) {
+        gamepadButtons.get(button).onPress(func);
+        return this;
     }
 
     //Trigger onPress()
@@ -124,9 +149,19 @@ public class Gamepad {
         return gamepadTriggers.get(trigger).onPress();
     }
 
+    public Gamepad onPress(Trigger trigger, Runnable func) {
+        gamepadTriggers.get(trigger).onPress(func);
+        return this;
+    }
+
     //Button onRelease()
     public boolean onRelease(Button button) {
         return gamepadButtons.get(button).onRelease();
+    }
+
+    public Gamepad onRelease(Button button, Runnable func) {
+        gamepadButtons.get(button).onRelease(func);
+        return this;
     }
 
     //Trigger onRelease()
@@ -134,14 +169,9 @@ public class Gamepad {
         return gamepadTriggers.get(trigger).onRelease();
     }
 
-    //Button onDown()
-    public boolean isDown(Button button) {
-        return gamepadButtons.get(button).isDown();
-    }
-
-    //Trigger onDown()
-    public boolean isDown(Trigger trigger) {
-        return gamepadTriggers.get(trigger).isDown();
+    public Gamepad onRelease(Trigger trigger, Runnable func) {
+        gamepadTriggers.get(trigger).onRelease(func);
+        return this;
     }
 
     //Button onChange()
@@ -149,9 +179,19 @@ public class Gamepad {
         return gamepadButtons.get(button).onChange();
     }
 
+    public Gamepad onChange(Button button, Runnable func) {
+        gamepadButtons.get(button).onChange(func);
+        return this;
+    }
+
     //Trigger onChange()
     public boolean onChange(Trigger trigger) {
         return gamepadTriggers.get(trigger).onChange();
+    }
+
+    public Gamepad onChange(Trigger trigger, Runnable func) {
+        gamepadTriggers.get(trigger).onChange(func);
+        return this;
     }
 
     public void update() {

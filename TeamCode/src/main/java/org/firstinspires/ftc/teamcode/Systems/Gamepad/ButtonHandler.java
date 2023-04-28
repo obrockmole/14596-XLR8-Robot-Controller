@@ -22,16 +22,41 @@ public class ButtonHandler {
         return button.getAsBoolean();
     }
 
+    public boolean isUp() {
+        return !button.getAsBoolean();
+    }
+
     public boolean onPress() {
         return (!previousState && currentState);
+    }
+
+    public ButtonHandler onPress(Runnable func) {
+        if (!previousState && currentState) {
+            func.run();
+        }
+        return this;
     }
 
     public boolean onRelease() {
         return (previousState && !currentState);
     }
 
+    public ButtonHandler onRelease(Runnable func) {
+        if (previousState && !currentState) {
+            func.run();
+        }
+        return this;
+    }
+
     public boolean onChange() {
         return (previousState != currentState);
+    }
+
+    public ButtonHandler onChange(Runnable func) {
+        if (previousState != currentState) {
+            func.run();
+        }
+        return this;
     }
 
     public void update() {
