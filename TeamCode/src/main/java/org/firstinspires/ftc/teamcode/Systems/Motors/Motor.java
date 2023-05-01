@@ -13,9 +13,9 @@ import java.util.Arrays;
 /**
  * The Motor class represents a motor component that can be used to in a variety of different ways to control the robot.
  * It can operate in two modes, power or position mode.
- * In power mode, the motor's power can be set based on an index of a pre-determined list of powers.
+ * In power mode, the motor's power can be set.
  *
- * In position mode, the motor can be moved to a specific encoder position based on an index of a pre-determined list of positions through a PIDF function.
+ * In position mode, the motor can be moved to a specific encoder position through a PIDF function.
  */
 public class Motor {
     DcMotorEx motor;
@@ -38,7 +38,7 @@ public class Motor {
     Mode mode = Mode.POWER;
 
     /**
-     * Gets the controlled DcMotorEx motor.
+     * Gets the controlled motor.
      *
      * @return the controlled motor
      */
@@ -47,13 +47,25 @@ public class Motor {
     }
 
     /**
-     * Sets the controlled DcMotorEx motor.
+     * Sets the controlled motor.
      *
      * @param motor the DcMotorEx object that represents the motor
      * @return the updated Motor object
      */
     public Motor setMotor(DcMotorEx motor) {
         this.motor = motor;
+        return this;
+    }
+
+    /**
+     * Sets the controlled motor through the HardwareMap and name.
+     *
+     * @param hardwareMap the robots hardware map
+     * @param name the motor's configuration name
+     * @return the updated Motor object
+     */
+    public Motor setMotor(HardwareMap hardwareMap, String name) {
+        this.motor = hardwareMap.get(DcMotorEx.class, name);
         return this;
     }
 
@@ -120,7 +132,7 @@ public class Motor {
     /**
      * Constructor for a Motor object.
      *
-     * @param motor the DcMotorEx object to be controlled
+     * @param motor the motor object to be controlled
      * @param mode the motor's mode
      * @param ticksPerDegree the number of encoder ticks per degree
      * @param reversed is the motor reversed

@@ -114,27 +114,22 @@ public class Gamepad {
         return stickValue;
     }
 
-    //Button isDown()
     public boolean isDown(Button button) {
         return gamepadButtons.get(button).isDown();
     }
 
-    //Trigger isDown()
     public boolean isDown(Trigger trigger) {
         return gamepadTriggers.get(trigger).isDown();
     }
 
-    //Button isUp()
     public boolean isUp(Button button) {
         return gamepadButtons.get(button).isUp();
     }
 
-    //Trigger isUp()
     public boolean isUp(Trigger trigger) {
         return gamepadTriggers.get(trigger).isUp();
     }
 
-    //Button onPress()
     public boolean onPress(Button button) {
         return gamepadButtons.get(button).onPress();
     }
@@ -144,7 +139,6 @@ public class Gamepad {
         return this;
     }
 
-    //Trigger onPress()
     public boolean onPress(Trigger trigger) {
         return gamepadTriggers.get(trigger).onPress();
     }
@@ -154,7 +148,6 @@ public class Gamepad {
         return this;
     }
 
-    //Button onRelease()
     public boolean onRelease(Button button) {
         return gamepadButtons.get(button).onRelease();
     }
@@ -164,7 +157,6 @@ public class Gamepad {
         return this;
     }
 
-    //Trigger onRelease()
     public boolean onRelease(Trigger trigger) {
         return gamepadTriggers.get(trigger).onRelease();
     }
@@ -174,7 +166,6 @@ public class Gamepad {
         return this;
     }
 
-    //Button onChange()
     public boolean onChange(Button button) {
         return gamepadButtons.get(button).onChange();
     }
@@ -184,7 +175,6 @@ public class Gamepad {
         return this;
     }
 
-    //Trigger onChange()
     public boolean onChange(Trigger trigger) {
         return gamepadTriggers.get(trigger).onChange();
     }

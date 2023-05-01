@@ -30,8 +30,8 @@ public class PositionServo {
         return this;
     }
 
-    public PositionServo setServo(HardwareMap hardwaremap, String name) {
-        this.servo = hardwaremap.get(Servo.class, name);
+    public PositionServo setServo(HardwareMap hardwareMap, String name) {
+        this.servo = hardwareMap.get(Servo.class, name);
         return this;
     }
 
@@ -82,7 +82,7 @@ public class PositionServo {
         this.targetPosition = targetPosition;
         return this;
     }
-    
+
     public double getPosition() {
         return servo.getPosition();
     }
