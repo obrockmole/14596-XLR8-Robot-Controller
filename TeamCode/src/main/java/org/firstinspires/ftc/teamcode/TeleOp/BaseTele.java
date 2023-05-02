@@ -12,10 +12,10 @@ public class BaseTele extends OpMode {
     Gamepad driver, manipulator;
 
     public void init() {
-        Motor frontLeft = new Motor(hardwareMap, "frontLeft", Motor.Mode.POWER, 751.8 / 360, false);
-        Motor backLeft = new Motor(hardwareMap, "backLeft", Motor.Mode.POWER, 751.8 / 360, false);
-        Motor frontRight = new Motor(hardwareMap, "frontRight", Motor.Mode.POWER, 751.8 / 360, false);
-        Motor backRight = new Motor(hardwareMap, "backRight", Motor.Mode.POWER, 751.8 / 360, false);
+        Motor frontLeft = new Motor(hardwareMap, "frontLeft", Motor.Mode.POWER, 751.8 / 360, 10, false);
+        Motor backLeft = new Motor(hardwareMap, "backLeft", Motor.Mode.POWER, 751.8 / 360, 10, false);
+        Motor frontRight = new Motor(hardwareMap, "frontRight", Motor.Mode.POWER, 751.8 / 360, 10, false);
+        Motor backRight = new Motor(hardwareMap, "backRight", Motor.Mode.POWER, 751.8 / 360, 10, false);
         IMU imu = hardwareMap.get(IMU.class, "imu");
 
         drivetrain = new Drivetrain(frontLeft, backLeft, frontRight, backRight, imu);

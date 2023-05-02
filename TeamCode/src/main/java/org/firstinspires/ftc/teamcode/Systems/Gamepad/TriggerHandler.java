@@ -66,10 +66,6 @@ public class TriggerHandler {
         return false;
     }
 
-    public boolean onPress() {
-        return (!previousState && currentState);
-    }
-
     public boolean onPress(Runnable func) {
         if (!previousState && currentState) {
             func.run();
@@ -78,20 +74,12 @@ public class TriggerHandler {
         return false;
     }
 
-    public boolean onRelease() {
-        return (previousState && !currentState);
-    }
-
     public boolean onRelease(Runnable func) {
         if (previousState && !currentState) {
             func.run();
             return true;
         }
         return false;
-    }
-
-    public boolean onChange() {
-        return (previousState != currentState);
     }
 
     public boolean onChange(Runnable func) {

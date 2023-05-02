@@ -1,14 +1,15 @@
 package org.firstinspires.ftc.teamcode.Samples;
 
-import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.Systems.Gamepad.Gamepad;
 import org.firstinspires.ftc.teamcode.Systems.Gamepad.GamepadButtons.Button;
 import org.firstinspires.ftc.teamcode.Systems.Timer;
 
-//@Disabled
-@Autonomous(group = "Samples")
+@Disabled
+@TeleOp(group = "Samples")
 public class Timer_Sample extends OpMode {
     Timer timer;
 
@@ -31,7 +32,8 @@ public class Timer_Sample extends OpMode {
 
     @Override
     public void loop() {
-        if (driver.onPress(Button.A)) timer.start(); //Start the timer when the A button is pressed
+        driver.onPress(Button.A, () -> timer.start()) //Start the timer when the A button is pressed
+                .update();
 
         //Update the state every second and display the current state to telemetry
         switch (state) {

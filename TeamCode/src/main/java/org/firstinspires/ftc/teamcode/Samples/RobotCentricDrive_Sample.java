@@ -19,10 +19,10 @@ public class RobotCentricDrive_Sample extends OpMode {
     @Override
     public void init() {
         //Initialize the motors and IMU
-        Motor frontLeft = new Motor(hardwareMap, "frontLeft", Motor.Mode.POWER, 751.8 / 360, false);
-        Motor backLeft = new Motor(hardwareMap, "backLeft", Motor.Mode.POWER, 751.8 / 360, false);
-        Motor frontRight = new Motor(hardwareMap, "frontRight", Motor.Mode.POWER, 751.8 / 360, false);
-        Motor backRight = new Motor(hardwareMap, "backRight", Motor.Mode.POWER, 751.8 / 360, false);
+        Motor frontLeft = new Motor(hardwareMap, "frontLeft", Motor.Mode.POWER, 751.8 / 360, 10, false);
+        Motor backLeft = new Motor(hardwareMap, "backLeft", Motor.Mode.POWER, 751.8 / 360, 10, false);
+        Motor frontRight = new Motor(hardwareMap, "frontRight", Motor.Mode.POWER, 751.8 / 360, 10, false);
+        Motor backRight = new Motor(hardwareMap, "backRight", Motor.Mode.POWER, 751.8 / 360, 10, false);
         IMU imu = hardwareMap.get(IMU.class, "imu");
 
         drivetrain = new Drivetrain(frontLeft, backLeft, frontRight, backRight, imu); //Assign the motors and IMU to the drivetrain
@@ -32,6 +32,7 @@ public class RobotCentricDrive_Sample extends OpMode {
 
     @Override
     public void loop() {
+        driver.update();
         /*
           The drivetrain has two drive modes: field centric and robot centric.
           Robot centric is the default drive mode. The robot will always move in relation to the position its facing.

@@ -13,7 +13,7 @@ public class ContinuousServoGroup {
     ArrayList<ContinuousServo> servos;
 
     public ContinuousServoGroup(@NonNull ContinuousServo... servos) {
-        this.servos.addAll(Arrays.asList(servos));
+        this.servos = new ArrayList<>(Arrays.asList(servos));
     }
 
     public ArrayList<ContinuousServo> getServos() {
@@ -22,7 +22,7 @@ public class ContinuousServoGroup {
 
     public ContinuousServoGroup setServos(@NonNull ContinuousServo... servos) {
         this.servos.clear();
-        this.servos.addAll(Arrays.asList(servos));
+        this.servos = new ArrayList<>(Arrays.asList(servos));
         return this;
     }
 

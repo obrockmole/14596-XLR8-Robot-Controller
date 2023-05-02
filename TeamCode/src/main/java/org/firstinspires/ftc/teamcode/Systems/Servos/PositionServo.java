@@ -114,7 +114,7 @@ public class PositionServo {
         telemetry.addData("Servo", hardwareMap.getNamesOf(servo));
         telemetry.addData("Current Position", getPosition());
         telemetry.addData("Target Position", getTargetPosition());
-        telemetry.addData("Scale Range", getScaleRange());
+        telemetry.addData("Scale Range", getScaleRange().toString());
         telemetry.addData("Reversed", isReversed());
         return this;
     }

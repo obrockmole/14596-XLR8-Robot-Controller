@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.Samples;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
@@ -8,7 +9,7 @@ import org.firstinspires.ftc.teamcode.Systems.Gamepad.GamepadButtons.Button;
 import org.firstinspires.ftc.teamcode.Systems.Gamepad.GamepadButtons.Stick;
 import org.firstinspires.ftc.teamcode.Systems.Gamepad.GamepadButtons.Trigger;
 
-//@Disabled
+@Disabled
 @TeleOp(group = "Samples")
 public class Gamepad_Sample extends OpMode {
     Gamepad driver, manipulator;
@@ -25,17 +26,16 @@ public class Gamepad_Sample extends OpMode {
     @Override
     public void loop() {
         // Driver Gamepad
-        if (driver.onPress(Button.A)) dPressed++;
-        if (driver.onRelease(Button.A)) dReleased++;
-        if (driver.onChange(Button.A)) dChanged++;
+        driver.onPress(Button.A, () -> dPressed++)
+                .onRelease(Button.A, () -> dReleased++)
+                .onChange(Button.A, () -> dChanged++)
+                .update();
 
         // Manipulator Gamepad
-        if (manipulator.onPress(Button.A)) mPressed++;
-        if (manipulator.onRelease(Button.A)) mReleased++;
-        if (manipulator.onChange(Button.A)) mChanged++;
-
-        driver.update();
-        manipulator.update();
+        manipulator.onPress(Button.A, () -> mPressed++)
+                .onRelease(Button.A, () -> mReleased++)
+                .onChange(Button.A, () -> mChanged++)
+                .update();
 
         //Telemetry to display gamepad changes and values
         telemetry.addLine("Driver A Pressed: " + dPressed);

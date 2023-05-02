@@ -13,7 +13,7 @@ public class PositionServoGroup {
     ArrayList<PositionServo> servos;
 
     public PositionServoGroup(@NonNull PositionServo... servos) {
-        this.servos.addAll(Arrays.asList(servos));
+        this.servos = new ArrayList<>(Arrays.asList(servos));
     }
 
     public ArrayList<PositionServo> getServos() {
@@ -22,7 +22,7 @@ public class PositionServoGroup {
 
     public PositionServoGroup setServos(@NonNull PositionServo... servos) {
         this.servos.clear();
-        this.servos.addAll(Arrays.asList(servos));
+        this.servos = new ArrayList<>(Arrays.asList(servos));
         return this;
     }
 

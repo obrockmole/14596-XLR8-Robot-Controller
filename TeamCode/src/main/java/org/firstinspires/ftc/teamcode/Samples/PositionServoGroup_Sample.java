@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.Samples;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
@@ -8,7 +9,7 @@ import org.firstinspires.ftc.teamcode.Systems.Gamepad.GamepadButtons.Button;
 import org.firstinspires.ftc.teamcode.Systems.Servos.PositionServo;
 import org.firstinspires.ftc.teamcode.Systems.Servos.PositionServoGroup;
 
-//@Disabled
+@Disabled
 @TeleOp(group = "Samples")
 public class PositionServoGroup_Sample extends OpMode {
     PositionServoGroup servos;
@@ -34,15 +35,14 @@ public class PositionServoGroup_Sample extends OpMode {
         /*
           Change the state of servos based on input from gamepad1.
          */
-        if (driver.onPress(Button.A))
-            servos.setTargetPosition(positions[0]); //Set servo positions to 0
-        else if (driver.onPress(Button.B))
-            servos.setTargetPosition(positions[1]); //Set servo positions to 0.3
-        else if (driver.onPress(Button.X))
-            servos.setTargetPosition(positions[2]); //Set servo positions to 0.7
-        else if (driver.onPress(Button.Y))
-            servos.setTargetPosition(positions[3]); //Set servo positions to 1
+        driver.onPress(Button.A, () -> servos.setTargetPosition(positions[0])) //Set servo positions to 0
+                .onPress(Button.B, () -> servos.setTargetPosition(positions[1])) //Set servo positions to 0.3
+                .onPress(Button.X, () -> servos.setTargetPosition(positions[2])) //Set servo positions to 0.7
+                .onPress(Button.Y, () -> servos.setTargetPosition(positions[3])) //Set servo positions to 1
+                .update();
 
         servos.update(); //Update servos object
+
+        servos.log(telemetry, hardwareMap); //Log servo data to telemetry
     }
 }

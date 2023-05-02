@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.Samples;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
@@ -8,7 +9,7 @@ import org.firstinspires.ftc.teamcode.Systems.Gamepad.Gamepad;
 import org.firstinspires.ftc.teamcode.Systems.Gamepad.GamepadButtons.Button;
 import org.firstinspires.ftc.teamcode.Systems.Motors.Motor;
 
-//@Disabled
+@Disabled
 @TeleOp(group = "Samples")
 public class Motor_Sample extends OpMode {
     Motor powerMotor, positionMotor;
@@ -28,14 +29,14 @@ public class Motor_Sample extends OpMode {
           Initialize powerMotor as a power motor by specifying the mode as POWER in the constructor.
           This example uses a predefined motor in the constructor.
          */
-        powerMotor = new Motor(hardwareMap.get(DcMotorEx.class, "powerMotor1"), Motor.Mode.POWER, 751.8 / 360, false);
+        powerMotor = new Motor(hardwareMap.get(DcMotorEx.class, "powerMotor1"), Motor.Mode.POWER, 751.8 / 360, 10, false);
         powers = new double[]{0, 0.3, 0.7, 1};
 
         /*
           Initialize positionMotor as a position motor by specifying the mode as POSITION in the constructor.
           This example uses the hardware map and the motors name in the constructor.
          */
-        positionMotor = new Motor(hardwareMap, "posMotor1", Motor.Mode.POSITION, 751.8 / 360, false);
+        positionMotor = new Motor(hardwareMap, "posMotor1", Motor.Mode.POSITION, 751.8 / 360, 10, false);
         positions = new int[]{0, 400, 750, 1200};
 
         powerMotor.setTargetPower(powers[0]);
@@ -49,28 +50,25 @@ public class Motor_Sample extends OpMode {
         /*
           Change the state of powerMotor based on input from gamepad1.
          */
-        if (driver.onPress(Button.A))
-            powerMotor.setTargetPower(powers[0]); //Set motor power to 0
-        else if (driver.onPress(Button.B))
-            powerMotor.setTargetPower(powers[1]); //Set motor power to 0.3
-        else if (driver.onPress(Button.X))
-            powerMotor.setTargetPower(powers[2]); //Set motor power to 0.7
-        else if (driver.onPress(Button.Y))
-            powerMotor.setTargetPower(powers[3]); //Set motor power to 1
+        driver.onPress(Button.A, () -> powerMotor.setTargetPower(powers[0])) //Set motor power to 0
+                .onPress(Button.B, () -> powerMotor.setTargetPower(powers[1])) //Set motor power to 0.3
+                .onPress(Button.X, () -> powerMotor.setTargetPower(powers[2])) //Set motor power to 0.7
+                .onPress(Button.Y, () -> powerMotor.setTargetPower(powers[3])) //Set motor power to 1
+                .update();
 
         /*
           Change the state of positionMotor based on input from gamepad2.
          */
-        if (manipulator.onPress(Button.A))
-            powerMotor.setTargetPosition(positions[0]); //Set motor position to 0 ticks
-        else if (manipulator.onPress(Button.B))
-            powerMotor.setTargetPosition(positions[1]); //Set motor position to 400 ticks
-        else if (manipulator.onPress(Button.X))
-            powerMotor.setTargetPosition(positions[2]); //Set motor position to 750 ticks
-        else if (manipulator.onPress(Button.Y))
-            powerMotor.setTargetPosition(positions[3]); //Set motor position to 1200 ticks
+        manipulator.onPress(Button.A, () -> positionMotor.setTargetPosition(positions[0])) //Set motor position to 0 ticks
+                .onPress(Button.B, () -> positionMotor.setTargetPosition(positions[1])) //Set motor position to 400 ticks
+                .onPress(Button.X, () -> positionMotor.setTargetPosition(positions[2])) //Set motor position to 750 ticks
+                .onPress(Button.Y, () -> positionMotor.setTargetPosition(positions[3])) //Set motor position to 1200 ticks
+                .update();
 
         powerMotor.update(); //Update powerMotor object
         positionMotor.update(); //Update positionMotor object
+
+        powerMotor.log(telemetry, hardwareMap);
+        positionMotor.log(telemetry, hardwareMap);
     }
 }
