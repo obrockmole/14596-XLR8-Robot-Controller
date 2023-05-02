@@ -10,6 +10,7 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+
 public class Motor {
     DcMotorEx motor;
 
@@ -34,6 +35,11 @@ public class Motor {
 
     public Motor setMotor(DcMotorEx motor) {
         this.motor = motor;
+        return this;
+    }
+
+    public Motor setMotor(HardwareMap hardwareMap, String name) {
+        this.motor = hardwareMap.get(DcMotorEx.class, name);
         return this;
     }
 
@@ -73,7 +79,7 @@ public class Motor {
         return this;
     }
 
-    public Motor(DcMotorEx motor, Mode mode, double ticksPerDegree, int tolerance, boolean reversed) {
+    public Motor(DcMotorEx motor, Mode mode, double ticksPerDegree, boolean reversed) {
         this.motor = motor;
         this.mode = mode;
         this.ticksPerDegree = ticksPerDegree;

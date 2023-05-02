@@ -114,22 +114,18 @@ public class Gamepad {
         return stickValue;
     }
 
-    //Button isDown()
     public boolean isDown(Button button) {
         return gamepadButtons.get(button).isDown();
     }
 
-    //Trigger isDown()
     public boolean isDown(Trigger trigger) {
         return gamepadTriggers.get(trigger).isDown();
     }
 
-    //Button isUp()
     public boolean isUp(Button button) {
         return gamepadButtons.get(button).isUp();
     }
 
-    //Trigger isUp()
     public boolean isUp(Trigger trigger) {
         return gamepadTriggers.get(trigger).isUp();
     }
