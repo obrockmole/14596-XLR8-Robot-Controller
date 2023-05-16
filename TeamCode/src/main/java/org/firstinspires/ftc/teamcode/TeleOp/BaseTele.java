@@ -11,6 +11,7 @@ public class BaseTele extends OpMode {
     Drivetrain drivetrain;
     Gamepad driver, manipulator;
 
+    //@Override
     public void init() {
         Motor frontLeft = new Motor(hardwareMap, "frontLeft", Motor.Mode.POWER, 751.8 / 360, 10, false);
         Motor backLeft = new Motor(hardwareMap, "backLeft", Motor.Mode.POWER, 751.8 / 360, 10, false);
@@ -24,6 +25,7 @@ public class BaseTele extends OpMode {
         manipulator = new Gamepad(gamepad2);
     }
 
+    //@Override
     public void loop() {
         driver.update();
         manipulator.update();

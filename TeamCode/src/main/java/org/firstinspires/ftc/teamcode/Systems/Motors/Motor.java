@@ -79,7 +79,7 @@ public class Motor {
         return this;
     }
 
-    public Motor(DcMotorEx motor, Mode mode, double ticksPerDegree, boolean reversed) {
+    public Motor(DcMotorEx motor, Mode mode, double ticksPerDegree, int tolerance, boolean reversed) {
         this.motor = motor;
         this.mode = mode;
         this.ticksPerDegree = ticksPerDegree;
