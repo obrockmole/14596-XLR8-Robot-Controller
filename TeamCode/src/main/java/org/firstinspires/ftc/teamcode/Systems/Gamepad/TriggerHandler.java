@@ -46,48 +46,38 @@ public class TriggerHandler {
         return currentState;
     }
 
-    public boolean isDown(Runnable func) {
-        if (currentState) {
-            func.run();
-            return true;
-        }
-        return false;
-    }
-
     public boolean isUp() {
         return !currentState;
     }
 
-    public boolean isUp(Runnable func) {
-        if (!currentState) {
+    public TriggerHandler onDown(Runnable func) {
+        if (isDown())
             func.run();
-            return true;
-        }
-        return false;
+        return this;
     }
 
-    public boolean onPress(Runnable func) {
-        if (!previousState && currentState) {
+    public TriggerHandler onUp(Runnable func) {
+        if (isUp())
             func.run();
-            return true;
-        }
-        return false;
+        return this;
     }
 
-    public boolean onRelease(Runnable func) {
-        if (previousState && !currentState) {
+    public TriggerHandler onPress(Runnable func) {
+        if (!previousState && currentState)
             func.run();
-            return true;
-        }
-        return false;
+        return this;
     }
 
-    public boolean onChange(Runnable func) {
-        if (previousState != currentState) {
+    public TriggerHandler onRelease(Runnable func) {
+        if (previousState && !currentState)
             func.run();
-            return true;
-        }
-        return false;
+        return this;
+    }
+
+    public TriggerHandler onChange(Runnable func) {
+        if (previousState != currentState)
+            func.run();
+        return this;
     }
 
     public void update() {

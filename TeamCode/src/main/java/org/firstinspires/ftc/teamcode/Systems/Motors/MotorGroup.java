@@ -76,8 +76,8 @@ public class MotorGroup {
         return this;
     }
 
-    public int getCurrentPosition() {
-        return motors.get(0).getCurrentPosition();
+    public int getCurrentPosition(int motor) {
+        return motors.get(motor).getCurrentPosition();
     }
 
     public int getTargetPosition() {

@@ -51,7 +51,7 @@ public class MotorGroup_Sample extends OpMode {
     @Override
     public void loop() {
         /*
-          Change the state of powerMotor based on input from gamepad1.
+          Change the state of the power motors based on input from gamepad1.
          */
         driver.onPress(Button.A, () -> powerMotors.setTargetPower(powers[0])) //Set motor powers to 0
                 .onPress(Button.B, () -> powerMotors.setTargetPower(powers[1])) //Set motor powers to 0.3
@@ -60,7 +60,7 @@ public class MotorGroup_Sample extends OpMode {
                 .update();
 
         /*
-          Change the state of positionMotor based on input from gamepad2.
+          Change the state of the power motors based on input from gamepad2.
          */
         manipulator.onPress(Button.A, () -> positionMotors.setTargetPosition(positions[0])) //Set motor positions to 0
                 .onPress(Button.B, () -> positionMotors.setTargetPosition(positions[1])) //Set motor positions to 400

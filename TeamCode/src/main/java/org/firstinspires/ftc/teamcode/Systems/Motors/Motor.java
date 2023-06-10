@@ -19,7 +19,7 @@ public class Motor {
 
     PIDController pidController;
     int targetPosition = 0;
-    int tolerance = 0;
+    int tolerance;
     double p, i, d, f, ticksPerDegree;
 
     public enum Mode {
@@ -27,7 +27,28 @@ public class Motor {
         POSITION,
         DISABLED
     }
-    Mode mode = Mode.POWER;
+    Mode mode;
+
+    public Motor(DcMotorEx motor, Mode mode, double ticksPerDegree, int tolerance, boolean reversed) {
+        this.motor = motor;
+        this.mode = mode;
+        this.ticksPerDegree = ticksPerDegree;
+        this.tolerance = tolerance;
+        this.pidController = new PIDController(0, 0, 0);
+        setReversed(reversed);
+    }
+
+    public Motor(HardwareMap hardwareMap, String name, Mode mode, double ticksPerDegree, int tolerance, boolean reversed) {
+        this(hardwareMap.get(DcMotorEx.class, name), mode, ticksPerDegree, tolerance, reversed);
+    }
+
+    public Motor(DcMotorEx motor, Mode mode, double ticksPerDegree, boolean reversed) {
+        this(motor, mode, ticksPerDegree, 10, reversed);
+    }
+
+    public Motor(HardwareMap hardwareMap, String name, Mode mode, double ticksPerDegree, boolean reversed) {
+        this(hardwareMap.get(DcMotorEx.class, name), mode, ticksPerDegree, 10, reversed);
+    }
 
     public DcMotorEx getMotor() {
         return motor;
@@ -77,19 +98,6 @@ public class Motor {
     public Motor setTolerance(int tolerance) {
         this.tolerance = tolerance;
         return this;
-    }
-
-    public Motor(DcMotorEx motor, Mode mode, double ticksPerDegree, int tolerance, boolean reversed) {
-        this.motor = motor;
-        this.mode = mode;
-        this.ticksPerDegree = ticksPerDegree;
-        this.tolerance = tolerance;
-        this.pidController = new PIDController(0, 0, 0);
-        setReversed(reversed);
-    }
-
-    public Motor(HardwareMap hardwareMap, String name, Mode mode, double ticksPerDegree, int tolerance, boolean reversed) {
-        this(hardwareMap.get(DcMotorEx.class, name), mode, ticksPerDegree, tolerance, reversed);
     }
 
     public double getPower() {
@@ -221,10 +229,13 @@ public class Motor {
         telemetry.addData("Motor", hardwareMap.getNamesOf(motor));
         telemetry.addData("Mode", mode);
         telemetry.addData("Reversed", isReversed());
-        telemetry.addData("Current Power", getPower());
-        telemetry.addData("Target Power", getTargetPower());
-        telemetry.addData("Current Position", getCurrentPosition());
-        telemetry.addData("Target Position", getTargetPosition());
+        if (mode == Mode.POWER) {
+            telemetry.addData("Current Power", getPower());
+            telemetry.addData("Target Power", getTargetPower());
+        } else if (mode == Mode.POSITION) {
+            telemetry.addData("Current Position", getCurrentPosition());
+            telemetry.addData("Target Position", getTargetPosition());
+        }
         return this;
     }
 }

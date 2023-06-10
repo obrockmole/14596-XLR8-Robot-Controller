@@ -26,24 +26,33 @@ public class ButtonHandler {
         return !button.getAsBoolean();
     }
 
-    public ButtonHandler onPress(Runnable func) {
-        if (!previousState && currentState) {
+    public ButtonHandler onDown(Runnable func) {
+        if (isDown())
             func.run();
-        }
+        return this;
+    }
+
+    public ButtonHandler onUp(Runnable func) {
+        if (isUp())
+            func.run();
+        return this;
+    }
+
+    public ButtonHandler onPress(Runnable func) {
+        if (!previousState && currentState)
+            func.run();
         return this;
     }
 
     public ButtonHandler onRelease(Runnable func) {
-        if (previousState && !currentState) {
+        if (previousState && !currentState)
             func.run();
-        }
         return this;
     }
 
     public ButtonHandler onChange(Runnable func) {
-        if (previousState != currentState) {
+        if (previousState != currentState)
             func.run();
-        }
         return this;
     }
 
