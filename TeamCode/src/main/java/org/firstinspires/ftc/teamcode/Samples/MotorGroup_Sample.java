@@ -9,6 +9,7 @@ import org.firstinspires.ftc.teamcode.Systems.Gamepad.Gamepad;
 import org.firstinspires.ftc.teamcode.Systems.Gamepad.GamepadButtons.Button;
 import org.firstinspires.ftc.teamcode.Systems.Motors.Motor;
 import org.firstinspires.ftc.teamcode.Systems.Motors.MotorGroup;
+import org.firstinspires.ftc.teamcode.Systems.Motors.MotorLookupTable;
 
 @Disabled
 @TeleOp(group = "Samples")
@@ -30,16 +31,16 @@ public class MotorGroup_Sample extends OpMode {
           Initialize powerMotors with a list of motors set to power by specifying the mode as POWER in the constructor.
           This example uses a predefined motors in the constructor.
          */
-        powerMotors = new MotorGroup(new Motor(hardwareMap.get(DcMotorEx.class, "powerMotor1"), Motor.Mode.POWER, 751.8 / 360, 10, false),
-                new Motor(hardwareMap.get(DcMotorEx.class, "powerMotor2"), Motor.Mode.POWER, 751.8 / 360, 10, true));
+        powerMotors = new MotorGroup(new Motor(hardwareMap.get(DcMotorEx.class, "powerMotor1"), MotorLookupTable.GOBILDA_435, Motor.Mode.POWER, 10, false),
+                new Motor(hardwareMap.get(DcMotorEx.class, "powerMotor2"), MotorLookupTable.GOBILDA_435, Motor.Mode.POWER, 10, false));
         powers = new double[]{0, 0.3, 0.7, 1};
 
         /*
           Initialize positionMotors with a list of motors set to position control by specifying the mode as POSITION in the constructor.
           This example uses the hardware map and the motors name in the constructor.
          */
-        positionMotors = new MotorGroup(new Motor(hardwareMap, "posMotor1", Motor.Mode.POSITION, 751.8 / 360, 10, false),
-                new Motor(hardwareMap, "posMotor2", Motor.Mode.POSITION, 751.8 / 360, 10, true));
+        positionMotors = new MotorGroup(new Motor(hardwareMap, "posMotor1", MotorLookupTable.GOBILDA_435, Motor.Mode.POSITION, 10, false),
+                new Motor(hardwareMap, "posMotor2", MotorLookupTable.GOBILDA_435, Motor.Mode.POSITION, 10, true));
         positions = new int[]{0, 400, 750, 1200};
 
         powerMotors.setTargetPower(powers[0]);

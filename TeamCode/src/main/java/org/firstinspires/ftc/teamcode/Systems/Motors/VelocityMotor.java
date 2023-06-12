@@ -13,6 +13,7 @@ import java.util.Arrays;
 
 public class VelocityMotor {
     DcMotorEx motor;
+    MotorLookupTable motorType;
 
     PIDController velocityController;
     SimpleMotorFeedforward feedforwardController;
@@ -22,21 +23,21 @@ public class VelocityMotor {
     double lastVelocity = 0;
     double lastPosition = 0;
     double lastTimestamp = 0;
-    double kP = 0, kI = 0, kD = 0, kS = 0, kV = 0, kA = 0, ticksPerSecond;
+    double kP = 0, kI = 0, kD = 0, kS = 0, kV = 0, kA = 0;
 
     boolean reversed = false;
 
-    public VelocityMotor(DcMotorEx motor, double ticksPerSecond, boolean reversed) {
+    public VelocityMotor(DcMotorEx motor, MotorLookupTable motorType, boolean reversed) {
         this.motor = motor;
-        this.ticksPerSecond = ticksPerSecond;
+        this.motorType = motorType;
         setReversed(reversed);
 
         velocityController = new PIDController(kP, kI, kD);
         feedforwardController = new SimpleMotorFeedforward(kS, kV, kA);
     }
 
-    public VelocityMotor(HardwareMap hardwareMap, String name, double ticksPerSecond, boolean reversed) {
-        this(hardwareMap.get(DcMotorEx.class, name), ticksPerSecond, reversed);
+    public VelocityMotor(HardwareMap hardwareMap, String name, MotorLookupTable motorType, boolean reversed) {
+        this(hardwareMap.get(DcMotorEx.class, name), motorType, reversed);
     }
 
     DcMotorEx getMotor() {
@@ -50,6 +51,15 @@ public class VelocityMotor {
 
     public VelocityMotor setMotor(HardwareMap hardwareMap, String name) {
         this.motor = hardwareMap.get(DcMotorEx.class, name);
+        return this;
+    }
+
+    public MotorLookupTable getMotorType() {
+        return motorType;
+    }
+
+    public VelocityMotor setMotorType(MotorLookupTable motorType) {
+        this.motorType = motorType;
         return this;
     }
 
@@ -126,6 +136,34 @@ public class VelocityMotor {
         return this;
     }
 
+    public int getFreeRPM() {
+        return motorType.freeRPM;
+    }
+
+    public double getRPM() {
+        return motorType.RPM;
+    }
+
+    public double getTicksPerRotation() {
+        return motorType.TPR;
+    }
+
+    public double getTicksPerDegree() {
+        return motorType.TPD;
+    }
+
+    public double getTicksPerSecond() {
+        return motorType.TPS;
+    }
+
+    public double getGearRatio() {
+        return motorType.gearRatio;
+    }
+
+    public int getEncoderResolution() {
+        return motorType.resolution;
+    }
+
     public double getVelocity() {
         return motor.getVelocity();
     }
@@ -170,7 +208,7 @@ public class VelocityMotor {
     public void update() {
         double speed = getTargetVelocity();
         double velocity = velocityController.calculate(getCorrectedVelocity(), speed) + feedforwardController.calculate(speed, getAcceleration());
-        setPower(velocity / ticksPerSecond);
+        setPower(velocity / getTicksPerSecond());
     }
 
     public VelocityMotor log(Telemetry telemetry, HardwareMap hardwareMap) {

@@ -36,6 +36,15 @@ public class VelocityMotorGroup {
         return this;
     }
 
+    public MotorLookupTable getMotorType() {
+        return motors.get(0).getMotorType();
+    }
+
+    public VelocityMotorGroup setMotorType(MotorLookupTable motorType) {
+        for (VelocityMotor motor : motors) motor.setMotorType(motorType);
+        return this;
+    }
+
     public boolean isReversed(int motor) {
         return motors.get(motor).isReversed();
     }
@@ -101,6 +110,34 @@ public class VelocityMotorGroup {
     public VelocityMotorGroup setTargetVelocity(double targetVelocity) {
         for (VelocityMotor motor : motors) motor.setTargetVelocity(targetVelocity);
         return this;
+    }
+
+    public int getFreeRPM() {
+        return motors.get(0).getFreeRPM();
+    }
+
+    public double getRPM() {
+        return motors.get(0).getRPM();
+    }
+
+    public double getTicksPerRotation() {
+        return motors.get(0).getTicksPerRotation();
+    }
+
+    public double getTicksPerDegree() {
+        return motors.get(0).getTicksPerDegree();
+    }
+
+    public double getTicksPerSecond() {
+        return motors.get(0).getTicksPerSecond();
+    }
+
+    public double getGearRatio() {
+        return motors.get(0).getGearRatio();
+    }
+
+    public int getEncoderResolution() {
+        return motors.get(0).getEncoderResolution();
     }
 
     public double getVelocity(int motor) {

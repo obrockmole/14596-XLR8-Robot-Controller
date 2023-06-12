@@ -13,6 +13,7 @@ import java.util.Arrays;
 
 public class Motor {
     DcMotorEx motor;
+    MotorLookupTable motorType;
 
     double targetPower = 0;
     double speedScale = 1;
@@ -20,7 +21,7 @@ public class Motor {
     PIDController pidController;
     int targetPosition = 0;
     int tolerance;
-    double p, i, d, f, ticksPerDegree;
+    double p, i, d, f;
 
     public enum Mode {
         POWER,
@@ -29,25 +30,25 @@ public class Motor {
     }
     Mode mode;
 
-    public Motor(DcMotorEx motor, Mode mode, double ticksPerDegree, int tolerance, boolean reversed) {
+    public Motor(DcMotorEx motor, MotorLookupTable motorType, Mode mode, int tolerance, boolean reversed) {
         this.motor = motor;
         this.mode = mode;
-        this.ticksPerDegree = ticksPerDegree;
+        this.motorType = motorType;
         this.tolerance = tolerance;
         this.pidController = new PIDController(0, 0, 0);
         setReversed(reversed);
     }
 
-    public Motor(HardwareMap hardwareMap, String name, Mode mode, double ticksPerDegree, int tolerance, boolean reversed) {
-        this(hardwareMap.get(DcMotorEx.class, name), mode, ticksPerDegree, tolerance, reversed);
+    public Motor(HardwareMap hardwareMap, String name, MotorLookupTable motorType, Mode mode, int tolerance, boolean reversed) {
+        this(hardwareMap.get(DcMotorEx.class, name), motorType, mode, tolerance, reversed);
     }
 
-    public Motor(DcMotorEx motor, Mode mode, double ticksPerDegree, boolean reversed) {
-        this(motor, mode, ticksPerDegree, 10, reversed);
+    public Motor(DcMotorEx motor, MotorLookupTable motorType, Mode mode, boolean reversed) {
+        this(motor, motorType, mode, 10, reversed);
     }
 
-    public Motor(HardwareMap hardwareMap, String name, Mode mode, double ticksPerDegree, boolean reversed) {
-        this(hardwareMap.get(DcMotorEx.class, name), mode, ticksPerDegree, 10, reversed);
+    public Motor(HardwareMap hardwareMap, String name, MotorLookupTable motorType, Mode mode, boolean reversed) {
+        this(hardwareMap.get(DcMotorEx.class, name), motorType, mode, 10, reversed);
     }
 
     public DcMotorEx getMotor() {
@@ -61,6 +62,15 @@ public class Motor {
 
     public Motor setMotor(HardwareMap hardwareMap, String name) {
         this.motor = hardwareMap.get(DcMotorEx.class, name);
+        return this;
+    }
+
+    public MotorLookupTable getMotorType() {
+        return motorType;
+    }
+
+    public Motor setMotorType(MotorLookupTable motorType) {
+        this.motorType = motorType;
         return this;
     }
 
@@ -131,6 +141,10 @@ public class Motor {
         return this;
     }
 
+    public PIDController getPID() {
+        return pidController;
+    }
+
     public ArrayList<Double> getPIDF() {
         return new ArrayList<>(Arrays.asList(p, i, d, f));
     }
@@ -141,6 +155,12 @@ public class Motor {
         this.d = d;
         this.f = f;
         pidController.setPID(p, i, d);
+        return this;
+    }
+
+    public Motor setPIDF(PIDController pidController, double f) {
+        this.pidController = pidController;
+        this.f = f;
         return this;
     }
 
@@ -180,13 +200,32 @@ public class Motor {
         return this;
     }
 
-    public double getTicksPerDegree() {
-        return ticksPerDegree;
+    public int getFreeRPM() {
+        return motorType.freeRPM;
     }
 
-    public Motor setTicksPerDegree(double ticksPerDegree) {
-        this.ticksPerDegree = ticksPerDegree;
-        return this;
+    public double getRPM() {
+        return motorType.RPM;
+    }
+
+    public double getTicksPerRotation() {
+        return motorType.TPR;
+    }
+
+    public double getTicksPerDegree() {
+        return motorType.TPD;
+    }
+
+    public double getTicksPerSecond() {
+        return motorType.TPS;
+    }
+
+    public double getGearRatio() {
+        return motorType.gearRatio;
+    }
+
+    public int getEncoderResolution() {
+        return motorType.resolution;
     }
 
     public double calculatePIDF() {

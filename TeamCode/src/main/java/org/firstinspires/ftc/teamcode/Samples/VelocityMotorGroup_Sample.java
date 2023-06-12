@@ -5,6 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.Systems.Gamepad.Gamepad;
 import org.firstinspires.ftc.teamcode.Systems.Gamepad.GamepadButtons.Button;
+import org.firstinspires.ftc.teamcode.Systems.Motors.MotorLookupTable;
 import org.firstinspires.ftc.teamcode.Systems.Motors.VelocityMotor;
 import org.firstinspires.ftc.teamcode.Systems.Motors.VelocityMotorGroup;
 
@@ -22,7 +23,7 @@ public class VelocityMotorGroup_Sample extends OpMode {
         //Initializes custom gamepad.
         gamepad =  new Gamepad(gamepad1);
 
-        motors = new VelocityMotorGroup(new VelocityMotor(hardwareMap, "veloMotor1", 3600, false), new VelocityMotor(hardwareMap, "veloMotor2", 3600, true)); //3600 is the max ticks per second for a GoBilda 435rpm motor according to Gunnar
+        motors = new VelocityMotorGroup(new VelocityMotor(hardwareMap, "veloMotor1", MotorLookupTable.GOBILDA_435, false), new VelocityMotor(hardwareMap, "veloMotor2", MotorLookupTable.GOBILDA_435, true)); //3600 is the max ticks per second for a GoBilda 435rpm motor according to Gunnar
         velocities = new int[]{0, 1200, 2400, 3600};
 
         motors.setVelocityControllerCoefficients(0, 0, 0)

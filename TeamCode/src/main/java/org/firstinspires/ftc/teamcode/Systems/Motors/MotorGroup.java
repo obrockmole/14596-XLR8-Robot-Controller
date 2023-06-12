@@ -35,6 +35,15 @@ public class MotorGroup {
         return this;
     }
 
+    public MotorLookupTable getMotorType() {
+        return motors.get(0).getMotorType();
+    }
+
+    public MotorGroup setMotorType(MotorLookupTable motorType) {
+        for (Motor motor : motors) motor.setMotorType(motorType);
+        return this;
+    }
+
     public Motor.Mode getMode() {
         return motors.get(0).getMode();
     }
@@ -134,13 +143,33 @@ public class MotorGroup {
         return this;
     }
 
+
+    public int getFreeRPM() {
+        return motors.get(0).getFreeRPM();
+    }
+
+    public double getRPM() {
+        return motors.get(0).getRPM();
+    }
+
+    public double getTicksPerRotation() {
+        return motors.get(0).getTicksPerRotation();
+    }
+
     public double getTicksPerDegree() {
         return motors.get(0).getTicksPerDegree();
     }
 
-    public MotorGroup setTicksPerDegree(double ticksPerDegree) {
-        for (Motor motor : motors) motor.setTicksPerDegree(ticksPerDegree);
-        return this;
+    public double getTicksPerSecond() {
+        return motors.get(0).getTicksPerSecond();
+    }
+
+    public double getGearRatio() {
+        return motors.get(0).getGearRatio();
+    }
+
+    public int getEncoderResolution() {
+        return motors.get(0).getEncoderResolution();
     }
 
     public void resetEncoder() {
