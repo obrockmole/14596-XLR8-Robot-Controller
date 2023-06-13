@@ -37,6 +37,11 @@ public class Gamepad {
         return gamepad;
     }
 
+    public Gamepad setGamepad(com.qualcomm.robotcore.hardware.Gamepad gamepad) {
+        this.gamepad = gamepad;
+        return this;
+    }
+
     public boolean atRest() {
         return gamepad.atRest();
     }

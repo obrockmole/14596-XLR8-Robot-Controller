@@ -31,7 +31,6 @@ public class GamepadTouchpad_Sample extends OpMode {
 
         //Telemetry to display gamepad changes and values
         telemetry.addLine("Touchpad: " + gamepad.isDown(Button.TOUCHPAD));
-        telemetry.addLine("Guide: " + gamepad.isDown(Button.GUIDE));
 
         telemetry.addLine();
         telemetry.addLine("----------------------------------------");

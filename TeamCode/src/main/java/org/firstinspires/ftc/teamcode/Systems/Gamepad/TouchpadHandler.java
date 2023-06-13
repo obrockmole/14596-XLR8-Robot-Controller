@@ -13,6 +13,8 @@ public class TouchpadHandler {
 
     public TouchpadHandler(Gamepad gamepad, TouchpadFinger finger) {
         this.gamepad = gamepad;
+        this.finger = finger;
+
         switch (finger) {
             case FINGER_1:
                 this.fingerBool = () -> gamepad.getGamepad().touchpad_finger_1;
@@ -30,7 +32,7 @@ public class TouchpadHandler {
 
     public float getX() {
         float fingerX = 0;
-        switch (finger) {
+        if (isDown()) switch (finger) {
             case FINGER_1:
                 fingerX = gamepad.getGamepad().touchpad_finger_1_x;
                 break;
@@ -49,7 +51,7 @@ public class TouchpadHandler {
 
     public float getY() {
         float fingerY = 0;
-        switch (finger) {
+        if (isDown()) switch (finger) {
             case FINGER_1:
                 fingerY = gamepad.getGamepad().touchpad_finger_1_y;
                 break;
