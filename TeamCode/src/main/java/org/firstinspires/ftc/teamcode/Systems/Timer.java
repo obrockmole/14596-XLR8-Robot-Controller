@@ -12,10 +12,18 @@ public class Timer {
         running = true;
     }
 
+    public void begin() {
+        start();
+    }
+
     public void stop() {
         if (!running) return;
         endTime = System.nanoTime();
         running = false;
+    }
+
+    public void end() {
+        stop();
     }
 
     public void restart() {
