@@ -4,6 +4,8 @@ import com.qualcomm.robotcore.hardware.AnalogInput;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.Range;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
+
 public class Potentiometer {
     private AnalogInput sensor;
 
@@ -44,5 +46,13 @@ public class Potentiometer {
         else angle = ((540 * voltage) + 891 - Math.sqrt(Math.pow(874960 * voltage, 2) - (962280 * voltage) + 793881)) / (4 * voltage);
 
         return Range.scale(angle, 270, 0, 0, 270);
+    }
+
+    public Potentiometer log(Telemetry telemetry, HardwareMap hardwareMap) {
+        telemetry.addData("Sensor", hardwareMap.getNamesOf(sensor));
+        telemetry.addData("Voltage", getVoltage());
+        telemetry.addData("Angle Rough", getAngleRough());
+        telemetry.addData("Angle", getAngle());
+        return this;
     }
 }

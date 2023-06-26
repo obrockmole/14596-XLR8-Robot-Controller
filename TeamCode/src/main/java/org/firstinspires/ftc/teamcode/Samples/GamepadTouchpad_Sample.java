@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.Samples;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
@@ -16,42 +17,38 @@ public class GamepadTouchpad_Sample extends OpMode {
 
     @Override
     public void init() {
-        gamepad = new Gamepad(gamepad1);
+        gamepad = new Gamepad(gamepad1); //Initialize the gamepad
     }
 
     @Override
     public void loop() {
-        gamepad.onPress(TouchpadFinger.FINGER_1, () -> f1Pressed++)
-                .onPress(TouchpadFinger.FINGER_2, () -> f2Pressed++)
-                .onRelease(TouchpadFinger.FINGER_1, () -> f1Released++)
-                .onRelease(TouchpadFinger.FINGER_2, () -> f2Released++)
-                .onChange(TouchpadFinger.FINGER_1, () -> f1Changed++)
-                .onChange(TouchpadFinger.FINGER_2, () -> f2Changed++)
+        gamepad.onPress(TouchpadFinger.FINGER_1, () -> f1Pressed++) //Increment the number of times finger 1 was pressed
+                .onRelease(TouchpadFinger.FINGER_1, () -> f1Released++) //Increment the number of times finger 1 was released
+                .onChange(TouchpadFinger.FINGER_1, () -> f1Changed++) //Increment the number of times finger 1 changed
+
+                .onPress(TouchpadFinger.FINGER_2, () -> f2Pressed++) //Increment the number of times finger 2 was pressed
+                .onRelease(TouchpadFinger.FINGER_2, () -> f2Released++) //Increment the number of times finger 2 was released
+                .onChange(TouchpadFinger.FINGER_2, () -> f2Changed++) //Increment the number of times finger 2 changed
                 .update();
 
-        //Telemetry to display gamepad changes and values
-        telemetry.addLine("Touchpad: " + gamepad.isDown(Button.TOUCHPAD));
-
-        telemetry.addLine();
-        telemetry.addLine("----------------------------------------");
-        telemetry.addLine();
-
+        //Telemetry to display finger 1 changes and values
         telemetry.addLine("Finger 1: " + gamepad.isDown(TouchpadFinger.FINGER_1));
         telemetry.addLine("Finger 1 Pressed: " + f1Pressed);
         telemetry.addLine("Finger 1 Released: " + f1Released);
         telemetry.addLine("Finger 1 Changed: " + f1Changed);
-        telemetry.addLine("Finger 1 Position: " + gamepad.getFingerX(TouchpadFinger.FINGER_1) + ", " + gamepad.getFingerY(TouchpadFinger.FINGER_1));
-        telemetry.addLine("Finger 1 Position Delta: " + gamepad.getFingerXDelta(TouchpadFinger.FINGER_1) + ", " + gamepad.getFingerYDelta(TouchpadFinger.FINGER_1));
+        telemetry.addLine("Finger 1 Position: " + gamepad.getFingerPosition(TouchpadFinger.FINGER_1)); //Current position of finger 1
+        telemetry.addLine("Finger 1 Position Delta: " + gamepad.getFingerPositionDelta(TouchpadFinger.FINGER_1)); //Change in position of finger 1 since last update
 
         telemetry.addLine();
         telemetry.addLine("----------------------------------------");
         telemetry.addLine();
 
+        //Telemetry to display finger 2 changes and values
         telemetry.addLine("Finger 2: " + gamepad.isDown(TouchpadFinger.FINGER_2));
         telemetry.addLine("Finger 2 Pressed: " + f2Pressed);
         telemetry.addLine("Finger 2 Released: " + f2Released);
         telemetry.addLine("Finger 2 Changed: " + f2Changed);
-        telemetry.addLine("Finger 2 Position: " + gamepad.getFingerX(TouchpadFinger.FINGER_2) + ", " + gamepad.getFingerY(TouchpadFinger.FINGER_2));
-        telemetry.addLine("Finger 2 Position Delta: " + gamepad.getFingerXDelta(TouchpadFinger.FINGER_2) + ", " + gamepad.getFingerYDelta(TouchpadFinger.FINGER_2));
+        telemetry.addLine("Finger 2 Position: " + gamepad.getFingerPosition(TouchpadFinger.FINGER_2)); //Current position of finger 2
+        telemetry.addLine("Finger 2 Position Delta: " + gamepad.getFingerPositionDelta(TouchpadFinger.FINGER_2)); //Change in position of finger 2 since last update
     }
 }

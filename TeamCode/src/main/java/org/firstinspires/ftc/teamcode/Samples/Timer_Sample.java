@@ -13,9 +13,9 @@ import org.firstinspires.ftc.teamcode.Systems.Timer;
 public class Timer_Sample extends OpMode {
     Timer timer;
 
-    Gamepad driver; //This example uses custom gamepads. See GamepadSample.java for more information
+    Gamepad gamepad; //This example uses custom gamepads. See Gamepad_Sample.java for more information
 
-    enum State {
+    enum State { //State enum
         STATE_1,
         STATE_2,
         STATE_3
@@ -24,24 +24,24 @@ public class Timer_Sample extends OpMode {
 
     @Override
     public void init() {
-        timer = new Timer();
+        timer = new Timer(); //Initialize timer
         state = State.STATE_1;
 
-        driver = new Gamepad(gamepad1);
+        gamepad = new Gamepad(gamepad1); //Initialize custom gamepad
     }
 
     @Override
     public void loop() {
-        driver.onPress(Button.A, () -> timer.start()) //Start the timer when the A button is pressed
+        gamepad.onPress(Button.A, () -> timer.start()) //Start the timer when the A button is pressed
                 .update();
 
         //Update the state every second and display the current state to telemetry
         switch (state) {
             case STATE_1:
-                telemetry.addLine("State: 1");
+                telemetry.addLine("State: 1"); //Display the current state to telemetry (this should change every second)
                 if (timer.getTime() > 1000) { // getTime() returns the time in milliseconds, to get seconds use getTimeSeconds()
-                    state = State.STATE_2;
-                    timer.restart();
+                    state = State.STATE_2; //Update the state
+                    timer.restart(); //Restart the timer
                 }
                 break;
 

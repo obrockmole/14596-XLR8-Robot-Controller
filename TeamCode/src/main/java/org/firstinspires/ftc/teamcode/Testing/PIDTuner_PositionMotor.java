@@ -11,7 +11,7 @@ import org.firstinspires.ftc.teamcode.Systems.Motors.MotorLookupTable;
 
 //@Disabled
 @Config
-@TeleOp
+@TeleOp(group = "Tuning")
 public class PIDTuner_PositionMotor extends OpMode {
     private Motor motor;
 

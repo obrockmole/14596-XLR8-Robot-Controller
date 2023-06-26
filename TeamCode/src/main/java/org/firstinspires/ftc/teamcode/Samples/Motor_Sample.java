@@ -15,7 +15,7 @@ import org.firstinspires.ftc.teamcode.Systems.Motors.MotorLookupTable;
 public class Motor_Sample extends OpMode {
     Motor powerMotor, positionMotor;
 
-    Gamepad driver, manipulator; //This example uses custom gamepads. See GamepadSample.java for more information
+    Gamepad driver, manipulator; //This example uses custom gamepads. See Gamepad_Sample.java for more information
 
     double[] powers; //List of saved powers to switch between
     int[] positions; //List of saved positions to switch between
@@ -31,19 +31,19 @@ public class Motor_Sample extends OpMode {
           This example uses a predefined motor in the constructor.
          */
         powerMotor = new Motor(hardwareMap.get(DcMotorEx.class, "powerMotor1"), MotorLookupTable.GOBILDA_435, Motor.Mode.POWER, 10, false);
-        powers = new double[]{0, 0.3, 0.7, 1};
+        powers = new double[]{0, 0.3, 0.7, 1}; //Define list of powers to switch between
 
         /*
           Initialize positionMotor as a position motor by specifying the mode as POSITION in the constructor.
           This example uses the hardware map and the motors name in the constructor.
          */
         positionMotor = new Motor(hardwareMap, "posMotor1", MotorLookupTable.GOBILDA_435, Motor.Mode.POSITION, 10, false);
-        positions = new int[]{0, 400, 750, 1200};
+        positions = new int[]{0, 400, 750, 1200}; //Define list of positions to switch between
 
-        powerMotor.setTargetPower(powers[0]);
+        powerMotor.setTargetPower(powers[0]); //Set initial motor power to 0
 
-        positionMotor.setPIDF(0.05, 0, 0.001, 0.4)
-                .setTargetPosition(positions[0]);
+        positionMotor.setPIDF(0.05, 0, 0.001, 0.4) //Set PIDF coefficients
+                .setTargetPosition(positions[0]); //Set initial motor position to 0
     }
 
     @Override
@@ -66,10 +66,12 @@ public class Motor_Sample extends OpMode {
                 .onPress(Button.Y, () -> positionMotor.setTargetPosition(positions[3])) //Set motor position to 1200 ticks
                 .update();
 
-        powerMotor.update(); //Update powerMotor object
-        positionMotor.update(); //Update positionMotor object
-
-        powerMotor.log(telemetry, hardwareMap);
-        positionMotor.log(telemetry, hardwareMap);
+        /*
+            Log motor data to telemetry and update the objects.
+         */
+        powerMotor.log(telemetry, hardwareMap)
+                .update();
+        positionMotor.log(telemetry, hardwareMap)
+                .update();
     }
 }

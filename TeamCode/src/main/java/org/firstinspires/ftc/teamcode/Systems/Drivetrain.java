@@ -45,11 +45,12 @@ public class Drivetrain {
         return speedScale;
     }
 
-    public void setSpeedScale(int speedScale) {
+    public Drivetrain setSpeedScale(int speedScale) {
         this.speedScale = speedScale;
+        return this;
     }
 
-    public void standardDrive(double forward, double rightward, double rotational) {
+    public Drivetrain standardDrive(double forward, double rightward, double rotational) {
         double normalizer = Math.max(Math.abs(forward) + Math.abs(rightward) + Math.abs(rotational), 1);
 
         double flPower =  forward - rightward - rotational;
@@ -61,9 +62,11 @@ public class Drivetrain {
         backLeft.setTargetPower((blPower / normalizer) * speedScale);
         frontRight.setTargetPower((frPower / normalizer) * speedScale);
         backRight.setTargetPower((brPower / normalizer) * speedScale);
+
+        return this;
     }
 
-    public void fieldCentricDrive(double forward, double rightward, double rotational) {
+    public Drivetrain fieldCentricDrive(double forward, double rightward, double rotational) {
         double heading = imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);
         double fixedForward = forward * Math.cos(-heading) - rightward * Math.sin(-heading);
         double fixedRightward = forward * Math.sin(-heading) + rightward * Math.cos(-heading);
@@ -79,6 +82,8 @@ public class Drivetrain {
         backLeft.setTargetPower((blPower / normalizer) * speedScale);
         frontRight.setTargetPower((frPower / normalizer) * speedScale);
         backRight.setTargetPower((brPower / normalizer) * speedScale);
+
+        return this;
     }
 
     public Drivetrain resetIMU() {
@@ -93,7 +98,7 @@ public class Drivetrain {
         backRight.update();
     }
 
-    public void log(Telemetry telemetry) {
+    public Drivetrain log(Telemetry telemetry) {
         telemetry.addLine("-----Motor Powers-----");
         telemetry.addData("Front Left Power: ", frontLeft.getPower());
         telemetry.addData("Back Left Power: ", backLeft.getPower());
@@ -114,5 +119,7 @@ public class Drivetrain {
         telemetry.addData("Z Axis: ", imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES));
 
         telemetry.addLine();
+
+        return this;
     }
 }

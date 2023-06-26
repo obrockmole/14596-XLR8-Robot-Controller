@@ -30,6 +30,14 @@ public class TouchpadHandler {
         previousPos = currentPos;
     }
 
+    public Vector2D getPosition() {
+        return currentPos;
+    }
+
+    public Vector2D getPositionDelta() {
+        return new Vector2D(getXDelta(), getYDelta());
+    }
+
     public float getX() {
         float fingerX = 0;
         if (isDown()) switch (finger) {

@@ -13,7 +13,7 @@ import org.firstinspires.ftc.teamcode.Systems.Motors.VelocityMotor;
 
 //@Disabled
 @Config
-@TeleOp
+@TeleOp(group = "Tuning")
 public class PIDTuner_VelocityMotor extends OpMode {
     private VelocityMotor motor;
 

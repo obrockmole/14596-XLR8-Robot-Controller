@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.Systems.Gamepad;
 
 import com.qualcomm.robotcore.util.Range;
 
+import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 import org.firstinspires.ftc.teamcode.Systems.Gamepad.GamepadButtons.Button;
 import org.firstinspires.ftc.teamcode.Systems.Gamepad.GamepadButtons.Stick;
 import org.firstinspires.ftc.teamcode.Systems.Gamepad.GamepadButtons.TouchpadFinger;
@@ -136,6 +137,14 @@ public class Gamepad {
                 break;
         }
         return stickValue;
+    }
+
+    public Vector2D getFingerPosition(TouchpadFinger finger) {
+        return gamepadTouchpad.get(finger).getPosition();
+    }
+
+    public Vector2D getFingerPositionDelta(TouchpadFinger finger) {
+        return gamepadTouchpad.get(finger).getPositionDelta();
     }
 
     public float getFingerX(TouchpadFinger finger) {

@@ -15,12 +15,16 @@ import org.firstinspires.ftc.teamcode.Systems.Motors.MotorLookupTable;
 @Disabled
 @TeleOp(group = "Samples")
 public class FieldCentricDrive_Sample extends OpMode {
-    Drivetrain drivetrain; //This example uses custom motors. See MotorSample.java for more information
-    Gamepad driver;
+    Drivetrain drivetrain;
+
+    Gamepad driver; //This example uses a custom gamepad. See Gamepad_Sample.java for more information
 
     @Override
     public void init() {
+        driver = new Gamepad(gamepad1); //Initializes custom gamepad
+
         //Initialize the motors and IMU
+        //This example uses custom motors. See Motor_Sample.java for more information
         Motor frontLeft = new Motor(hardwareMap, "frontLeft", MotorLookupTable.GOBILDA_435, Motor.Mode.POWER, 10, false);
         Motor backLeft = new Motor(hardwareMap, "backLeft", MotorLookupTable.GOBILDA_435, Motor.Mode.POWER, 10, false);
         Motor frontRight = new Motor(hardwareMap, "frontRight", MotorLookupTable.GOBILDA_435, Motor.Mode.POWER, 10, false);
@@ -28,23 +32,20 @@ public class FieldCentricDrive_Sample extends OpMode {
         IMU imu = hardwareMap.get(IMU.class, "imu");
 
         drivetrain = new Drivetrain(frontLeft, backLeft, frontRight, backRight, imu); //Assign the motors and IMU to the drivetrain
-
-        driver = new Gamepad(gamepad1); //Assign gamepad1 to the driver
     }
 
     @Override
     public void loop() {
-        driver.onPress(Button.BACK, () -> drivetrain.resetIMU())
-                .update();
+        driver.onPress(Button.BACK, () -> drivetrain.resetIMU()) //Reset the IMU when the back button is pressed on the gamepad
+                .update(); //Update the gamepad
 
         /*
           The drivetrain has two drive modes: field centric and robot centric.
           Field centric means the robot will always move in relation to the field regardless of orientation.
           This is controlled with the standardDrive() method and joystick values.
          */
-        drivetrain.fieldCentricDrive(driver.getStickY(Stick.LEFT_STICK), driver.getStickX(Stick.LEFT_STICK), driver.getStickX(Stick.RIGHT_STICK));
-
-        drivetrain.log(telemetry);
-        drivetrain.update(); //Update the drivetrain. This sets the motor powers
+        drivetrain.fieldCentricDrive(driver.getStickY(Stick.LEFT_STICK), driver.getStickX(Stick.LEFT_STICK), driver.getStickX(Stick.RIGHT_STICK))
+                .log(telemetry) //Log drivetrain data to the telemetry
+                .update(); //Update the object.
     }
 }

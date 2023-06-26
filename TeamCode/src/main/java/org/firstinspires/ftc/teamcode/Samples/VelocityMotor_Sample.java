@@ -13,7 +13,7 @@ import org.firstinspires.ftc.teamcode.Systems.Motors.VelocityMotor;
 public class VelocityMotor_Sample extends OpMode {
     VelocityMotor motor;
 
-    Gamepad gamepad; //This example uses custom gamepads. See GamepadSample.java for more information
+    Gamepad gamepad; //This example uses custom gamepads. See Gamepad_Sample.java for more information
 
     int[] velocities; //List of saved velocities to switch between
 
@@ -23,11 +23,11 @@ public class VelocityMotor_Sample extends OpMode {
         gamepad =  new Gamepad(gamepad1);
 
         motor = new VelocityMotor(hardwareMap, "veloMotor1", MotorLookupTable.GOBILDA_435, false); //3600 is the max ticks per second for a GoBilda 435rpm motor according to Gunnar
-        velocities = new int[]{0, 1200, 2400, 3600};
+        velocities = new int[]{0, 1200, 2400, 3600}; //Define list of velocities to switch between (in ticks per second)
 
-        motor.setVelocityControllerCoefficients(0, 0, 0)
-                .setFeedforwardControllerCoefficients(0, 0, 0)
-                .setTargetVelocity(velocities[0]);
+        motor.setVelocityControllerCoefficients(0, 0, 0) //Set velocity PID coefficients
+                .setFeedforwardControllerCoefficients(0, 0, 0) //Set feedforward PID coefficients
+                .setTargetVelocity(velocities[0]); //Set initial velocity to 0 tps
     }
 
     @Override
@@ -41,6 +41,10 @@ public class VelocityMotor_Sample extends OpMode {
                 .onPress(Button.Y, () -> motor.setTargetVelocity(velocities[3])) //Set motor velocity to 3600 tps
                 .update();
 
-        motor.log(telemetry, hardwareMap);
+        /*
+            Log motor data to telemetry and update the object.
+         */
+        motor.log(telemetry, hardwareMap)
+                .update();
     }
 }
