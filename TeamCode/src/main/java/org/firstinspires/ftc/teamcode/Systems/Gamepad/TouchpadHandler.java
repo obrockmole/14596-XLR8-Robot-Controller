@@ -73,7 +73,7 @@ public class TouchpadHandler {
     }
 
     public float getYDelta() {
-        return (float) (currentPos.getX() - previousPos.getY());
+        return (float) (currentPos.getY() - previousPos.getY());
     }
 
     public boolean isDown() {

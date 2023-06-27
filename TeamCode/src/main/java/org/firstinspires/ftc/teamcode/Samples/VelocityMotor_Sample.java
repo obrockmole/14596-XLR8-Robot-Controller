@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.Samples;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
@@ -8,7 +9,7 @@ import org.firstinspires.ftc.teamcode.Systems.Gamepad.GamepadButtons.Button;
 import org.firstinspires.ftc.teamcode.Systems.Motors.MotorLookupTable;
 import org.firstinspires.ftc.teamcode.Systems.Motors.VelocityMotor;
 
-//@Disabled
+@Disabled
 @TeleOp(group = "Samples")
 public class VelocityMotor_Sample extends OpMode {
     VelocityMotor motor;

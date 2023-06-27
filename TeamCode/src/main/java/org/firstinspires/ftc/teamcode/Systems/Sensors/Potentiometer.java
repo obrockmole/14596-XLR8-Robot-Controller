@@ -43,7 +43,7 @@ public class Potentiometer {
         double angle;
 
         if (voltage == 0) angle = 270;
-        else angle = ((540 * voltage) + 891 - Math.sqrt(Math.pow(874960 * voltage, 2) - (962280 * voltage) + 793881)) / (4 * voltage);
+        else angle = ((2700 * voltage) + 4455 - Math.sqrt((21870000 * Math.pow(voltage, 2)) - (24057000 * voltage) + 19847025)) / (20 * voltage);
 
         return Range.scale(angle, 270, 0, 0, 270);
     }

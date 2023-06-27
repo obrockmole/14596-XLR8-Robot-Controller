@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.Samples;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
@@ -9,7 +10,7 @@ import org.firstinspires.ftc.teamcode.Systems.Motors.MotorLookupTable;
 import org.firstinspires.ftc.teamcode.Systems.Motors.VelocityMotor;
 import org.firstinspires.ftc.teamcode.Systems.Motors.VelocityMotorGroup;
 
-//@Disabled
+@Disabled
 @TeleOp(group = "Samples")
 public class VelocityMotorGroup_Sample extends OpMode {
     VelocityMotorGroup motors;

@@ -1,14 +1,12 @@
 package org.firstinspires.ftc.teamcode.Samples;
 
-import android.graphics.Color;
-
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.Systems.Sensors.ColorSensor;
-import org.firstinspires.ftc.teamcode.Systems.Sensors.LimitSwitch;
 
-//@Disabled
+@Disabled
 @TeleOp(group = "Samples")
 public class ColorSensor_Sample extends OpMode {
     ColorSensor sensor;

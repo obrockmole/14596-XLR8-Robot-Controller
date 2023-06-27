@@ -1,12 +1,12 @@
 package org.firstinspires.ftc.teamcode.Samples;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-import org.firstinspires.ftc.teamcode.Systems.Sensors.ColorSensor;
 import org.firstinspires.ftc.teamcode.Systems.Sensors.DistanceSensor;
 
-//@Disabled
+@Disabled
 @TeleOp(group = "Samples")
 public class DistanceSensor_Sample extends OpMode {
     DistanceSensor sensor;

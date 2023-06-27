@@ -3,10 +3,12 @@ package org.firstinspires.ftc.teamcode.Systems;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class DataLogger {
     File file;
-    FileWriter writer;
+    List<String> data = new ArrayList<>();
 
     public DataLogger(String fileName) {
         file = new File(fileName);
@@ -14,29 +16,22 @@ public class DataLogger {
 
     public DataLogger(File file) {
         this.file = file;
+        this.file.setWritable(true);
     }
 
     public void startLogging(String header) {
-        try {
-            writer = new FileWriter(file);
-            writer.write(header);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        data.add(header);
     }
 
     public void writeData(String data) {
-        try {
-            writer.write(data);
-            writer.write(System.lineSeparator());
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        this.data.add(data);
     }
 
     public void stopLogging() {
-        try {
-            writer.close();
+        try (FileWriter writer = new FileWriter(file)) {
+            for (String line : data) {
+                writer.write(line + "\n");
+            }
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

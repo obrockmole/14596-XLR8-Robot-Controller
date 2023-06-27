@@ -1,61 +1,52 @@
 package org.firstinspires.ftc.teamcode.Systems.Sensors;
 
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 public class ColorSensor {
-    private com.qualcomm.robotcore.hardware.ColorSensor sensor;
+    private com.qualcomm.robotcore.hardware.NormalizedColorSensor sensor;
 
-    public ColorSensor(com.qualcomm.robotcore.hardware.ColorSensor sensor) {
+    public ColorSensor(com.qualcomm.robotcore.hardware.NormalizedColorSensor sensor) {
         this.sensor = sensor;
     }
 
     public ColorSensor(HardwareMap hardwareMap, String name) {
-        this(hardwareMap.get(com.qualcomm.robotcore.hardware.ColorSensor.class, name));
+        this(hardwareMap.get(com.qualcomm.robotcore.hardware.NormalizedColorSensor.class, name));
     }
 
-    public com.qualcomm.robotcore.hardware.ColorSensor getSensor() {
+    public com.qualcomm.robotcore.hardware.NormalizedColorSensor getSensor() {
         return sensor;
     }
 
-    public ColorSensor setSensor(com.qualcomm.robotcore.hardware.ColorSensor sensor) {
+    public ColorSensor setSensor(com.qualcomm.robotcore.hardware.NormalizedColorSensor sensor) {
         this.sensor = sensor;
         return this;
     }
 
     public ColorSensor setSensor(HardwareMap hardwareMap, String name) {
-        return setSensor(hardwareMap.get(com.qualcomm.robotcore.hardware.ColorSensor.class, name));
+        return setSensor(hardwareMap.get(com.qualcomm.robotcore.hardware.NormalizedColorSensor.class, name));
     }
 
     public int getRed() {
-        return sensor.red();
+        return (int)Range.scale(sensor.getNormalizedColors().red, 0, 1, 0, 255);
     }
 
     public int getGreen() {
-        return sensor.green();
+        return (int)Range.scale(sensor.getNormalizedColors().green, 0, 1, 0, 255);
     }
 
     public int getBlue() {
-        return sensor.blue();
+        return (int)Range.scale(sensor.getNormalizedColors().blue, 0, 1, 0, 255);
     }
 
     public int getAlpha() {
-        return sensor.alpha();
+        return (int)Range.scale(sensor.getNormalizedColors().alpha, 0, 1, 0, 255);
     }
 
-    public int getHue() {
-        return sensor.argb();
-    }
-
-    public ColorSensor enableLED() {
-        sensor.enableLed(true);
-        return this;
-    }
-
-    public ColorSensor disableLED() {
-        sensor.enableLed(false);
-        return this;
+    public int getColor() {
+        return sensor.getNormalizedColors().toColor();
     }
 
     public ColorSensor log(Telemetry telemetry, HardwareMap hardwareMap) {

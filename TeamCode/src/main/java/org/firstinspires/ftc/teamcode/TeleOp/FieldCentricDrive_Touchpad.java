@@ -12,7 +12,7 @@ public class FieldCentricDrive_Touchpad extends BaseTele {
     public void loop() {
         driver.onPress(Button.BACK, () -> drivetrain.resetIMU());
 
-        drivetrain.fieldCentricDrive(driver.getFingerY(GamepadButtons.TouchpadFinger.FINGER_1), driver.getFingerX(GamepadButtons.TouchpadFinger.FINGER_1), driver.getStickX(Stick.RIGHT_STICK))
+        drivetrain.fieldCentricDrive(driver.getFingerY(GamepadButtons.TouchpadFinger.FINGER_1), -driver.getFingerX(GamepadButtons.TouchpadFinger.FINGER_1), driver.getStickX(Stick.RIGHT_STICK))
                 .update();
     }
 }

@@ -3,10 +3,9 @@ package org.firstinspires.ftc.teamcode.Testing;
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
-import com.arcrobotics.ftclib.controller.PIDController;
-import com.arcrobotics.ftclib.controller.wpilibcontroller.SimpleMotorFeedforward;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.PIDCoefficients;
 
 import org.firstinspires.ftc.teamcode.Systems.Motors.MotorLookupTable;
 import org.firstinspires.ftc.teamcode.Systems.Motors.VelocityMotor;
@@ -17,9 +16,8 @@ import org.firstinspires.ftc.teamcode.Systems.Motors.VelocityMotor;
 public class PIDTuner_VelocityMotor extends OpMode {
     private VelocityMotor motor;
 
-    public static MotorLookupTable motorType;
-    public static PIDController velocityController = new PIDController(0, 0, 0);
-    public static SimpleMotorFeedforward feedforwardController = new SimpleMotorFeedforward(0, 0, 0);
+    public static PIDCoefficients velocityPID = new PIDCoefficients();
+    public static PIDCoefficients feedforwardPID = new PIDCoefficients();
     public static int targetVelocity = 0;
 
     @Override
@@ -31,13 +29,10 @@ public class PIDTuner_VelocityMotor extends OpMode {
 
     @Override
     public void loop() {
-        if (motor.getMotorType() != motorType) motor.setMotorType(motorType);
-
-        motor.setVelocityController(velocityController)
-                .setFeedforwardController(feedforwardController)
+        motor.setVelocityControllerCoefficients(velocityPID.p, velocityPID.i, velocityPID.d)
+                .setFeedforwardControllerCoefficients(feedforwardPID.p, feedforwardPID.i, feedforwardPID.d)
                 .setTargetVelocity(targetVelocity)
+                .log(telemetry, hardwareMap)
                 .update();
-
-        motor.log(telemetry, hardwareMap);
     }
 }

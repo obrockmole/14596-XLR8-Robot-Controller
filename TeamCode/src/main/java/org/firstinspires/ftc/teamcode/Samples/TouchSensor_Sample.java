@@ -1,13 +1,12 @@
 package org.firstinspires.ftc.teamcode.Samples;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-import org.firstinspires.ftc.teamcode.Systems.Gamepad.Gamepad;
-import org.firstinspires.ftc.teamcode.Systems.Gamepad.GamepadButtons.TouchpadFinger;
 import org.firstinspires.ftc.teamcode.Systems.Sensors.TouchSensor;
 
-//@Disabled
+@Disabled
 @TeleOp(group = "Samples")
 public class TouchSensor_Sample extends OpMode {
     TouchSensor sensor;
