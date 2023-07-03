@@ -1,15 +1,34 @@
 package org.firstinspires.ftc.teamcode.Systems;
 
 public class Timer {
-    private float startTime, endTime;
-    private boolean running;
+    private Stopwatch stopwatch;
+    private float length;
+    private Runnable action;
 
-    public Timer() {}
+    public Timer(float length, Runnable action) {
+        stopwatch = new Stopwatch();
+        this.length = length;
+        this.action = action;
+    }
+
+    public float getLength() {
+        return length;
+    }
+
+    public void setLength(float length) {
+        this.length = length;
+    }
+
+    public Runnable getAction() {
+        return action;
+    }
+
+    public void setAction(Runnable action) {
+        this.action = action;
+    }
 
     public void start() {
-        if (running) return;
-        startTime = System.nanoTime();
-        running = true;
+        stopwatch.start();
     }
 
     public void begin() {
@@ -17,9 +36,7 @@ public class Timer {
     }
 
     public void stop() {
-        if (!running) return;
-        endTime = System.nanoTime();
-        running = false;
+        stopwatch.stop();
     }
 
     public void end() {
@@ -27,30 +44,25 @@ public class Timer {
     }
 
     public void restart() {
-        startTime = System.nanoTime();
-        running = true;
+        stopwatch.restart();
     }
 
-    public float getTime() {
-        if (running)
-            return (int)((System.nanoTime() - startTime) / 1000000);
-        else
-            return (int)((endTime - startTime) / 1000000);
+    public float getTimeLeft() {
+        return length - stopwatch.getTime();
     }
 
-    public float getTimeSeconds() {
-        return getTime() / 1000;
-    }
-
-    public float getStartTime() {
-        return startTime;
-    }
-
-    public float getEndTime() {
-        return endTime;
+    public float getTimeLeftSeconds() {
+        return getTimeLeft() / 1000;
     }
 
     public boolean isRunning() {
-        return running;
+        return stopwatch.isRunning();
+    }
+
+    public void update() {
+        if (isRunning() && getTimeLeft() <= 0) {
+            action.run();
+            stop();
+        }
     }
 }

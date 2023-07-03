@@ -9,7 +9,7 @@ import org.firstinspires.ftc.teamcode.Systems.Gamepad.Gamepad;
 import org.firstinspires.ftc.teamcode.Systems.Gamepad.GamepadButtons.Button;
 import org.firstinspires.ftc.teamcode.Systems.Motors.MotorLookupTable;
 import org.firstinspires.ftc.teamcode.Systems.Motors.TestingMotor_Logging;
-import org.firstinspires.ftc.teamcode.Systems.Timer;
+import org.firstinspires.ftc.teamcode.Systems.Stopwatch;
 
 //@Disabled
 @TeleOp(group = "Testing")
@@ -20,7 +20,7 @@ public class DataLogging_Test extends OpMode {
     int[] positions; //List of saved positions to switch between
 
     DataLogger positionLogger;
-    Timer timer;
+    Stopwatch stopwatch;
 
     @Override
     public void init() {
@@ -33,18 +33,18 @@ public class DataLogging_Test extends OpMode {
                 .setTargetPosition(positions[0]);
 
         positionLogger = new DataLogger(AppUtil.ROOT_FOLDER + "/FIRST/PositionMotor.csv");
-        timer = new Timer();
+        stopwatch = new Stopwatch();
     }
 
     @Override
     public void start() {
         positionLogger.startLogging("Time,Power,Position,TargetPosition");
-        timer.start();
+        stopwatch.start();
     }
 
     @Override
     public void loop() {
-        positionLogger.writeData(timer.getTimeSeconds() + motor1.getCSVData());
+        positionLogger.writeData(stopwatch.getTimeSeconds() + motor1.getCSVData());
 
         gamepad.onPress(Button.A, () -> motor1.setTargetPosition(positions[0]))
                 .onPress(Button.B, () -> motor1.setTargetPosition(positions[1]))

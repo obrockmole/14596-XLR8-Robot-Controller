@@ -6,9 +6,10 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.Systems.Gamepad.Gamepad;
 import org.firstinspires.ftc.teamcode.Systems.Gamepad.GamepadButtons.Button;
+import org.firstinspires.ftc.teamcode.Systems.Stopwatch;
 import org.firstinspires.ftc.teamcode.Systems.Timer;
 
-@Disabled
+//@Disabled
 @TeleOp(group = "Samples")
 public class Timer_Sample extends OpMode {
     Timer timer;
@@ -18,16 +19,29 @@ public class Timer_Sample extends OpMode {
     enum State { //State enum
         STATE_1,
         STATE_2,
-        STATE_3
+        STATE_3 {
+            @Override
+            public State next() {
+                return values()[0]; //Rollover to the first state
+            };
+        };
+
+        public State next() { //Get the next state
+            return values()[ordinal() + 1];
+        }
     }
     State state;
 
     @Override
     public void init() {
-        timer = new Timer(); //Initialize timer
-        state = State.STATE_1;
-
         gamepad = new Gamepad(gamepad1); //Initialize custom gamepad
+
+        timer = new Timer(1000, () -> {
+            state = state.next();
+            timer.restart();
+        }); //Initialize timer. Note: length is in milliseconds
+
+        state = State.STATE_1;
     }
 
     @Override
@@ -35,36 +49,13 @@ public class Timer_Sample extends OpMode {
         gamepad.onPress(Button.A, () -> timer.start()) //Start the timer when the A button is pressed
                 .update();
 
-        //Update the state every second and display the current state to telemetry
-        switch (state) {
-            case STATE_1:
-                telemetry.addLine("State: 1"); //Display the current state to telemetry (this should change every second)
-                if (timer.getTime() > 1000) { // getTime() returns the time in milliseconds, to get seconds use getTimeSeconds()
-                    state = State.STATE_2; //Update the state
-                    timer.restart(); //Restart the timer
-                }
-                break;
+        timer.update(); //Update the timer
 
-            case STATE_2:
-                telemetry.addLine("State: 2");
-                if (timer.getTime() > 1000) {
-                    state = State.STATE_3;
-                    timer.restart();
-                }
-                break;
-
-            case STATE_3:
-                telemetry.addLine("State: 3");
-                if (timer.getTime() > 1000) {
-                    state = State.STATE_1;
-                    timer.restart();
-                }
-                break;
-        }
-
+        //Update telmetry to display the current state
+        telemetry.addLine("State: " + state);
         //Display current time on telemetry
-        telemetry.addLine("Time: " + timer.getTime() + "ms");
-        telemetry.addLine("Time (Seconds):" + timer.getTimeSeconds() + "s");
+        telemetry.addLine("Time Left: " + timer.getTimeLeft() + "ms");
+        telemetry.addLine("Time Left (Seconds):" + timer.getTimeLeftSeconds() + "s");
         telemetry.update();
     }
 }
