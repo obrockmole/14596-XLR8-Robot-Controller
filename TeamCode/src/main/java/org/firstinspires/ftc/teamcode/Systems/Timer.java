@@ -59,10 +59,11 @@ public class Timer {
         return stopwatch.isRunning();
     }
 
-    public void update() {
+    public void update(boolean restart) {
         if (isRunning() && getTimeLeft() <= 0) {
             action.run();
-            stop();
+            if (restart) restart();
+            else stop();
         }
     }
 }

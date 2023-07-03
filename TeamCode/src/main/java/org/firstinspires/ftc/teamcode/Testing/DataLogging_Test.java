@@ -32,7 +32,7 @@ public class DataLogging_Test extends OpMode {
         motor1.setPIDF(0.05, 0, 0.001, 0.2)
                 .setTargetPosition(positions[0]);
 
-        positionLogger = new DataLogger(AppUtil.ROOT_FOLDER + "/FIRST/PositionMotor.csv");
+        positionLogger = new DataLogger(AppUtil.ROOT_FOLDER + "/FIRST/LoggedData/PositionMotor.csv");
         stopwatch = new Stopwatch();
     }
 
