@@ -2,9 +2,8 @@ package org.firstinspires.ftc.teamcode.Systems.Motors;
 
 import androidx.annotation.NonNull;
 
-import com.arcrobotics.ftclib.controller.PIDController;
-import com.arcrobotics.ftclib.controller.wpilibcontroller.SimpleMotorFeedforward;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
@@ -54,53 +53,12 @@ public class VelocityMotorGroup {
         return this;
     }
 
-    public PIDController getVelocityController() {
-        return motors.get(0).getVelocityController();
-    }
-
-    public VelocityMotorGroup setVelocityController(PIDController velocityController) {
-        for (VelocityMotor motor : motors) motor.setVelocityController(velocityController);
-        return this;
-    }
-
-    public ArrayList<Double> getVelocityControllerCoefficients() {
-        return motors.get(0).getVelocityControllerCoefficients();
-    }
-
-    public VelocityMotorGroup setVelocityControllerCoefficients(double kP, double kI, double kD) {
-        for (VelocityMotor motor : motors) motor.setVelocityControllerCoefficients(kP, kI, kD);
-        return this;
-    }
-
-    public SimpleMotorFeedforward getFeedforwardController() {
-        return motors.get(0).getFeedforwardController();
-    }
-
-    public VelocityMotorGroup setFeedforwardController(SimpleMotorFeedforward feedforwardController) {
-        for (VelocityMotor motor : motors) motor.setFeedforwardController(feedforwardController);
-        return this;
-    }
-
-    public ArrayList<Double> getFeedforwardControllerCoefficients() {
-        return motors.get(0).getFeedforwardControllerCoefficients();
-    }
-
-    public VelocityMotorGroup setFeedforwardControllerCoefficients(double kS, double kV, double kA) {
-        for (VelocityMotor motor : motors) motor.setFeedforwardControllerCoefficients(kS, kV, kA);
-        return this;
-    }
-
     public double getCurrentPosition() {
         return motors.get(0).getCurrentPosition();
     }
 
     public double getPower() {
         return motors.get(0).getPower();
-    }
-
-    public VelocityMotorGroup setPower(double power) {
-        for (VelocityMotor motor : motors) motor.setPower(power);
-        return this;
     }
 
     public double getTargetVelocity() {
@@ -110,6 +68,15 @@ public class VelocityMotorGroup {
     public VelocityMotorGroup setTargetVelocity(double targetVelocity) {
         for (VelocityMotor motor : motors) motor.setTargetVelocity(targetVelocity);
         return this;
+    }
+
+    public double getVelocity(int motor) {
+        return motors.get(motor).getVelocity();
+    }
+
+
+    public double getVelocityError(int motor) {
+        return motors.get(motor).getVelocityError();
     }
 
     public int getFreeRPM() {
@@ -140,20 +107,50 @@ public class VelocityMotorGroup {
         return motors.get(0).getEncoderResolution();
     }
 
-    public double getVelocity(int motor) {
-        return motors.get(motor).getVelocity();
+
+    public PIDFCoefficients getPIDF() {
+        return motors.get(0).getPIDF();
     }
 
-    public double getCorrectedVelocity(int motor) {
-        return motors.get(motor).getCorrectedVelocity();
+    public VelocityMotorGroup setPIDF(PIDFCoefficients pidf) {
+        for (VelocityMotor motor : motors) motor.setPIDF(pidf);
+        return this;
     }
 
-    public double getVelocityError(int motor) {
-        return motors.get(motor).getVelocityError();
+    public VelocityMotorGroup setPIDF(double p, double i, double d, double f) {
+        return setPIDF(new PIDFCoefficients(p, i, d, f));
     }
 
-    public double getAcceleration(int motor) {
-        return motors.get(motor).getAcceleration();
+    public double getP() {
+        return motors.get(0).getP();
+    }
+
+    public VelocityMotorGroup setP(double p) {
+        return setPIDF(p, getI(), getD(), getF());
+    }
+
+    public double getI() {
+        return motors.get(0).getI();
+    }
+
+    public VelocityMotorGroup setI(double i) {
+        return setPIDF(getP(), i, getD(), getF());
+    }
+
+    public double getD() {
+        return motors.get(0).getD();
+    }
+
+    public VelocityMotorGroup setD(double d) {
+        return setPIDF(getP(), getI(), d, getF());
+    }
+
+    public double getF() {
+        return motors.get(0).getF();
+    }
+
+    public VelocityMotorGroup setF(double f) {
+        return setPIDF(getP(), getI(), getD(), f);
     }
 
     public void resetEncoder() {

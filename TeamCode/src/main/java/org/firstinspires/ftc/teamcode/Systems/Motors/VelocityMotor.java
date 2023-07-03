@@ -1,46 +1,32 @@
 package org.firstinspires.ftc.teamcode.Systems.Motors;
 
-import com.arcrobotics.ftclib.controller.PIDController;
-import com.arcrobotics.ftclib.controller.wpilibcontroller.SimpleMotorFeedforward;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-
-import java.util.ArrayList;
-import java.util.Arrays;
 
 public class VelocityMotor {
     DcMotorEx motor;
     MotorLookupTable motorType;
 
-    PIDController velocityController;
-    SimpleMotorFeedforward feedforwardController;
-
     double targetVelocity = 0;
-    double acceleration = 0;
-    double lastVelocity = 0;
-    double lastPosition = 0;
-    double lastTimestamp = 0;
-    double kP = 0, kI = 0, kD = 0, kS = 0, kV = 0, kA = 0;
 
     boolean reversed = false;
 
     public VelocityMotor(DcMotorEx motor, MotorLookupTable motorType, boolean reversed) {
         this.motor = motor;
+        this.motor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         this.motorType = motorType;
         setReversed(reversed);
-
-        velocityController = new PIDController(kP, kI, kD);
-        feedforwardController = new SimpleMotorFeedforward(kS, kV, kA);
     }
 
     public VelocityMotor(HardwareMap hardwareMap, String name, MotorLookupTable motorType, boolean reversed) {
         this(hardwareMap.get(DcMotorEx.class, name), motorType, reversed);
     }
 
-    DcMotorEx getMotor() {
+    public DcMotorEx getMotor() {
         return motor;
     }
 
@@ -72,59 +58,12 @@ public class VelocityMotor {
         return this;
     }
 
-    public PIDController getVelocityController() {
-        return velocityController;
-    }
-
-    public VelocityMotor setVelocityController(PIDController velocityController) {
-        this.velocityController = velocityController;
-        return this;
-    }
-
-    public ArrayList<Double> getVelocityControllerCoefficients() {
-        return new ArrayList<>(Arrays.asList(kP, kI, kD));
-    }
-
-    public VelocityMotor setVelocityControllerCoefficients(double kP, double kI, double kD) {
-        this.kP = kP;
-        this.kI = kI;
-        this.kD = kD;
-        velocityController.setPID(kP, kI, kD);
-        return this;
-    }
-
-    public SimpleMotorFeedforward getFeedforwardController() {
-        return feedforwardController;
-    }
-
-    public VelocityMotor setFeedforwardController(SimpleMotorFeedforward feedforwardController) {
-        this.feedforwardController = feedforwardController;
-        return this;
-    }
-
-    public ArrayList<Double> getFeedforwardControllerCoefficients() {
-        return new ArrayList<>(Arrays.asList(kS, kV, kA));
-    }
-
-    public VelocityMotor setFeedforwardControllerCoefficients(double kS, double kV, double kA) {
-        this.kS = kS;
-        this.kV = kV;
-        this.kA = kA;
-        feedforwardController = new SimpleMotorFeedforward(kS, kV, kA);
-        return this;
-    }
-
     public double getCurrentPosition() {
         return motor.getCurrentPosition();
     }
 
     public double getPower() {
         return motor.getPower();
-    }
-
-    public VelocityMotor setPower(double power) {
-        motor.setPower(power);
-        return this;
     }
 
     public double getTargetVelocity() {
@@ -134,6 +73,19 @@ public class VelocityMotor {
     public VelocityMotor setTargetVelocity(double targetVelocity) {
         this.targetVelocity = targetVelocity;
         return this;
+    }
+
+    public double getVelocity() {
+        return motor.getVelocity();
+    }
+
+    public VelocityMotor setVelocity(double velocity) {
+        motor.setVelocity(velocity);
+        return this;
+    }
+
+    public double getVelocityError() {
+        return targetVelocity - getVelocity();
     }
 
     public int getFreeRPM() {
@@ -164,39 +116,49 @@ public class VelocityMotor {
         return motorType.resolution;
     }
 
-    public double getVelocity() {
-        return motor.getVelocity();
+    public PIDFCoefficients getPIDF() {
+        return motor.getPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER);
     }
 
-    public double getCorrectedVelocity() {
-        double currentVelocity = getVelocity();
-        double currentTime, dt;
-        double velocityEstimate = 0;
-
-        if (currentVelocity != lastVelocity) {
-            currentTime = (double) System.nanoTime() / 1E9;
-            dt = currentTime - lastTimestamp;
-            velocityEstimate = (getCurrentPosition() - lastPosition) / dt;
-            acceleration = (currentVelocity - lastVelocity) / dt;
-
-            lastVelocity = currentVelocity;
-            lastTimestamp = currentTime;
-            lastPosition = getCurrentPosition();
-        }
-
-        while (Math.abs(velocityEstimate - currentVelocity) > 0x10000 / 2) {
-            currentVelocity += Math.signum(velocityEstimate - currentVelocity) * 0x10000;
-        }
-
-        return currentVelocity;
+    public VelocityMotor setPIDF(PIDFCoefficients pidf) {
+        motor.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, pidf);
+        return this;
     }
 
-    public double getVelocityError() {
-        return targetVelocity - getCorrectedVelocity();
+    public VelocityMotor setPIDF(double p, double i, double d, double f) {
+        return setPIDF(new PIDFCoefficients(p, i, d, f));
     }
 
-    public double getAcceleration() {
-        return acceleration;
+    public double getP() {
+        return getPIDF().p;
+    }
+
+    public VelocityMotor setP(double p) {
+        return setPIDF(p, getI(), getD(), getF());
+    }
+
+    public double getI() {
+        return getPIDF().i;
+    }
+
+    public VelocityMotor setI(double i) {
+        return setPIDF(getP(), i, getD(), getF());
+    }
+
+    public double getD() {
+        return getPIDF().d;
+    }
+
+    public VelocityMotor setD(double d) {
+        return setPIDF(getP(), getI(), d, getF());
+    }
+
+    public double getF() {
+        return getPIDF().f;
+    }
+
+    public VelocityMotor setF(double f) {
+        return setPIDF(getP(), getI(), getD(), f);
     }
 
     public void resetEncoder() {
@@ -206,9 +168,7 @@ public class VelocityMotor {
     }
 
     public void update() {
-        double speed = getTargetVelocity();
-        double velocity = velocityController.calculate(getCorrectedVelocity(), speed) + feedforwardController.calculate(speed, getAcceleration());
-        setPower(velocity / getTicksPerSecond());
+        setVelocity(targetVelocity);
     }
 
     public VelocityMotor log(Telemetry telemetry, HardwareMap hardwareMap) {
@@ -216,7 +176,7 @@ public class VelocityMotor {
         telemetry.addData("Reversed", isReversed());
         telemetry.addData("Target Velocity", getTargetVelocity());
         telemetry.addData("Current Velocity", getVelocity());
-        telemetry.addData("Current Power", getPower());
+        telemetry.addData("PIDF", getPIDF().toString());
         return this;
     }
 }

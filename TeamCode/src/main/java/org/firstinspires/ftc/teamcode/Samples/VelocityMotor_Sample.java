@@ -26,9 +26,7 @@ public class VelocityMotor_Sample extends OpMode {
         motor = new VelocityMotor(hardwareMap, "veloMotor1", MotorLookupTable.GOBILDA_435, false); //3600 is the max ticks per second for a GoBilda 435rpm motor according to Gunnar
         velocities = new int[]{0, 1200, 2400, 3600}; //Define list of velocities to switch between (in ticks per second)
 
-        motor.setVelocityControllerCoefficients(0, 0, 0) //Set velocity PID coefficients
-                .setFeedforwardControllerCoefficients(0, 0, 0) //Set feedforward PID coefficients
-                .setTargetVelocity(velocities[0]); //Set initial velocity to 0 tps
+        motor.setTargetVelocity(velocities[0]); //Set initial velocity to 0 tps
     }
 
     @Override
