@@ -241,6 +241,10 @@ public class Motor {
         motor.setMode(currentRunMode);
     }
 
+    public String getCSVData() {
+        return String.format(",%s,%s,%s,%s", getPower(), getTargetPower(), getCurrentPosition(), getTargetPosition());
+    }
+
     public void update() {
         double power;
 
@@ -268,8 +272,8 @@ public class Motor {
         telemetry.addData("Motor", hardwareMap.getNamesOf(motor));
         telemetry.addData("Mode", mode);
         telemetry.addData("Reversed", isReversed());
+        telemetry.addData("Current Power", getPower());
         if (mode == Mode.POWER) {
-            telemetry.addData("Current Power", getPower());
             telemetry.addData("Target Power", getTargetPower());
         } else if (mode == Mode.POSITION) {
             telemetry.addData("Current Position", getCurrentPosition());
