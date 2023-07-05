@@ -59,12 +59,20 @@ public class ContinuousServo {
         return this;
     }
 
+    public double getPowerError() {
+        return targetPower - getPower();
+    }
+
+    public String getCSVData() {
+        return String.format(",%s,%s,%s", getPower(), getTargetPower(), getPowerError());
+    }
+
     public void update() {
         servo.setPower(targetPower);
     }
 
     public ContinuousServo log(Telemetry telemetry, HardwareMap hardwareMap) {
-        telemetry.addData("Servo", hardwareMap.getNamesOf(servo));
+        telemetry.addData("Servo", hardwareMap.getNamesOf(servo).toArray()[0]);
         telemetry.addData("Current Power", getPower());
         telemetry.addData("Target Power", getTargetPower());
         telemetry.addData("Reversed", isReversed());

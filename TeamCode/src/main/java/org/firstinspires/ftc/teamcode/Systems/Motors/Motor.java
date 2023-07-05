@@ -128,6 +128,10 @@ public class Motor {
         return this;
     }
 
+    public double getPowerError() {
+        return targetPower - getPower();
+    }
+
     public int getCurrentPosition() {
         return motor.getCurrentPosition();
     }
@@ -139,6 +143,10 @@ public class Motor {
     public Motor setTargetPosition(int position) {
         targetPosition = position;
         return this;
+    }
+
+    public int getPositionError() {
+        return targetPosition - getCurrentPosition();
     }
 
     public PIDController getPID() {
@@ -242,7 +250,7 @@ public class Motor {
     }
 
     public String getCSVData() {
-        return String.format(",%s,%s,%s,%s", getPower(), getTargetPower(), getCurrentPosition(), getTargetPosition());
+        return String.format(",%s,%s,%s,%s,%s,%s", getPower(), getTargetPower(), getPowerError(), getCurrentPosition(), getTargetPosition(), getPositionError());
     }
 
     public void update() {
@@ -269,7 +277,7 @@ public class Motor {
     }
 
     public Motor log(Telemetry telemetry, HardwareMap hardwareMap) {
-        telemetry.addData("Motor", hardwareMap.getNamesOf(motor));
+        telemetry.addData("Motor", hardwareMap.getNamesOf(motor).toArray()[0]);
         telemetry.addData("Mode", mode);
         telemetry.addData("Reversed", isReversed());
         telemetry.addData("Current Power", getPower());

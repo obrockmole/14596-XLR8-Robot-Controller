@@ -102,6 +102,14 @@ public class PositionServoGroup {
         return this;
     }
 
+    public double getPositionError(int servo) {
+        return servos.get(servo).getPositionError();
+    }
+
+    public String getCSVData(int servo) {
+        return servos.get(servo).getCSVData();
+    }
+
     public void update() {
         for (PositionServo servo : servos) servo.update();
     }

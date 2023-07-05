@@ -85,6 +85,10 @@ public class MotorGroup {
         return this;
     }
 
+    public double getPowerError(int motor) {
+        return motors.get(motor).getPowerError();
+    }
+
     public int getCurrentPosition(int motor) {
         return motors.get(motor).getCurrentPosition();
     }
@@ -96,6 +100,10 @@ public class MotorGroup {
     public MotorGroup setTargetPosition(int position) {
         for (Motor motor : motors) motor.setTargetPosition(position);
         return this;
+    }
+
+    public int getPositionError(int motor) {
+        return motors.get(motor).getPositionError();
     }
 
     public ArrayList<Double> getPIDF() {
@@ -174,6 +182,10 @@ public class MotorGroup {
 
     public void resetEncoder() {
         for (Motor motor : motors) motor.resetEncoder();
+    }
+
+    public String getCSVData(int motor) {
+        return motors.get(motor).getCSVData();
     }
 
     public void update() {

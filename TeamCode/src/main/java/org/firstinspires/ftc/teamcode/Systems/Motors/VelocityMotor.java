@@ -167,12 +167,16 @@ public class VelocityMotor {
         motor.setMode(currentRunMode);
     }
 
+    public String getCSVData() {
+        return String.format(",%s,%s,%s", getVelocity(), getTargetVelocity(), getVelocityError());
+    }
+
     public void update() {
         setVelocity(targetVelocity);
     }
 
     public VelocityMotor log(Telemetry telemetry, HardwareMap hardwareMap) {
-        telemetry.addData("Motor", hardwareMap.getNamesOf(motor));
+        telemetry.addData("Motor", hardwareMap.getNamesOf(motor).toArray()[0]);
         telemetry.addData("Reversed", isReversed());
         telemetry.addData("Target Velocity", getTargetVelocity());
         telemetry.addData("Current Velocity", getVelocity());

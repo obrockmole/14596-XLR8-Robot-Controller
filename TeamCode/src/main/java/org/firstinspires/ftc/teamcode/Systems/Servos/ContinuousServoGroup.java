@@ -65,6 +65,14 @@ public class ContinuousServoGroup {
         return this;
     }
 
+    public double getPowerError(int servo) {
+        return servos.get(servo).getPowerError();
+    }
+
+    public String getCSVData(int servo) {
+        return servos.get(servo).getCSVData();
+    }
+
     public void update() {
         for (ContinuousServo servo : servos)
             servo.update();

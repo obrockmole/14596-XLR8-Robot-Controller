@@ -106,12 +106,20 @@ public class PositionServo {
         return this;
     }
 
+    public double getPositionError() {
+        return targetPosition - getPosition();
+    }
+
+    public String getCSVData() {
+        return String.format(",%s,%s,%s", getPosition(), getTargetPosition(), getPositionError());
+    }
+
     public void update() {
         setPosition(targetPosition);
     }
 
     public PositionServo log(Telemetry telemetry, HardwareMap hardwareMap) {
-        telemetry.addData("Servo", hardwareMap.getNamesOf(servo));
+        telemetry.addData("Servo", hardwareMap.getNamesOf(servo).toArray()[0]);
         telemetry.addData("Current Position", getPosition());
         telemetry.addData("Target Position", getTargetPosition());
         telemetry.addData("Scale Range", getScaleRange().toString());

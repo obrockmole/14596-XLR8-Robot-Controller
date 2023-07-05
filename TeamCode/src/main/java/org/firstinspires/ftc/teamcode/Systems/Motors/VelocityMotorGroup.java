@@ -157,6 +157,10 @@ public class VelocityMotorGroup {
         for (VelocityMotor motor : motors) motor.resetEncoder();
     }
 
+    public String getCSVData(int motor) {
+        return motors.get(motor).getCSVData();
+    }
+
     public void update() {
         for (VelocityMotor motor : motors) motor.update();
     }

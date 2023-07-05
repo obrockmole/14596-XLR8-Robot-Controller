@@ -72,13 +72,17 @@ public class TouchSensor {
         return sensor.getValue();
     }
 
+    public String getCSVData() {
+        return String.format(",%s", ((isDown()) ? 1 : 0));
+    }
+
     public void update() {
         previousState = currentState;
         currentState = isDown();
     }
 
     public TouchSensor log(Telemetry telemetry, HardwareMap hardwareMap) {
-        telemetry.addData("Sensor", hardwareMap.getNamesOf(sensor));
+        telemetry.addData("Sensor", hardwareMap.getNamesOf(sensor).toArray()[0]);
         telemetry.addData("Pressed", isDown());
         telemetry.addData("Value", getValue());
         return this;

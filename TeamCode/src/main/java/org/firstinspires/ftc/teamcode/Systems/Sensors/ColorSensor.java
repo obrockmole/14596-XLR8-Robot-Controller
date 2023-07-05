@@ -49,8 +49,12 @@ public class ColorSensor {
         return sensor.getNormalizedColors().toColor();
     }
 
+    public String getCSVData() {
+        return String.format(",%s,%s,%s,%s", getRed(), getGreen(), getBlue(), getAlpha());
+    }
+
     public ColorSensor log(Telemetry telemetry, HardwareMap hardwareMap) {
-        telemetry.addData("Sensor", hardwareMap.getNamesOf(sensor));
+        telemetry.addData("Sensor", hardwareMap.getNamesOf(sensor).toArray()[0]);
         telemetry.addData("Red", getRed());
         telemetry.addData("Green", getGreen());
         telemetry.addData("Blue", getBlue());

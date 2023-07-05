@@ -34,10 +34,6 @@ public class Potentiometer {
         return sensor.getVoltage();
     }
 
-    public double getAngleRough() {
-        return getVoltage() * 81.8;
-    }
-
     public double getAngle() {
         double voltage = getVoltage();
         double angle;
@@ -48,10 +44,13 @@ public class Potentiometer {
         return Range.scale(angle, 270, 0, 0, 270);
     }
 
+    public String getCSVData() {
+        return String.format(",%s,%s", getVoltage(), getAngle());
+    }
+
     public Potentiometer log(Telemetry telemetry, HardwareMap hardwareMap) {
-        telemetry.addData("Sensor", hardwareMap.getNamesOf(sensor));
+        telemetry.addData("Sensor", hardwareMap.getNamesOf(sensor).toArray()[0]);
         telemetry.addData("Voltage", getVoltage());
-        telemetry.addData("Angle Rough", getAngleRough());
         telemetry.addData("Angle", getAngle());
         return this;
     }

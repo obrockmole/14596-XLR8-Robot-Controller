@@ -34,35 +34,39 @@ public class DistanceSensor {
     }
 
     public double getDistanceMM() {
-        return sensor.getDistance(DistanceUnit.MM);
+        return (!outOfRange()) ? sensor.getDistance(DistanceUnit.MM) : -1;
     }
 
     public double getDistanceCM() {
-        return sensor.getDistance(DistanceUnit.CM);
+        return (!outOfRange()) ? sensor.getDistance(DistanceUnit.CM) : -1;
     }
 
     public double getDistanceM() {
-        return sensor.getDistance(DistanceUnit.METER);
+        return (!outOfRange()) ? sensor.getDistance(DistanceUnit.METER) : -1;
     }
 
     public double getDistanceIN() {
-        return sensor.getDistance(DistanceUnit.INCH);
+        return (!outOfRange()) ? sensor.getDistance(DistanceUnit.INCH) : -1;
     }
 
     public double getDistanceFT() {
-        return sensor.getDistance(DistanceUnit.INCH) / 12;
+        return (!outOfRange()) ? sensor.getDistance(DistanceUnit.INCH) / 12 : -1;
     }
 
     public double getDistanceYD() {
-        return sensor.getDistance(DistanceUnit.INCH) / 36;
+        return (!outOfRange()) ? sensor.getDistance(DistanceUnit.INCH) / 36 : -1;
     }
 
     public boolean outOfRange() {
-        return getDistanceM() == com.qualcomm.robotcore.hardware.DistanceSensor.distanceOutOfRange;
+        return getDistanceM() == DistanceUnit.infinity;
+    }
+
+    public String getCSVData() {
+        return String.format(",%s", getDistanceCM());
     }
 
     public DistanceSensor log(Telemetry telemetry, HardwareMap hardwareMap) {
-        telemetry.addData("Sensor", hardwareMap.getNamesOf(sensor));
+        telemetry.addData("Sensor", hardwareMap.getNamesOf(sensor).toArray()[0]);
         telemetry.addData("Distance (cm)", getDistanceCM());
         telemetry.addData("Distance (in)", getDistanceIN());
         return this;

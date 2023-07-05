@@ -38,7 +38,7 @@ public class DataLogging_Sample extends OpMode {
 
     @Override
     public void start() {
-        motorLogger.startLogging("Time,Power,TargetPower,Position,TargetPosition"); //Create file and write header
+        motorLogger.startLogging("Time,Power,TargetPower,PowerError,Position,TargetPosition,PositionError"); //Create file and write header
         stopwatch.start(); //Start the stopwatch to get time
     }
 
