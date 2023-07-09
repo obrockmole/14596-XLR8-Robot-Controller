@@ -3,16 +3,17 @@ package org.firstinspires.ftc.teamcode.Testing;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-import org.firstinspires.ftc.teamcode.Systems.Vision.ContourDetector;
+import org.firstinspires.ftc.teamcode.Systems.Vision.ColorDetector;
+import org.firstinspires.ftc.teamcode.Systems.Vision.FaceDetector;
 
 //@Disabled
 @TeleOp(group = "Testing")
-public class VisionTest extends OpMode {
-    ContourDetector detector;
+public class FaceDetectionTest extends OpMode {
+    FaceDetector detector;
 
     @Override
     public void init() {
-        detector = new ContourDetector(hardwareMap, "Webcam");
+        detector = new FaceDetector(hardwareMap, "Webcam");
         detector.start();
     }
 
