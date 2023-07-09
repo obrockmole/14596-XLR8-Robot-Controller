@@ -3,17 +3,16 @@ package org.firstinspires.ftc.teamcode.Testing;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-import org.firstinspires.ftc.teamcode.Systems.Vision.ColorDetector;
-import org.firstinspires.ftc.teamcode.Systems.Vision.FaceDetector;
+import org.firstinspires.ftc.teamcode.Systems.Vision.CascadeDetector;
 
 //@Disabled
 @TeleOp(group = "Testing")
 public class FaceDetectionTest extends OpMode {
-    FaceDetector detector;
+    CascadeDetector detector;
 
     @Override
     public void init() {
-        detector = new FaceDetector(hardwareMap, "Webcam");
+        detector = new CascadeDetector(hardwareMap, "Webcam", "frontalface_default.xml");
         detector.start();
     }
 

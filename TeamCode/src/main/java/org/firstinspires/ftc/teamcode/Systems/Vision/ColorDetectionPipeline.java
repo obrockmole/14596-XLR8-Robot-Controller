@@ -15,15 +15,19 @@ public class ColorDetectionPipeline extends OpenCvPipeline {
     Mat hsv = new Mat();
     Mat mask = new Mat();
 
-    Scalar lowerRed = new Scalar(170, 110, 0);
-    Scalar upperRed = new Scalar(179, 255, 255);
+    Scalar lowerBound, upperBound;
 
     List<MatOfPoint> contours = new ArrayList<MatOfPoint>();
+
+    public ColorDetectionPipeline(Scalar lowerBound, Scalar upperBound) {
+        this.lowerBound = lowerBound;
+        this.upperBound = upperBound;
+    }
 
     @Override
     public Mat processFrame(Mat input) {
         Imgproc.cvtColor(input, hsv, Imgproc.COLOR_RGB2HSV);
-        Core.inRange(hsv, lowerRed, upperRed, mask);
+        Core.inRange(hsv, lowerBound, upperBound, mask);
 
         Imgproc.findContours(mask, contours, new Mat(), Imgproc.RETR_LIST, Imgproc.CHAIN_APPROX_SIMPLE);
 
@@ -42,5 +46,23 @@ public class ColorDetectionPipeline extends OpenCvPipeline {
         }
 
         return input;
+    }
+
+    public Scalar getLowerBound() {
+        return lowerBound;
+    }
+
+    public ColorDetectionPipeline setLowerBound(Scalar lowerBound) {
+        this.lowerBound = lowerBound;
+        return this;
+    }
+
+    public Scalar getUpperBound() {
+        return upperBound;
+    }
+
+    public ColorDetectionPipeline setUpperBound(Scalar upperBound) {
+        this.upperBound = upperBound;
+        return this;
     }
 }

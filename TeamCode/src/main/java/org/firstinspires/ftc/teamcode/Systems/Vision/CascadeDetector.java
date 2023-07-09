@@ -6,24 +6,25 @@ import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
 
-public class FaceDetector {
-    private FaceDetectionPipeline pipeline;
+public class CascadeDetector {
+    private CascadeDetectionPipeline pipeline;
     private WebcamName webcamName;
     private OpenCvCamera camera;
     private int cameraMonitorViewId;
+    private String cascadeFile;
 
-    public FaceDetector(HardwareMap hardwareMap, String cameraName) {
-        this(hardwareMap, hardwareMap.get(WebcamName.class, cameraName));
+    public CascadeDetector(HardwareMap hardwareMap, String cameraName, String cascadeFile) {
+        this(hardwareMap, hardwareMap.get(WebcamName.class, cameraName), cascadeFile);
     }
 
-    public FaceDetector(HardwareMap hardwareMap, WebcamName webcamName) {
+    public CascadeDetector(HardwareMap hardwareMap, WebcamName webcamName, String cascadeFile) {
         cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         this.webcamName = webcamName;
         camera = OpenCvCameraFactory.getInstance().createWebcam(webcamName, cameraMonitorViewId);
     }
 
     public void start() {
-        pipeline = new FaceDetectionPipeline("frontalface_default.xml");
+        pipeline = new CascadeDetectionPipeline(cascadeFile);
 
         camera.setPipeline(pipeline);
         camera.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
@@ -37,8 +38,22 @@ public class FaceDetector {
         });
     }
 
-    public FaceDetectionPipeline getPipeline() {
+    public String getCascadeFile() {
+        return pipeline.getCascadeFile();
+    }
+
+    public CascadeDetector setCascadeFile(String cascadeFile) {
+        pipeline.setCascadeFile(cascadeFile);
+        return this;
+    }
+
+    public CascadeDetectionPipeline getPipeline() {
         return pipeline;
+    }
+
+    public CascadeDetector setPipeline(CascadeDetectionPipeline pipeline) {
+        this.pipeline = pipeline;
+        return this;
     }
 
     public WebcamName getWebcamName() {
