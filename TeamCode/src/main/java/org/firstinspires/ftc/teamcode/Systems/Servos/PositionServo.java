@@ -107,7 +107,7 @@ public class PositionServo {
     }
 
     public double getPositionError() {
-        return targetPosition - getPosition();
+        return Math.abs(targetPosition - getPosition());
     }
 
     public String getCSVData() {

@@ -60,7 +60,7 @@ public class ContinuousServo {
     }
 
     public double getPowerError() {
-        return targetPower - getPower();
+        return Math.abs(targetPower - getPower());
     }
 
     public String getCSVData() {

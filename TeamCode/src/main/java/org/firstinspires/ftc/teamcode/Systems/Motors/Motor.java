@@ -129,7 +129,7 @@ public class Motor {
     }
 
     public double getPowerError() {
-        return targetPower - getPower();
+        return Math.abs(targetPower - getPower());
     }
 
     public int getCurrentPosition() {
@@ -146,7 +146,7 @@ public class Motor {
     }
 
     public int getPositionError() {
-        return targetPosition - getCurrentPosition();
+        return Math.abs(targetPosition - getCurrentPosition());
     }
 
     public PIDController getPID() {

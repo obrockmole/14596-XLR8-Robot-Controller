@@ -85,7 +85,7 @@ public class VelocityMotor {
     }
 
     public double getVelocityError() {
-        return targetVelocity - getVelocity();
+        return Math.abs(targetVelocity - getVelocity());
     }
 
     public int getFreeRPM() {
