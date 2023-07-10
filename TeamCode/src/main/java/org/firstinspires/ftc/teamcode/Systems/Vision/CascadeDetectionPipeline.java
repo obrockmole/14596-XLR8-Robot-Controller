@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.Systems.Vision;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfRect;
 import org.opencv.core.Point;
+import org.opencv.core.Rect;
 import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
 import org.opencv.objdetect.CascadeClassifier;
@@ -27,16 +28,9 @@ public class CascadeDetectionPipeline extends OpenCvPipeline {
 
         detector.detectMultiScale(gray, detections);
 
-        for (int i = 0; i < detections.toArray().length; i++) {
-            Imgproc.rectangle(
-                    input,
-                    new Point(
-                            detections.toArray()[i].x,
-                            detections.toArray()[i].y),
-                    new Point(
-                            detections.toArray()[i].x + detections.toArray()[i].width,
-                            detections.toArray()[i].y + detections.toArray()[i].height),
-                    new Scalar(0, 255, 0), 2);
+        for (Rect rect : detections.toArray()) {
+            Imgproc.rectangle(input, new Point(rect.x, rect.y),
+                    new Point(rect.x + rect.width, rect.y + rect.height), new Scalar(0, 255, 0), 2);
         }
 
         return input;

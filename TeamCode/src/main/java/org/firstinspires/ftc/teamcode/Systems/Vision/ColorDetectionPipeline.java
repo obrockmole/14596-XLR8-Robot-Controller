@@ -4,6 +4,7 @@ import org.opencv.core.Core;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfPoint;
 import org.opencv.core.Point;
+import org.opencv.core.Rect;
 import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
 import org.openftc.easyopencv.OpenCvPipeline;
@@ -17,7 +18,7 @@ public class ColorDetectionPipeline extends OpenCvPipeline {
 
     Scalar lowerBound, upperBound;
 
-    List<MatOfPoint> contours = new ArrayList<MatOfPoint>();
+    List<MatOfPoint> contours = new ArrayList<>();
 
     public ColorDetectionPipeline(Scalar lowerBound, Scalar upperBound) {
         this.lowerBound = lowerBound;
@@ -33,15 +34,9 @@ public class ColorDetectionPipeline extends OpenCvPipeline {
 
         for (MatOfPoint contour : contours) {
             if (Imgproc.contourArea(contour) > 10) {
-                Imgproc.rectangle(
-                        input,
-                        new Point(
-                                Imgproc.boundingRect(contour).x,
-                                Imgproc.boundingRect(contour).y),
-                        new Point(
-                                Imgproc.boundingRect(contour).x + Imgproc.boundingRect(contour).width,
-                                Imgproc.boundingRect(contour).y + Imgproc.boundingRect(contour).height),
-                        new Scalar(0, 255, 0), 2);
+                Rect rect = Imgproc.boundingRect(contour);
+                Imgproc.rectangle(input, new Point(rect.x, rect.y),
+                        new Point(rect.x + rect.width, rect.y + rect.height), new Scalar(0, 255, 0), 2);
             }
         }
 
