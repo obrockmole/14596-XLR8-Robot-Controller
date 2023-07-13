@@ -51,22 +51,20 @@ public class Gamepad {
         boolean buttonValue = false;
         switch (button) {
             case A:
+            case CROSS:
                 buttonValue = gamepad.a;
                 break;
             case B:
+            case CIRCLE:
                 buttonValue = gamepad.b;
                 break;
             case X:
+            case SQUARE:
                 buttonValue = gamepad.x;
                 break;
             case Y:
+            case TRIANGLE:
                 buttonValue = gamepad.y;
-                break;
-            case LEFT_BUMPER:
-                buttonValue = gamepad.left_bumper;
-                break;
-            case RIGHT_BUMPER:
-                buttonValue = gamepad.right_bumper;
                 break;
             case DPAD_UP:
                 buttonValue = gamepad.dpad_up;
@@ -80,6 +78,14 @@ public class Gamepad {
             case DPAD_RIGHT:
                 buttonValue = gamepad.dpad_right;
                 break;
+            case LEFT_BUMPER:
+            case L1:
+                buttonValue = gamepad.left_bumper;
+                break;
+            case RIGHT_BUMPER:
+            case R1:
+                buttonValue = gamepad.right_bumper;
+                break;
             case LEFT_STICK:
                 buttonValue = gamepad.left_stick_button;
                 break;
@@ -87,12 +93,15 @@ public class Gamepad {
                 buttonValue = gamepad.right_stick_button;
                 break;
             case START:
+            case OPTIONS:
                 buttonValue = gamepad.start;
                 break;
             case BACK:
+            case SHARE:
                 buttonValue = gamepad.back;
                 break;
             case GUIDE:
+            case PS:
                 buttonValue = gamepad.guide;
                 break;
             case TOUCHPAD:

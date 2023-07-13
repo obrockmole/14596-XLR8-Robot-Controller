@@ -31,9 +31,11 @@ public class TriggerHandler {
         double triggerValue = 0;
         switch (trigger) {
             case LEFT_TRIGGER:
+            case L2:
                 triggerValue = gamepad.getGamepad().left_trigger;
                 break;
             case RIGHT_TRIGGER:
+            case R2:
                 triggerValue = gamepad.getGamepad().right_trigger;
                 break;
             default:
