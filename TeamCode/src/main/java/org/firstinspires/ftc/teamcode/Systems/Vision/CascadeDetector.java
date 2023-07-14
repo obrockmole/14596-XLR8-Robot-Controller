@@ -21,6 +21,7 @@ public class CascadeDetector {
         cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         this.webcamName = webcamName;
         camera = OpenCvCameraFactory.getInstance().createWebcam(webcamName, cameraMonitorViewId);
+        this.cascadeFile = cascadeFile;
     }
 
     public void start() {

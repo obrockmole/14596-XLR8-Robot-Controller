@@ -12,7 +12,7 @@ public class FaceDetectionTest extends OpMode {
 
     @Override
     public void init() {
-        detector = new CascadeDetector(hardwareMap, "Webcam", "frontalface_default.xml");
+        detector = new CascadeDetector(hardwareMap, "Webcam", "frontalface_cascade.xml");
         detector.start();
     }
 
