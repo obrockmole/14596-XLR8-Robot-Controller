@@ -4,16 +4,16 @@ import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-import org.firstinspires.ftc.teamcode.Systems.Sensors.DistanceSensor;
+import org.firstinspires.ftc.teamcode.Systems.Sensors.Potentiometer;
 
 @Disabled
 @TeleOp(group = "Samples")
-public class DistanceSensor_Sample extends OpMode {
-    DistanceSensor sensor;
+public class SensorPotentiometer_Sample extends OpMode {
+    Potentiometer sensor;
 
     @Override
     public void init() {
-        sensor = new DistanceSensor(hardwareMap, "distance"); //Initializing the distance sensor with the hardware map and the name of the sensor
+        sensor = new Potentiometer(hardwareMap, "potentiometer"); //Initializing the potentiometer with the hardware map and the name of the sensor
     }
 
     @Override

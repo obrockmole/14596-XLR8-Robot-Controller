@@ -4,16 +4,16 @@ import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-import org.firstinspires.ftc.teamcode.Systems.Sensors.Potentiometer;
+import org.firstinspires.ftc.teamcode.Systems.Sensors.ColorSensor;
 
 @Disabled
 @TeleOp(group = "Samples")
-public class Potentiometer_Sample extends OpMode {
-    Potentiometer sensor;
+public class SensorColor_Sample extends OpMode {
+    ColorSensor sensor;
 
     @Override
     public void init() {
-        sensor = new Potentiometer(hardwareMap, "potentiometer"); //Initializing the potentiometer with the hardware map and the name of the sensor
+        sensor = new ColorSensor(hardwareMap, "color"); //Initializing the color sensor with the hardware map and the name of the sensor
     }
 
     @Override

@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.Samples;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
@@ -11,7 +12,7 @@ import org.firstinspires.ftc.teamcode.Systems.Motors.Motor;
 import org.firstinspires.ftc.teamcode.Systems.Motors.MotorLookupTable;
 import org.firstinspires.ftc.teamcode.Systems.Stopwatch;
 
-//@Disabled
+@Disabled
 @TeleOp(group = "Testing")
 public class DataLogging_Sample extends OpMode {
     Motor motor; //This example uses custom motors. See Motor_Sample.java for more information

@@ -11,7 +11,7 @@ import org.firstinspires.ftc.teamcode.Systems.Motors.VelocityMotor;
 
 @Disabled
 @TeleOp(group = "Samples")
-public class VelocityMotor_Sample extends OpMode {
+public class MotorVelocity_Sample extends OpMode {
     VelocityMotor motor;
 
     Gamepad gamepad; //This example uses custom gamepads. See Gamepad_Sample.java for more information

@@ -10,7 +10,7 @@ import org.firstinspires.ftc.teamcode.Systems.Servos.PositionServo;
 
 @Disabled
 @TeleOp(group = "Samples")
-public class PositionServo_Sample extends OpMode {
+public class ServoPosition_Sample extends OpMode {
     PositionServo servo;
 
     Gamepad gamepad; //This example uses a custom gamepad. See Gamepad_Sample.java for more information

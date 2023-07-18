@@ -7,13 +7,14 @@ import com.qualcomm.robotcore.hardware.IMU;
 
 import org.firstinspires.ftc.teamcode.Systems.Drivetrain;
 import org.firstinspires.ftc.teamcode.Systems.Gamepad.Gamepad;
+import org.firstinspires.ftc.teamcode.Systems.Gamepad.GamepadButtons.Button;
 import org.firstinspires.ftc.teamcode.Systems.Gamepad.GamepadButtons.Stick;
 import org.firstinspires.ftc.teamcode.Systems.Motors.Motor;
 import org.firstinspires.ftc.teamcode.Systems.Motors.MotorLookupTable;
 
 @Disabled
 @TeleOp(group = "Samples")
-public class RobotCentricDrive_Sample extends OpMode {
+public class DriveFieldCentric_Sample extends OpMode {
     Drivetrain drivetrain;
 
     Gamepad driver; //This example uses a custom gamepad. See Gamepad_Sample.java for more information
@@ -35,11 +36,12 @@ public class RobotCentricDrive_Sample extends OpMode {
 
     @Override
     public void loop() {
-        driver.update(); //Update the gamepad
+        driver.onPress(Button.BACK, () -> drivetrain.resetIMU()) //Reset the IMU when the back button is pressed on the gamepad
+                .update(); //Update the gamepad
 
         /*
           The drivetrain has two drive modes: field centric and robot centric.
-          Robot centric is the default drive mode. The robot will always move in relation to the position its facing.
+          Field centric means the robot will always move in relation to the field regardless of orientation.
           This is controlled with the standardDrive() method and joystick values.
          */
         drivetrain.fieldCentricDrive(driver.getStickY(Stick.LEFT_STICK), driver.getStickX(Stick.LEFT_STICK), driver.getStickX(Stick.RIGHT_STICK))

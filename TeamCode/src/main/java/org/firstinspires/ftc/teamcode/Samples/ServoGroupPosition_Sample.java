@@ -11,7 +11,7 @@ import org.firstinspires.ftc.teamcode.Systems.Servos.PositionServoGroup;
 
 @Disabled
 @TeleOp(group = "Samples")
-public class PositionServoGroup_Sample extends OpMode {
+public class ServoGroupPosition_Sample extends OpMode {
     PositionServoGroup servos;
 
     Gamepad gamepad; //This example uses a custom gamepad. See Gamepad_Sample.java for more information

@@ -8,7 +8,7 @@ import org.firstinspires.ftc.teamcode.Systems.Sensors.LimitSwitch;
 
 @Disabled
 @TeleOp(group = "Samples")
-public class LimitSwitch_Sample extends OpMode {
+public class SensorLimitSwitch_Sample extends OpMode {
     LimitSwitch sensor;
 
     int pressed = 0, released = 0, changed = 0;

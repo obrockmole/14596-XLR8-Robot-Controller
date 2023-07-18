@@ -8,7 +8,7 @@ import org.firstinspires.ftc.teamcode.Systems.Sensors.TouchSensor;
 
 @Disabled
 @TeleOp(group = "Samples")
-public class TouchSensor_Sample extends OpMode {
+public class SensorTouch_Sample extends OpMode {
     TouchSensor sensor;
 
     int pressed = 0, released = 0, changed = 0;
