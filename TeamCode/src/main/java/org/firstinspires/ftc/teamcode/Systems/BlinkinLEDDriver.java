@@ -1,11 +1,12 @@
 package org.firstinspires.ftc.teamcode.Systems;
 
-import android.graphics.Color;
-
 import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
-public class Blinkin {
+import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.teamcode.Systems.Sensors.ColorSensor;
+
+public class BlinkinLEDDriver {
     private RevBlinkinLedDriver blinkin;
     private Pattern pattern;
 
@@ -127,6 +128,10 @@ public class Blinkin {
             this.pattern = pattern;
         }
 
+        public RevBlinkinLedDriver.BlinkinPattern getPattern() {
+            return pattern;
+        }
+
         public static Pattern fromRevPattern(RevBlinkinLedDriver.BlinkinPattern pattern) {
             for (Pattern p : elements) {
                 if (p.pattern == pattern) return p;
@@ -147,11 +152,11 @@ public class Blinkin {
         }
     }
 
-    public Blinkin(RevBlinkinLedDriver blinkin) {
+    public BlinkinLEDDriver(RevBlinkinLedDriver blinkin) {
         this.blinkin = blinkin;
     }
 
-    public Blinkin(HardwareMap hardwareMap, String name) {
+    public BlinkinLEDDriver(HardwareMap hardwareMap, String name) {
         this(hardwareMap.get(RevBlinkinLedDriver.class, name));
     }
 
@@ -163,27 +168,35 @@ public class Blinkin {
         return pattern.pattern;
     }
 
-    public Blinkin setPattern(Pattern pattern) {
+    public BlinkinLEDDriver setPattern(Pattern pattern) {
         this.pattern = pattern;
         blinkin.setPattern(RevBlinkinLedDriver.BlinkinPattern.fromNumber(pattern.ordinal()));
         return this;
     }
 
-    public Blinkin setPattern(RevBlinkinLedDriver.BlinkinPattern pattern) {
+    public BlinkinLEDDriver setPattern(RevBlinkinLedDriver.BlinkinPattern pattern) {
         this.pattern = Pattern.fromRevPattern(pattern);
         blinkin.setPattern(pattern);
         return this;
     }
 
-    public Blinkin nextPattern() {
+    public BlinkinLEDDriver nextPattern() {
         pattern = pattern.next();
         setPattern(pattern);
         return this;
     }
 
-    public Blinkin previousPattern() {
+    public BlinkinLEDDriver previousPattern() {
         pattern = pattern.previous();
         setPattern(pattern);
+        return this;
+    }
+
+    public BlinkinLEDDriver log(Telemetry telemetry, HardwareMap hardwareMap) {
+        telemetry.addData("Sensor", hardwareMap.getNamesOf(blinkin).toArray()[0]);
+        telemetry.addData("Pattern", pattern.toString());
+        telemetry.addData("Rev Pattern", pattern.getPattern().toString());
+        telemetry.addData("Pattern #", pattern.ordinal());
         return this;
     }
 }
