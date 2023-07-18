@@ -12,7 +12,7 @@ import org.openftc.easyopencv.OpenCvPipeline;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ColorDetectionPipeline extends OpenCvPipeline {
+public class ContourDetectionPipeline extends OpenCvPipeline {
     Mat hsv = new Mat();
     Mat mask = new Mat();
 
@@ -20,7 +20,7 @@ public class ColorDetectionPipeline extends OpenCvPipeline {
 
     List<MatOfPoint> contours = new ArrayList<>();
 
-    public ColorDetectionPipeline(Scalar lowerBound, Scalar upperBound) {
+    public ContourDetectionPipeline(Scalar lowerBound, Scalar upperBound) {
         this.lowerBound = lowerBound;
         this.upperBound = upperBound;
     }
@@ -30,10 +30,11 @@ public class ColorDetectionPipeline extends OpenCvPipeline {
         Imgproc.cvtColor(input, hsv, Imgproc.COLOR_RGB2HSV);
         Core.inRange(hsv, lowerBound, upperBound, mask);
 
+        contours.clear();
         Imgproc.findContours(mask, contours, new Mat(), Imgproc.RETR_LIST, Imgproc.CHAIN_APPROX_SIMPLE);
 
         for (MatOfPoint contour : contours) {
-            if (Imgproc.contourArea(contour) > 10) {
+            if (Imgproc.contourArea(contour) > 50) {
                 Rect rect = Imgproc.boundingRect(contour);
                 Imgproc.rectangle(input, new Point(rect.x, rect.y),
                         new Point(rect.x + rect.width, rect.y + rect.height), new Scalar(0, 255, 0), 2);
@@ -47,7 +48,7 @@ public class ColorDetectionPipeline extends OpenCvPipeline {
         return lowerBound;
     }
 
-    public ColorDetectionPipeline setLowerBound(Scalar lowerBound) {
+    public ContourDetectionPipeline setLowerBound(Scalar lowerBound) {
         this.lowerBound = lowerBound;
         return this;
     }
@@ -56,7 +57,7 @@ public class ColorDetectionPipeline extends OpenCvPipeline {
         return upperBound;
     }
 
-    public ColorDetectionPipeline setUpperBound(Scalar upperBound) {
+    public ContourDetectionPipeline setUpperBound(Scalar upperBound) {
         this.upperBound = upperBound;
         return this;
     }

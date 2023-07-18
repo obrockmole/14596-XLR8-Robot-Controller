@@ -1,13 +1,11 @@
 package org.firstinspires.ftc.teamcode.Systems.Vision;
 
 import org.opencv.core.Mat;
-import org.opencv.core.MatOfPoint;
-import org.opencv.core.Point;
 import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
-import org.openftc.easyopencv.OpenCvPipeline;
 import org.openftc.apriltag.AprilTagDetection;
 import org.openftc.apriltag.AprilTagDetectorJNI;
+import org.openftc.easyopencv.OpenCvPipeline;
 
 import java.util.ArrayList;
 
@@ -66,13 +64,11 @@ public class AprilTagDetectionPipeline extends OpenCvPipeline {
         }
 
         for (AprilTagDetection detection : detections) {
-            ArrayList<MatOfPoint> corners = new ArrayList<>();
-            for (Point corner : detection.corners) {
-                corners.add(new MatOfPoint(corner));
-            }
-
-            Imgproc.polylines(input, corners, true, blue, 2);
-            Imgproc.putText(input, String.valueOf(detection.id), detection.center, 0, 1, blue);
+            Imgproc.line(input, detection.corners[0], detection.corners[1], blue, 3);
+            Imgproc.line(input, detection.corners[1], detection.corners[2], blue, 3);
+            Imgproc.line(input, detection.corners[2], detection.corners[3], blue, 3);
+            Imgproc.line(input, detection.corners[3], detection.corners[0], blue, 3);
+            Imgproc.putText(input, String.valueOf(detection.id), detection.center, 0, 2, blue);
         }
 
         return input;

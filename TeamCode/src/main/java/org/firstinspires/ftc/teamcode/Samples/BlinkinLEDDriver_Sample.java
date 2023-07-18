@@ -1,6 +1,5 @@
 package org.firstinspires.ftc.teamcode.Samples;
 
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
@@ -11,7 +10,7 @@ import org.firstinspires.ftc.teamcode.Systems.Gamepad.GamepadButtons.Button;
 
 //@Disabled
 @TeleOp(group = "Samples")
-public class Blinkin_Sample extends OpMode {
+public class BlinkinLEDDriver_Sample extends OpMode {
     Gamepad gamepad; //This example uses a custom gamepad. See Gamepad_Sample.java for more information
 
     Blinkin blinkin;

@@ -6,20 +6,13 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
-import org.firstinspires.ftc.teamcode.Systems.Vision.ColorDetectionPipeline;
-import org.firstinspires.ftc.teamcode.Systems.Vision.ColorDetector;
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
-import org.opencv.core.MatOfPoint;
-import org.opencv.core.Point;
 import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvPipeline;
-
-import java.util.ArrayList;
-import java.util.List;
 
 //@Disabled
 @Config
@@ -30,7 +23,9 @@ public class VisionTuner_ColorBounds extends OpMode {
     OpenCvCamera camera;
     int cameraMonitorViewId;
 
-    public static Scalar lowerBound, upperBound;
+    Scalar lowerBound, upperBound;
+    public static double lb1, lb2, lb3;
+    public static double ub1, ub2, ub3;
 
     @Override
     public void init() {
@@ -52,10 +47,16 @@ public class VisionTuner_ColorBounds extends OpMode {
         });
 
         FtcDashboard.getInstance().startCameraStream(camera, 0);
+
+        lowerBound = new Scalar(lb1, lb2, lb3);
+        upperBound = new Scalar(ub1, ub2, ub3);
     }
 
     @Override
     public void init_loop() {
+        lowerBound.set(new double[]{lb1, lb2, lb3});
+        upperBound.set(new double[]{ub1, ub2, ub3});
+
         pipeline.setLowerBound(lowerBound)
                 .setUpperBound(upperBound);
     }
@@ -67,7 +68,6 @@ public class VisionTuner_ColorBounds extends OpMode {
 class VisionTunerPipeline extends OpenCvPipeline {
     Mat hsv = new Mat();
     Mat mask = new Mat();
-    Mat output = new Mat();
 
     Scalar lowerBound, upperBound;
 
@@ -80,9 +80,8 @@ class VisionTunerPipeline extends OpenCvPipeline {
     public Mat processFrame(Mat input) {
         Imgproc.cvtColor(input, hsv, Imgproc.COLOR_RGB2HSV);
         Core.inRange(hsv, lowerBound, upperBound, mask);
-        Core.bitwise_and(input, input, output, mask);
 
-        return output;
+        return mask;
     }
 
     public VisionTunerPipeline setLowerBound(Scalar lowerBound) {
