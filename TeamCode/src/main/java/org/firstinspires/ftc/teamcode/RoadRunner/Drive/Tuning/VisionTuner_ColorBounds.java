@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.Testing;
+package org.firstinspires.ftc.teamcode.RoadRunner.Drive.Tuning;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.config.Config;
@@ -16,16 +16,14 @@ import org.openftc.easyopencv.OpenCvPipeline;
 
 //@Disabled
 @Config
-@TeleOp(group = "Testing")
+@TeleOp(group = "Tuning")
 public class VisionTuner_ColorBounds extends OpMode {
     VisionTunerPipeline pipeline;
     WebcamName webcamName;
     OpenCvCamera camera;
     int cameraMonitorViewId;
 
-    Scalar lowerBound, upperBound;
-    public static double lb1, lb2, lb3;
-    public static double ub1, ub2, ub3;
+    public static Scalar LOWER_BOUND = new Scalar(0, 0, 0), UPPER_BOUND = new Scalar(0, 0, 0);
 
     @Override
     public void init() {
@@ -33,7 +31,7 @@ public class VisionTuner_ColorBounds extends OpMode {
         webcamName = hardwareMap.get(WebcamName.class, "Webcam");
         camera = OpenCvCameraFactory.getInstance().createWebcam(webcamName, cameraMonitorViewId);
 
-        pipeline = new VisionTunerPipeline(lowerBound, upperBound);
+        pipeline = new VisionTunerPipeline(LOWER_BOUND, UPPER_BOUND);
 
         camera.setPipeline(pipeline);
         camera.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
@@ -46,19 +44,12 @@ public class VisionTuner_ColorBounds extends OpMode {
             public void onError(int errorCode) {}
         });
 
-        FtcDashboard.getInstance().startCameraStream(camera, 0);
-
-        lowerBound = new Scalar(lb1, lb2, lb3);
-        upperBound = new Scalar(ub1, ub2, ub3);
+        FtcDashboard.getInstance().startCameraStream(camera, 30);
     }
 
     @Override
     public void init_loop() {
-        lowerBound.set(new double[]{lb1, lb2, lb3});
-        upperBound.set(new double[]{ub1, ub2, ub3});
-
-        pipeline.setLowerBound(lowerBound)
-                .setUpperBound(upperBound);
+        pipeline.setBounds(LOWER_BOUND, UPPER_BOUND);
     }
 
     @Override
@@ -84,12 +75,8 @@ class VisionTunerPipeline extends OpenCvPipeline {
         return mask;
     }
 
-    public VisionTunerPipeline setLowerBound(Scalar lowerBound) {
+    public VisionTunerPipeline setBounds(Scalar lowerBound, Scalar upperBound) {
         this.lowerBound = lowerBound;
-        return this;
-    }
-
-    public VisionTunerPipeline setUpperBound(Scalar upperBound) {
         this.upperBound = upperBound;
         return this;
     }

@@ -1,10 +1,11 @@
-package org.firstinspires.ftc.teamcode.Testing;
+package org.firstinspires.ftc.teamcode.RoadRunner.Drive.Tuning;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 
 import org.firstinspires.ftc.teamcode.Systems.Motors.MotorLookupTable;
 import org.firstinspires.ftc.teamcode.Systems.Motors.VelocityMotor;
@@ -15,24 +16,21 @@ import org.firstinspires.ftc.teamcode.Systems.Motors.VelocityMotor;
 public class PIDTuner_VelocityMotor extends OpMode {
     private VelocityMotor motor;
 
-    public static double p, i, d, f;
-    public static int targetVelocity = 0;
+    public static PIDFCoefficients PIDF_COEFFICIENTS = new PIDFCoefficients();
+    public static int TARGET_VELOCITY = 0;
 
     @Override
     public void init() {
         motor = new VelocityMotor(hardwareMap, "velocityMotor", MotorLookupTable.GOBILDA_435, false);
-        p = motor.getP();
-        i = motor.getI();
-        d = motor.getD();
-        f = motor.getF();
+        PIDF_COEFFICIENTS = motor.getPIDF();
 
         telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
     }
 
     @Override
     public void loop() {
-        motor.setPIDF(p, i, d, f)
-                .setTargetVelocity(targetVelocity)
+        motor.setPIDF(PIDF_COEFFICIENTS)
+                .setTargetVelocity(TARGET_VELOCITY)
                 .log(telemetry, hardwareMap)
                 .update();
     }
