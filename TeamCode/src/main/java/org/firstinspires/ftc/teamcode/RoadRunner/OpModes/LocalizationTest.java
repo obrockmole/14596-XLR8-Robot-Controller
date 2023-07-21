@@ -17,7 +17,7 @@ import org.firstinspires.ftc.teamcode.RoadRunner.Drive.SampleMecanumDrive;
  */
 
 @Disabled
-@TeleOp(group = "rr")
+@TeleOp(group = "RoadRunner")
 public class LocalizationTest extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {

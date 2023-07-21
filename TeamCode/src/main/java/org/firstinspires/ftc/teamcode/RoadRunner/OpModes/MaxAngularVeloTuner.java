@@ -23,10 +23,10 @@ import java.util.Objects;
  * Further fine tuning of MAX_ANG_VEL may be desired.
  */
 
-@Disabled
+//@Disabled
 
 @Config
-@Autonomous(group = "rr")
+@Autonomous(group = "RoadRunner")
 public class MaxAngularVeloTuner extends LinearOpMode {
     public static double RUNTIME = 4.0;
 

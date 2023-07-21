@@ -23,9 +23,9 @@ import org.firstinspires.ftc.teamcode.RoadRunner.TrajectorySequence.TrajectorySe
  * These coefficients can be tuned live in dashboard.
  */
 
-@Disabled
+//@Disabled
 @Config
-@Autonomous(group = "rr")
+@Autonomous(group = "RoadRunner")
 public class FollowerPIDTuner extends LinearOpMode {
     public static double DISTANCE = 48; // in
 
