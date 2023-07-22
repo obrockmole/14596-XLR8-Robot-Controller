@@ -48,6 +48,7 @@ public class RoadRunner_AutoDriveToAprilTag extends OpMode {
         detectedTag = new AprilTagDetection();
 
         drive = new SampleMecanumDrive(hardwareMap);
+        trajSeq = drive.trajectorySequenceBuilder(new Pose2d(0, 0, 0));
     }
 
     public void start() {
@@ -61,13 +62,7 @@ public class RoadRunner_AutoDriveToAprilTag extends OpMode {
         }
 
         if (targetFound) {
-            double d = detectedTag.ftcPose.range - 10, x, y, heading = -detectedTag.ftcPose.yaw;
-
-            x = d * Math.sin(Math.toDegrees(detectedTag.ftcPose.bearing));
-            y = Math.sqrt(Math.pow(d, 2) - Math.pow(x, 2));
-
-            trajSeq = drive.trajectorySequenceBuilder(new Pose2d(0, 0, 0));
-            trajSeq.lineToLinearHeading(new Pose2d(x, y, heading));
+            setTrajSeq();
         }
 
         drive.followTrajectorySequenceAsync(trajSeq.build());
@@ -85,19 +80,23 @@ public class RoadRunner_AutoDriveToAprilTag extends OpMode {
             }
 
             if (targetFound) {
-                double d = detectedTag.ftcPose.range - 10, x, y, heading = -detectedTag.ftcPose.yaw;
-
-                x = d * Math.sin(Math.toDegrees(detectedTag.ftcPose.bearing));
-                y = Math.sqrt(Math.pow(d, 2) - Math.pow(x, 2));
-
-                if (detectedTag.ftcPose.x < 0)
-                    x *= -1;
-
-                trajSeq = drive.trajectorySequenceBuilder(new Pose2d(0, 0, 0));
-                trajSeq.lineToLinearHeading(new Pose2d(x, y, heading));
+                setTrajSeq();
+                drive.followTrajectorySequenceAsync(trajSeq.build());
             }
         }
 
         drive.update();
+    }
+
+    public void setTrajSeq() {
+        double x, y = detectedTag.ftcPose.y - 10, heading = detectedTag.ftcPose.yaw;
+
+        double m = -1 / Math.tan(Math.toRadians(heading));
+        double b = detectedTag.ftcPose.y - (detectedTag.ftcPose.x * m);
+
+        x = (y - b) / m;
+
+        trajSeq = drive.trajectorySequenceBuilder(new Pose2d(0, 0, 0));
+        trajSeq.lineToLinearHeading(new Pose2d(x, y, heading));
     }
 }
