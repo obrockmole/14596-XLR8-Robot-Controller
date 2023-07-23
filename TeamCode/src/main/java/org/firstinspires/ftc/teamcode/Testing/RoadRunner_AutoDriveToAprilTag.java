@@ -89,12 +89,15 @@ public class RoadRunner_AutoDriveToAprilTag extends OpMode {
     }
 
     public void setTrajSeq() {
-        double x, y = detectedTag.ftcPose.y - 10, heading = detectedTag.ftcPose.yaw;
-
+        double heading = detectedTag.ftcPose.yaw;
         double m = -1 / Math.tan(Math.toRadians(heading));
-        double b = detectedTag.ftcPose.y - (detectedTag.ftcPose.x * m);
 
-        x = (y - b) / m;
+        double x, diff = 10 / Math.sqrt(1 + m * m);
+        if (heading > 0)
+            x = detectedTag.ftcPose.x + diff;
+        else
+            x = detectedTag.ftcPose.x - diff;
+        double y = m * (x - detectedTag.ftcPose.x) + detectedTag.ftcPose.y;
 
         trajSeq = drive.trajectorySequenceBuilder(new Pose2d(0, 0, 0));
         trajSeq.lineToLinearHeading(new Pose2d(x, y, heading));
