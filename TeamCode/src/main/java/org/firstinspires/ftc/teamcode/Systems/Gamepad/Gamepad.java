@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.Systems.Gamepad;
 
+import android.graphics.Color;
+
 import com.qualcomm.robotcore.util.Range;
 
 import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
@@ -357,16 +359,8 @@ public class Gamepad {
         return this;
     }
 
-    public Gamepad ledFlash(double r, double g, double b, int count) {
-        LEDEffect effect = new LEDEffect();
-
-        for (int i = 0; i < count; i++) {
-            effect.addStep(scaleColor(r), scaleColor(g), scaleColor(b), 250)
-                    .addStep(0, 0, 0, 100);
-        }
-
-        runLEDEffect(effect);
-        return this;
+    public Gamepad setLEDColor(int color, int duration) {
+        return setLEDColor(Color.red(color), Color.green(color), Color.blue(color), duration);
     }
 
     public Gamepad ledFlash(double r, double g, double b, int count, int runDuration, int stopDuration) {
@@ -379,6 +373,18 @@ public class Gamepad {
 
         runLEDEffect(effect);
         return this;
+    }
+
+    public Gamepad ledFlash(int color, int count, int runDuration, int stopDuration) {
+        return ledFlash(Color.red(color), Color.green(color), Color.blue(color), count, runDuration, stopDuration);
+    }
+
+    public Gamepad ledFlash(double r, double g, double b, int count) {
+        return ledFlash(r, g, b, count, 250, 100);
+    }
+
+    public Gamepad ledFlash(int color, int count) {
+        return ledFlash(color, count, 250, 100);
     }
 
     public Gamepad runLEDEffect(LEDEffect effect) {
@@ -490,6 +496,10 @@ public class Gamepad {
         public LEDEffect addStep(double r, double g, double b, int duration) {
             steps.add(new Step(r, g, b, duration));
             return this;
+        }
+
+        public LEDEffect addStep(int color, int duration) {
+            return addStep(Color.red(color), Color.green(color), Color.blue(color), duration);
         }
 
         public LEDEffect removeStep(int index) {
