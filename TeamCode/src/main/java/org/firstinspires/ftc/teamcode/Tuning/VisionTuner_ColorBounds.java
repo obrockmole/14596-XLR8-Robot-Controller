@@ -23,7 +23,9 @@ public class VisionTuner_ColorBounds extends OpMode {
     OpenCvCamera camera;
     int cameraMonitorViewId;
 
-    public static Scalar LOWER_BOUND = new Scalar(0, 0, 0), UPPER_BOUND = new Scalar(0, 0, 0);
+    Scalar lowerBound, upperBound;
+    public static double lowH, lowS, lowV;
+    public static double upH, upS, upV;
 
     @Override
     public void init() {
@@ -31,7 +33,7 @@ public class VisionTuner_ColorBounds extends OpMode {
         webcamName = hardwareMap.get(WebcamName.class, "Webcam");
         camera = OpenCvCameraFactory.getInstance().createWebcam(webcamName, cameraMonitorViewId);
 
-        pipeline = new VisionTunerPipeline(LOWER_BOUND, UPPER_BOUND);
+        pipeline = new VisionTunerPipeline(lowerBound, upperBound);
 
         camera.setPipeline(pipeline);
         camera.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
@@ -45,11 +47,17 @@ public class VisionTuner_ColorBounds extends OpMode {
         });
 
         FtcDashboard.getInstance().startCameraStream(camera, 30);
+
+        lowerBound = new Scalar(lowH, lowS, lowV);
+        upperBound = new Scalar(upH, upS, upV);
     }
 
     @Override
     public void init_loop() {
-        pipeline.setBounds(LOWER_BOUND, UPPER_BOUND);
+        lowerBound.set(new double[]{lowH, lowS, lowV});
+        upperBound.set(new double[]{upH, upS, upV});
+
+        pipeline.setBounds(lowerBound, upperBound);
     }
 
     @Override

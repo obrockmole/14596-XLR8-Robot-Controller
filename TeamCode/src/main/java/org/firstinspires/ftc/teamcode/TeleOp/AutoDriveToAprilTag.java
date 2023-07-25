@@ -1,21 +1,19 @@
-package org.firstinspires.ftc.teamcode.Testing;
+package org.firstinspires.ftc.teamcode.TeleOp;
 
 import com.acmerobotics.dashboard.config.Config;
-import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.teamcode.Systems.Gamepad.GamepadButtons;
 import org.firstinspires.ftc.teamcode.Systems.Gamepad.GamepadButtons.Button;
 import org.firstinspires.ftc.teamcode.Systems.Vision.FIRST_AprilTagDetector;
-import org.firstinspires.ftc.teamcode.TeleOp.BaseTele;
 import org.firstinspires.ftc.vision.VisionPortal;
 import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
 
 import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.atomic.AtomicReference;
 
+
+//TODO: MAKE WORK, driver and drivetrain are null object references
 //@Disabled
 @Config
 @TeleOp(group = "Testing")
@@ -28,9 +26,7 @@ public class AutoDriveToAprilTag extends BaseTele {
     public static double STRAFE_GAIN = 0.015;
     public static double TURN_GAIN = 0.01;
 
-    public static int TARGET_TAG = 0;
-
-    private double forward, rightward, rotational;
+    public static int TARGET_TAG = 1;
 
     private boolean targetFound = false, calibrated = false;
 
@@ -71,6 +67,7 @@ public class AutoDriveToAprilTag extends BaseTele {
         }
         telemetry.addLine();
 
+        double forward, rightward, rotational;
         if (driver.isDown(Button.A) && targetFound) {
             double distanceError = (detectedTag.ftcPose.range - TARGET_DISTANCE);
             double yawError = detectedTag.ftcPose.yaw;
@@ -85,7 +82,7 @@ public class AutoDriveToAprilTag extends BaseTele {
             rotational = driver.getStickX(GamepadButtons.Stick.RIGHT_STICK);
         }
 
-        drivetrain.standardDrive(driver.getStickY(GamepadButtons.Stick.LEFT_STICK), driver.getStickX(GamepadButtons.Stick.LEFT_STICK), driver.getStickX(GamepadButtons.Stick.RIGHT_STICK))
+        drivetrain.standardDrive(forward, rightward, rotational)
                 .update();
     }
 }

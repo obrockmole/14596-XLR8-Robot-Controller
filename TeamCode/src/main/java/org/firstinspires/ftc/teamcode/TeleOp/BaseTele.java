@@ -9,8 +9,9 @@ import org.firstinspires.ftc.teamcode.Systems.Motors.Motor;
 import org.firstinspires.ftc.teamcode.Systems.Motors.MotorLookupTable;
 
 public class BaseTele extends OpMode {
-    protected Drivetrain drivetrain;
-    protected Gamepad driver, manipulator;
+    Drivetrain drivetrain;
+    Gamepad driver;
+    Gamepad manipulator;
 
     //@Override
     public void init() {
