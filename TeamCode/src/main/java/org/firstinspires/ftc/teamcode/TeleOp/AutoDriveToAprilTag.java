@@ -32,16 +32,8 @@ public class AutoDriveToAprilTag extends BaseTele {
 
     public void init() {
         aprilTagDetector = new FIRST_AprilTagDetector(hardwareMap, "Webcam");
-        aprilTagDetector.initCamera();
-
-        if (aprilTagDetector.getVisionPortal().getCameraState() != VisionPortal.CameraState.STREAMING) {
-            telemetry.addData("Camera", "Not streaming");
-            telemetry.update();
-            while (!calibrated && aprilTagDetector.getVisionPortal().getCameraState() != VisionPortal.CameraState.STREAMING) {
-                aprilTagDetector.sleep(20);
-            }
-            calibrated = true;
-        }
+        //TODO: Get proper calibration values for the camera
+        aprilTagDetector.initCamera(50d, 50d, 50d, 50d);
 
         detectedTag = new AprilTagDetection();
     }
@@ -76,6 +68,7 @@ public class AutoDriveToAprilTag extends BaseTele {
             forward = Range.clip(distanceError * SPEED_GAIN, -0.5, 0.5);
             rightward = Range.clip(-yawError * STRAFE_GAIN, -0.5, 0.5);
             rotational = Range.clip(headingError * TURN_GAIN, -0.5, 0.5);
+
         } else {
             forward = driver.getStickY(GamepadButtons.Stick.LEFT_STICK);
             rightward = driver.getStickX(GamepadButtons.Stick.LEFT_STICK);

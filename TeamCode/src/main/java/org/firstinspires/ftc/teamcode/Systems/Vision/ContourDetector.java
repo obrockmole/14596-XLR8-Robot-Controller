@@ -35,6 +35,7 @@ public class ContourDetector {
         camera.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
             @Override
             public void onOpened() {
+                //TODO: Get proper resolution values for the camera
                 camera.startStreaming(640, 480);
             }
 

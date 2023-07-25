@@ -1,47 +1,37 @@
-package org.firstinspires.ftc.teamcode.Testing;
+package org.firstinspires.ftc.teamcode.Samples;
 
-import com.acmerobotics.dashboard.config.Config;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
+import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.util.Range;
 
-import org.firstinspires.ftc.teamcode.Systems.Gamepad.GamepadButtons;
-import org.firstinspires.ftc.teamcode.Systems.Gamepad.GamepadButtons.Button;
+import org.firstinspires.ftc.teamcode.Systems.Vision.AprilTagDetector;
 import org.firstinspires.ftc.teamcode.Systems.Vision.FIRST_AprilTagDetector;
-import org.firstinspires.ftc.teamcode.TeleOp.BaseTele;
 import org.firstinspires.ftc.vision.VisionPortal;
 import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
 
 import java.util.ArrayList;
 
-//@Disabled
-@Config
-@TeleOp(group = "Testing")
-public class FIRST_AprilTagDetectionTest extends BaseTele {
-    private FIRST_AprilTagDetector aprilTagDetector;
-    private ArrayList<AprilTagDetection> detectedTags;
+@Disabled
+@TeleOp(group = "Samples")
+public class VisionFIRSTAprilTagDetection_Sample extends OpMode {
+    FIRST_AprilTagDetector aprilTagDetector;
+    ArrayList<AprilTagDetection> detectedTags;
 
-    private boolean calibrated = false;
-
+    @Override
     public void init() {
         aprilTagDetector = new FIRST_AprilTagDetector(hardwareMap, "Webcam");
-        aprilTagDetector.initCamera();
-
-        if (aprilTagDetector.getVisionPortal().getCameraState() != VisionPortal.CameraState.STREAMING) {
-            telemetry.addData("Camera", "Not streaming");
-            telemetry.update();
-            while (!calibrated && aprilTagDetector.getVisionPortal().getCameraState() != VisionPortal.CameraState.STREAMING) {
-                aprilTagDetector.sleep(20);
-            }
-            calibrated = true;
-        }
+        //TODO: Get proper calibration values for the camera
+        aprilTagDetector.initCamera(50d, 50d, 50d, 50d); //Initialize the camera with the focal length and center of the camera
 
         detectedTags = new ArrayList<>();
     }
 
+    @Override
     public void loop() {
-        detectedTags = aprilTagDetector.getDetections();
-        telemetry.addData("Tags Detected", detectedTags.size());
+        detectedTags = aprilTagDetector.getDetections(); //Get the list of detected tags
+        telemetry.addData("Tags Detected", detectedTags.size()); //Log the number of detected tags
 
+        //Log the data for all detected tags
         for (AprilTagDetection detection : detectedTags) {
             telemetry.addData("ID", detection.id);
             if (detection.metadata != null) {

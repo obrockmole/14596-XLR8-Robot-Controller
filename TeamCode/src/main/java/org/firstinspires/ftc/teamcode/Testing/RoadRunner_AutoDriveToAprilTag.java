@@ -28,22 +28,14 @@ public class RoadRunner_AutoDriveToAprilTag extends OpMode {
     private FIRST_AprilTagDetector aprilTagDetector;
     private AprilTagDetection detectedTag;
 
-    public static int TARGET_TAG = 0;
+    public static int TARGET_TAG = 1;
 
-    private boolean targetFound = false, calibrated = false;
+    private boolean targetFound = false;
 
     public void init() {
         aprilTagDetector = new FIRST_AprilTagDetector(hardwareMap, "Webcam");
-        aprilTagDetector.initCamera();
-
-        if (aprilTagDetector.getVisionPortal().getCameraState() != VisionPortal.CameraState.STREAMING) {
-            telemetry.addData("Camera", "Not streaming");
-            telemetry.update();
-            while (!calibrated && aprilTagDetector.getVisionPortal().getCameraState() != VisionPortal.CameraState.STREAMING) {
-                aprilTagDetector.sleep(20);
-            }
-            calibrated = true;
-        }
+        //TODO: Get proper calibration values for the camera
+        aprilTagDetector.initCamera(50d, 50d, 50d, 50d);
 
         detectedTag = new AprilTagDetection();
 

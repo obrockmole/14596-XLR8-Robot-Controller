@@ -18,6 +18,8 @@ public class FIRST_AprilTagDetector {
     private VisionPortal visionPortal;
     private AprilTagProcessor processor;
 
+    private double fx, fy, cx, cy;
+
     public FIRST_AprilTagDetector(HardwareMap hardwareMap, String cameraName) {
         this(hardwareMap.get(WebcamName.class, cameraName));
     }
@@ -26,8 +28,15 @@ public class FIRST_AprilTagDetector {
         this.webcam = webcam;
     }
 
-    public FIRST_AprilTagDetector initCamera() {
-        processor = new AprilTagProcessor.Builder().build();
+    public FIRST_AprilTagDetector initCamera(double fx, double fy, double cx, double cy) {
+        this.fx = fx;
+        this.fy = fy;
+        this.cx = cx;
+        this.cy = cy;
+
+        processor = new AprilTagProcessor.Builder()
+                .setLensIntrinsics(fx, fy, cx, cy)
+                .build();
 
         visionPortal = new VisionPortal.Builder()
                 .setCamera(webcam)
@@ -35,32 +44,6 @@ public class FIRST_AprilTagDetector {
                 .build();
 
         return this;
-    }
-
-    public FIRST_AprilTagDetector setManualExposure(Telemetry telemetry, int exposureTime, int gain) {
-        if (visionPortal == null) return this;
-
-        ExposureControl exposureControl = visionPortal.getCameraControl(ExposureControl.class);
-        if (exposureControl.getMode() != ExposureControl.Mode.Manual) {
-            exposureControl.setMode(ExposureControl.Mode.Manual);
-            sleep(50);
-        }
-        exposureControl.setExposure(exposureTime, TimeUnit.MILLISECONDS);
-        sleep(20);
-
-        GainControl gainControl = visionPortal.getCameraControl(GainControl.class);
-        gainControl.setGain(gain);
-        sleep(20);
-
-        return this;
-    }
-
-    public void sleep(long ms) {
-        try {
-            Thread.sleep(ms);
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-        }
     }
 
     public WebcamName getWebcam() {
@@ -104,7 +87,62 @@ public class FIRST_AprilTagDetector {
         return this;
     }
 
+    public double getFX() {
+        return fx;
+    }
+
+    public FIRST_AprilTagDetector setFX(double fx) {
+        this.fx = fx;
+        return setLensIntrinsics(fx, fy, cx, cy);
+    }
+
+    public double getFY() {
+        return fy;
+    }
+
+    public FIRST_AprilTagDetector setFY(double fy) {
+        this.fy = fy;
+        return setLensIntrinsics(fx, fy, cx, cy);
+    }
+
+    public double getCX() {
+        return cx;
+    }
+
+    public FIRST_AprilTagDetector setCX(double cx) {
+        this.cx = cx;
+        return setLensIntrinsics(fx, fy, cx, cy);
+    }
+
+    public double getCY() {
+        return cy;
+    }
+
+    public FIRST_AprilTagDetector setCY(double cy) {
+        this.cy = cy;
+        return setLensIntrinsics(fx, fy, cx, cy);
+    }
+
+    public FIRST_AprilTagDetector setLensIntrinsics(double fx, double fy, double cx, double cy) {
+        this.fx = fx;
+        this.fy = fy;
+        this.cx = cx;
+        this.cy = cy;
+
+        processor = new AprilTagProcessor.Builder()
+                .setLensIntrinsics(fx, fy, cx, cy)
+                .build();
+
+        setProcessor(processor);
+
+        return this;
+    }
+
     public ArrayList<AprilTagDetection> getDetections() {
         return processor.getDetections();
+    }
+
+    public ArrayList<AprilTagDetection> getFreshDetections() {
+        return processor.getFreshDetections();
     }
 }

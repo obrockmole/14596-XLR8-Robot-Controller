@@ -24,12 +24,14 @@ public class AprilTagDetector {
     }
 
     public void start() {
+        //TODO: Get proper calibration values for the camera
         pipeline = new AprilTagDetectionPipeline(50d, 50d, 50d, 50d, 50d);
 
         camera.setPipeline(pipeline);
         camera.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
             @Override
             public void onOpened() {
+                //TODO: Get proper resolution values for the camera
                 camera.startStreaming(640, 480);
             }
 
