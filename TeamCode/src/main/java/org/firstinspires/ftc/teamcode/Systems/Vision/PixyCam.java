@@ -3,8 +3,12 @@ package org.firstinspires.ftc.teamcode.Systems.Vision;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.I2cAddr;
 import com.qualcomm.robotcore.hardware.I2cDeviceSynch;
+import com.qualcomm.robotcore.hardware.I2cDeviceSynchDevice;
+import com.qualcomm.robotcore.hardware.configuration.annotations.DeviceProperties;
+import com.qualcomm.robotcore.hardware.configuration.annotations.I2cDeviceType;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.teamcode.RoadRunner.OpModes.ManualFeedforwardTuner;
 
 /*
         Bytes    16-bit word    Description
@@ -18,45 +22,103 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
         12, 13   y              height of object
 */
 
-public class PixyCam {
-    I2cDeviceSynch pixy;
+@I2cDeviceType
+@DeviceProperties(name = "Pixy Cam v2", xmlTag = "PixyCam2")
+public class PixyCam extends I2cDeviceSynchDevice<I2cDeviceSynch> implements Pixy {
+    public PixyCam(I2cDeviceSynch deviceClient) {
+        super(deviceClient, true);
 
-    public PixyCam(I2cDeviceSynch pixy) {
-        this.pixy = pixy;
+        this.deviceClient.setI2cAddress(I2cAddr.create7bit(0x54));
+        this.deviceClient.setReadWindow(new I2cDeviceSynch.ReadWindow(1, 26, I2cDeviceSynch.ReadMode.REPEAT));
+
+        super.registerArmingStateCallback(false);
+        this.deviceClient.engage();
     }
 
-    public PixyCam(HardwareMap hardwareMap, String name) {
-        pixy = hardwareMap.get(I2cDeviceSynch.class, name);
+    @Override
+    public Manufacturer getManufacturer() {
+        return Manufacturer.Other;
     }
 
-    public void initialize() {
-        pixy.setI2cAddress(I2cAddr.create7bit(0x54));
-
-        I2cDeviceSynch.ReadWindow readWindow = new I2cDeviceSynch.ReadWindow(1, 26, I2cDeviceSynch.ReadMode.REPEAT);
-        pixy.setReadWindow(readWindow);
+    @Override
+    public String getDeviceName() {
+        return "Pixy Cam v2";
     }
 
-    public void engage() {
-        pixy.engage();
+    @Override
+    protected synchronized boolean doInitialize() {
+        return true;
     }
 
-    public void update() {}
+    @Override
+    public byte[] readData() {
+        return new byte[] {this.deviceClient.read8(0), this.deviceClient.read8(1), this.deviceClient.read8(2), this.deviceClient.read8(3), this.deviceClient.read8(4), this.deviceClient.read8(5), this.deviceClient.read8(6), this.deviceClient.read8(7), this.deviceClient.read8(8), this.deviceClient.read8(9), this.deviceClient.read8(10), this.deviceClient.read8(11), this.deviceClient.read8(12), this.deviceClient.read8(13)};
+    }
 
-    public void log(Telemetry telemetry) {
-        telemetry.addData("Byte 0", pixy.read8(0));
-        telemetry.addData("Byte 1", pixy.read8(1));
-        telemetry.addData("Byte 2", pixy.read8(2));
-        telemetry.addData("Byte 3", pixy.read8(3));
-        telemetry.addData("Byte 4", pixy.read8(4));
-        telemetry.addData("Byte 5", pixy.read8(5));
-        telemetry.addData("Byte 6", pixy.read8(6));
-        telemetry.addData("Byte 7", pixy.read8(7));
-        telemetry.addData("Byte 8", pixy.read8(8));
-        telemetry.addData("Byte 9", pixy.read8(9));
-        telemetry.addData("Byte 10", pixy.read8(10));
-        telemetry.addData("Byte 11", pixy.read8(11));
-        telemetry.addData("Byte 12", pixy.read8(12));
-        telemetry.addData("Byte 13", pixy.read8(13));
-        telemetry.update();
+    @Override
+    public void disable() {}
+
+    @Override
+    public String getDeviceType() {
+        return "PixyCam";
+    }
+
+    public enum Register {
+        REQ_GET_RESOLUTION((byte)12),
+        REQ_GET_VERSION((byte)14),
+        REQ_SET_CAMERA_BRIGHTNESS((byte)16),
+        REQ_SET_SERVOS((byte)18),
+        REQ_SET_LED((byte)20),
+        REQ_SET_LABEL((byte)22),
+        REQ_GET_FPS((byte)24),
+
+        REQ_GET_BLOCKS((byte)32),
+
+        REQ_GET_MAIN_FEATURES((byte)48),
+        REQ_SET_MODE((byte)54),
+        REQ_SET_VECTOR((byte)56),
+        REQ_SET_NEXT_TURN((byte)58),
+        REQ_SET_DEFAULT_TURN((byte)60),
+        REQ_REVERSE_VECTOR((byte)62),
+
+        REQ_GET_RGB((byte)112),
+
+        RES_RESULT((byte)1),
+        RES_RESOLUTION((byte)13),
+        RES_VERSION((byte)15),
+
+        RES_BLOCKS((byte)33),
+
+        RES_MAIN_FEATURES((byte)49),
+
+        FEATURE_TYPE_MAIN((byte)0x00),
+        FEATURE_TYPE_ALL((byte)0x01),
+
+        FEATURES_VECTOR((byte)1),
+        FEATURES_INTERSECTION((byte)(1 << 1)),
+        FEATURES_BARCODE((byte)(1 << 2)),
+        FEATURES_ALL((byte)((byte)1 + (byte)(1 << 1) + (byte)(1 << 2))),
+
+        BLOCKS_SIG_1((byte)1),
+        BLOCKS_SIG_2((byte)(1 << 1)),
+        BLOCKS_SIG_3((byte)(1 << 2)),
+        BLOCKS_SIG_4((byte)(1 << 3)),
+        BLOCKS_SIG_5((byte)(1 << 4)),
+        BLOCKS_SIG_6((byte)(1 << 5)),
+        BLOCKS_SIG_7((byte)(1 << 6)),
+        BLOCKS_SIG_8((byte)(1 << 7)),
+        BLOCKS_ALL_SIG((byte)255),
+        MAX_BLOCKS_ALL((byte)255),
+
+        LINE_FLAG_INVALID((byte)0x02),
+        LINE_FLAG_INTERSECTION_PRESENT((byte)0x04),
+
+        SAT_FLAG_SATURATE((byte)0x01);
+
+        public int bVal;
+
+        Register(int bVal) {
+            this.bVal = bVal;
+        }
     }
 }
