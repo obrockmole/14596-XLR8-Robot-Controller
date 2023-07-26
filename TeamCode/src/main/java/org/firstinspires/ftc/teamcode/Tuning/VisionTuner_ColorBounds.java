@@ -6,8 +6,12 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
+import org.firstinspires.ftc.teamcode.Systems.Vision.ContourDetectionPipeline;
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
+import org.opencv.core.MatOfPoint;
+import org.opencv.core.Point;
+import org.opencv.core.Rect;
 import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
 import org.openftc.easyopencv.OpenCvCamera;
@@ -23,9 +27,8 @@ public class VisionTuner_ColorBounds extends OpMode {
     OpenCvCamera camera;
     int cameraMonitorViewId;
 
-    Scalar lowerBound, upperBound;
-    public static double lowH, lowS, lowV;
-    public static double upH, upS, upV;
+    public static HSV weakLowHSV = new HSV(0, 0, 0), weakHighHSV = new HSV(0, 0, 0);
+    public static HSV strictLowHSV = new HSV(0, 0, 0), strictHighHSV = new HSV(0, 0, 0);
 
     @Override
     public void init() {
@@ -33,12 +36,13 @@ public class VisionTuner_ColorBounds extends OpMode {
         webcamName = hardwareMap.get(WebcamName.class, "Webcam");
         camera = OpenCvCameraFactory.getInstance().createWebcam(webcamName, cameraMonitorViewId);
 
-        pipeline = new VisionTunerPipeline(lowerBound, upperBound);
+        pipeline = new VisionTunerPipeline(weakLowHSV.toScalar(), weakHighHSV.toScalar(), strictLowHSV.toScalar(), strictHighHSV.toScalar());
 
         camera.setPipeline(pipeline);
         camera.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
             @Override
             public void onOpened() {
+                //TODO: Get proper resolution values for the camera
                 camera.startStreaming(640, 480);
             }
 
@@ -47,17 +51,11 @@ public class VisionTuner_ColorBounds extends OpMode {
         });
 
         FtcDashboard.getInstance().startCameraStream(camera, 30);
-
-        lowerBound = new Scalar(lowH, lowS, lowV);
-        upperBound = new Scalar(upH, upS, upV);
     }
 
     @Override
     public void init_loop() {
-        lowerBound.set(new double[]{lowH, lowS, lowV});
-        upperBound.set(new double[]{upH, upS, upV});
-
-        pipeline.setBounds(lowerBound, upperBound);
+        pipeline.setHSV(weakLowHSV.toScalar(), weakHighHSV.toScalar(), strictLowHSV.toScalar(), strictHighHSV.toScalar());
     }
 
     @Override
@@ -66,26 +64,61 @@ public class VisionTuner_ColorBounds extends OpMode {
 
 class VisionTunerPipeline extends OpenCvPipeline {
     Mat hsv = new Mat();
-    Mat mask = new Mat();
+    Mat lowMask = new Mat();
+    Mat lowColoredMask = new Mat();
+    Mat scaledMask = new Mat();
+    Mat strictMask = new Mat();
+    Mat strictColoredMask = new Mat();
 
-    Scalar lowerBound, upperBound;
+    Scalar weakLowHSV, weakHighHSV, strictLowHSV, strictHighHSV;
 
-    public VisionTunerPipeline(Scalar lowerBound, Scalar upperBound) {
-        this.lowerBound = lowerBound;
-        this.upperBound = upperBound;
+    public VisionTunerPipeline(Scalar weakLowHSV, Scalar weakHighHSV, Scalar strictLowHSV, Scalar strictHighHSV) {
+        this.weakLowHSV = weakLowHSV;
+        this.weakHighHSV = weakHighHSV;
+        this.strictLowHSV = strictLowHSV;
+        this.strictHighHSV = strictHighHSV;
     }
 
     @Override
     public Mat processFrame(Mat input) {
         Imgproc.cvtColor(input, hsv, Imgproc.COLOR_RGB2HSV);
-        Core.inRange(hsv, lowerBound, upperBound, mask);
 
-        return mask;
+        Core.inRange(hsv, weakLowHSV, weakHighHSV, lowMask);
+
+        Core.bitwise_and(hsv, hsv, lowColoredMask, lowMask);
+
+        Scalar average = Core.mean(lowColoredMask, lowMask);
+
+        lowColoredMask.convertTo(scaledMask, -1, 150 / average.val[1], 0);
+
+        Core.inRange(scaledMask, strictLowHSV, strictHighHSV, strictMask);
+
+        Core.bitwise_and(hsv, hsv, strictColoredMask, strictMask);
+        Imgproc.cvtColor(strictColoredMask, strictColoredMask, Imgproc.COLOR_HSV2RGB);
+
+        return strictColoredMask;
     }
 
-    public VisionTunerPipeline setBounds(Scalar lowerBound, Scalar upperBound) {
-        this.lowerBound = lowerBound;
-        this.upperBound = upperBound;
-        return this;
+    public void setHSV(Scalar weakLowHSV, Scalar weakHighHSV, Scalar strictLowHSV, Scalar strictHighHSV) {
+        this.weakLowHSV = weakLowHSV;
+        this.weakHighHSV = weakHighHSV;
+        this.strictLowHSV = strictLowHSV;
+        this.strictHighHSV = strictHighHSV;
+    }
+}
+
+class HSV {
+    public double h;
+    public double s;
+    public double v;
+
+    public HSV(double h, double s, double v) {
+        this.h = h;
+        this.s = s;
+        this.v = v;
+    }
+
+    public Scalar toScalar() {
+        return new Scalar(h, s, v);
     }
 }

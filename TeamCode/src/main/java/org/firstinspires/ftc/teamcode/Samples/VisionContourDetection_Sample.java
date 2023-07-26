@@ -15,9 +15,9 @@ public class VisionContourDetection_Sample extends OpMode {
     @Override
     public void init() {
         detector = new ContourDetector(hardwareMap, "Webcam"); //Initialize the detector
-        detector.start(new Scalar(170, 110, 0), new Scalar(179, 255, 255)); //Start the detector.
+        detector.start(new Scalar(0, 0, 0), new Scalar(179, 255, 255), new Scalar(80, 100, 100), new Scalar(160, 200, 200)); //Start the detector.
         /*
-            Note: The two Scalar parameters are the lower and upper bounds of the HSV color range to detect.
+            Note: The four Scalar parameters are the lower and upper bounds of the HSV color range to detect for both the first (weak) and second (strict) detections.
             OpenCV HSV ranges are 0-179 for H, 0-255 for S, and 0-255 for V.
             For RGB values, use detector.startRGB(new Scalar(R, G, B), new Scalar(R, G, B));
 

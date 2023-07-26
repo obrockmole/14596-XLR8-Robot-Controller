@@ -7,10 +7,13 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.opencv.core.Mat;
+import org.opencv.core.MatOfPoint;
 import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
+
+import java.util.ArrayList;
 
 public class ContourDetector {
     private ContourDetectionPipeline pipeline;
@@ -28,8 +31,8 @@ public class ContourDetector {
         camera = OpenCvCameraFactory.getInstance().createWebcam(webcamName, cameraMonitorViewId);
     }
 
-    public void start(Scalar lowerBound, Scalar upperBound) {
-        pipeline = new ContourDetectionPipeline(lowerBound, upperBound);
+    public void start(Scalar weakLowHSV, Scalar weakHighHSV, Scalar strictLowHSV, Scalar strictHighHSV) {
+        pipeline = new ContourDetectionPipeline(weakLowHSV, weakHighHSV, strictLowHSV, strictHighHSV);
 
         camera.setPipeline(pipeline);
         camera.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
@@ -44,37 +47,59 @@ public class ContourDetector {
         });
     }
 
-    public void startRGB(Scalar lowerBound, Scalar upperBound) {
-        Scalar lowerBoundBGR = new Scalar(lowerBound.val[2], lowerBound.val[1], lowerBound.val[0]);
-        Scalar upperBoundBGR = new Scalar(upperBound.val[2], upperBound.val[1], upperBound.val[0]);
-
-        Mat bgrLowerBoundMat = new Mat(1, 1, CV_8UC3, lowerBoundBGR), bgrUpperBoundMat = new Mat(1, 1, CV_8UC3, upperBoundBGR);
-        Mat hsvLowerBoundMat = new Mat(), hsvUpperBoundMat = new Mat();
-
-        Imgproc.cvtColor(bgrLowerBoundMat, hsvLowerBoundMat, COLOR_BGR2HSV);
-        Imgproc.cvtColor(bgrUpperBoundMat, hsvUpperBoundMat, COLOR_BGR2HSV);
-
-        Scalar hsvLowerBound = new Scalar(hsvLowerBoundMat.get(0, 0)), hsvUpperBound = new Scalar(hsvUpperBoundMat.get(0, 0));
-
-        start(hsvLowerBound, hsvUpperBound);
+    public Scalar getWeakLowHSV() {
+        return pipeline.getWeakLowHSV();
     }
 
-    public Scalar getLowerBound() {
-        return pipeline.getLowerBound();
-    }
-
-    public ContourDetector setLowerBound(Scalar lowerBound) {
-        pipeline.setLowerBound(lowerBound);
+    public ContourDetector setWeakLowHSV(Scalar weakLowHSV) {
+        pipeline.setWeakLowHSV(weakLowHSV);
         return this;
     }
 
-    public Scalar getUpperBound() {
-        return pipeline.getLowerBound();
+    public Scalar getWeakHighHSV() {
+        return pipeline.getWeakHighHSV();
     }
 
-    public ContourDetector setUpperBound(Scalar upperBound) {
-        pipeline.setUpperBound(upperBound);
+    public ContourDetector setWeakHighHSV(Scalar weakHighHSV) {
+        pipeline.setWeakHighHSV(weakHighHSV);
         return this;
+    }
+
+    public Scalar getStrictLowHSV() {
+        return pipeline.getStrictLowHSV();
+    }
+
+    public ContourDetector setStrictLowHSV(Scalar strictLowHSV) {
+        pipeline.setStrictLowHSV(strictLowHSV);
+        return this;
+    }
+
+    public Scalar getStrictHighHSV() {
+        return pipeline.getStrictHighHSV();
+    }
+
+    public ContourDetector setStrictHighHSV(Scalar strictHighHSV) {
+        pipeline.setStrictHighHSV(strictHighHSV);
+        return this;
+    }
+
+    public ContourDetector setWeakHSV(Scalar weakLowHSV, Scalar weakHighHSV) {
+        pipeline.setWeakHSV(weakLowHSV, weakHighHSV);
+        return this;
+    }
+
+    public ContourDetector setStrictHSV(Scalar strictLowHSV, Scalar strictHighHSV) {
+        pipeline.setStrictHSV(strictLowHSV, strictHighHSV);
+        return this;
+    }
+
+    public ContourDetector setHSV(Scalar weakLowHSV, Scalar weakHighHSV, Scalar strictLowHSV, Scalar strictHighHSV) {
+        pipeline.setHSV(weakLowHSV, weakHighHSV, strictLowHSV, strictHighHSV);
+        return this;
+    }
+
+    public ArrayList<MatOfPoint> getContours() {
+        return pipeline.getContours();
     }
 
     public ContourDetectionPipeline getPipeline() {
