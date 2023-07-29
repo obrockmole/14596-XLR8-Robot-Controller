@@ -16,9 +16,9 @@ import java.util.HashMap;
 public class Gamepad {
     com.qualcomm.robotcore.hardware.Gamepad gamepad;
 
-    private HashMap<Button, ButtonHandler> gamepadButtons;
-    private HashMap<Trigger, TriggerHandler> gamepadTriggers;
-    private HashMap<TouchpadFinger, TouchpadHandler> gamepadTouchpad;
+    private final HashMap<Button, ButtonHandler> gamepadButtons;
+    private final HashMap<Trigger, TriggerHandler> gamepadTriggers;
+    private final HashMap<TouchpadFinger, TouchpadHandler> gamepadTouchpad;
 
     public Gamepad(com.qualcomm.robotcore.hardware.Gamepad gamepad) {
         this.gamepad = gamepad;
@@ -350,20 +350,16 @@ public class Gamepad {
         return gamepad.isRumbling();
     }
 
-    private double scaleColor(double color) {
+    private double scaleColor(int color) {
         return Math.round(Range.scale(Range.clip(color, 0, 255), 0, 255, 0, 1));
     }
 
-    public Gamepad setLEDColor(double r, double g, double b, int duration) {
+    public Gamepad setLEDColor(int r, int g, int b, int duration) {
         gamepad.setLedColor(scaleColor(r), scaleColor(g), scaleColor(b), duration);
         return this;
     }
 
-    public Gamepad setLEDColor(int color, int duration) {
-        return setLEDColor(Color.red(color), Color.green(color), Color.blue(color), duration);
-    }
-
-    public Gamepad ledFlash(double r, double g, double b, int count, int runDuration, int stopDuration) {
+    public Gamepad ledFlash(int r, int g, int b, int count, int runDuration, int stopDuration) {
         LEDEffect effect = new LEDEffect();
 
         for (int i = 0; i < count; i++) {
@@ -375,16 +371,8 @@ public class Gamepad {
         return this;
     }
 
-    public Gamepad ledFlash(int color, int count, int runDuration, int stopDuration) {
-        return ledFlash(Color.red(color), Color.green(color), Color.blue(color), count, runDuration, stopDuration);
-    }
-
-    public Gamepad ledFlash(double r, double g, double b, int count) {
+    public Gamepad ledFlash(int r, int g, int b, int count) {
         return ledFlash(r, g, b, count, 250, 100);
-    }
-
-    public Gamepad ledFlash(int color, int count) {
-        return ledFlash(color, count, 250, 100);
     }
 
     public Gamepad runLEDEffect(LEDEffect effect) {
@@ -450,8 +438,8 @@ public class Gamepad {
         }
 
         public static class Step {
-            public double motor1, motor2;
-            public int duration;
+            private final double motor1, motor2;
+            private final int duration;
 
             public Step(double motor1, double motor2, int duration) {
                 this.motor1 = motor1;
@@ -523,8 +511,8 @@ public class Gamepad {
         }
 
         public static class Step {
-            public double r, g, b;
-            public int duration;
+            private final double r, g, b;
+            private final int duration;
 
             public Step(double r, double g, double b, int duration) {
                 this.r = r;
