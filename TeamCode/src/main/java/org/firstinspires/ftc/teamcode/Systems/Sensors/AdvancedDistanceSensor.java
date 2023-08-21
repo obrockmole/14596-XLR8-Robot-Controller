@@ -5,14 +5,19 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.Systems.DataFilters.KalmanFilter;
+import org.firstinspires.ftc.teamcode.Systems.DataFilters.MovingAverageFilter;
+import org.firstinspires.ftc.teamcode.Systems.DataFilters.MultiVariableKalmanFilter;
 
 public class AdvancedDistanceSensor {
     private com.qualcomm.robotcore.hardware.DistanceSensor sensor;
-    private KalmanFilter filter;
 
-    public AdvancedDistanceSensor(HardwareMap hardwareMap, String name, KalmanFilter filter) {
+    private MovingAverageFilter movingAverageFilter;
+    private KalmanFilter kalmanFilter;
+
+    public AdvancedDistanceSensor(HardwareMap hardwareMap, String name, MovingAverageFilter movingAverageFilter, KalmanFilter kalmanFilter) {
         this.sensor = hardwareMap.get(com.qualcomm.robotcore.hardware.DistanceSensor.class, name);
-        this.filter = filter;
+        this.movingAverageFilter = movingAverageFilter;
+        this.kalmanFilter = kalmanFilter;
     }
 
     public double getDistance() {
@@ -26,12 +31,15 @@ public class AdvancedDistanceSensor {
     public AdvancedDistanceSensor log(Telemetry telemetry, HardwareMap hardwareMap) {
         telemetry.addData("Sensor", hardwareMap.getNamesOf(sensor).toArray()[0]);
         telemetry.addData("Measured Distance (cm)", getDistance());
-        telemetry.addData("Filtered Distance (cm)", filter.getStateEstimate());
+        telemetry.addData("MAF Distance (cm)", movingAverageFilter.getStateEstimate());
+        telemetry.addData("KF Distance (cm)", kalmanFilter.getStateEstimate());
         return this;
     }
 
     public AdvancedDistanceSensor update() {
-        filter.setMeasurement(getDistance())
+        movingAverageFilter.update(getDistance());
+
+        kalmanFilter.setMeasurement(getDistance())
                 .update();
                 //.updateSimplified();
 
