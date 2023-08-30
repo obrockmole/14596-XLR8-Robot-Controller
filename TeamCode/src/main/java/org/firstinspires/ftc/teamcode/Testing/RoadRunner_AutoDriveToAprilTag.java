@@ -78,6 +78,8 @@ public class RoadRunner_AutoDriveToAprilTag extends OpMode {
         }
 
         drive.update();
+        if (!drive.isBusy())
+            targetFound = false;
     }
 
     public void setTrajSeq() {
