@@ -2,13 +2,15 @@ package org.firstinspires.ftc.teamcode.Systems;
 
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.hardware.HardwareMap;
-import com.qualcomm.robotcore.hardware.IMU;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.Systems.Motors.Motor;
 import org.firstinspires.ftc.teamcode.Systems.Odometry.Odometry;
 import org.firstinspires.ftc.teamcode.Systems.Odometry.OdometryPod;
+import org.firstinspires.ftc.teamcode.Systems.Sensors.BatteryVoltageSensor;
+import org.firstinspires.ftc.teamcode.Systems.Sensors.IMU;
+import com.qualcomm.robotcore.hardware.IMU.Parameters;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -17,7 +19,7 @@ public class NewDrivetrain {
     private Motor frontLeft, backLeft, frontRight, backRight;
     private Odometry odometry;
     private IMU imu;
-    private IMU.Parameters imuParameters;
+    private BatteryVoltageSensor batteryVoltageSensor;
 
     int speedScale = 1;
 
@@ -32,8 +34,6 @@ public class NewDrivetrain {
         this.odometry = odometry;
 
         this.imu = imu;
-        imuParameters = new IMU.Parameters(new RevHubOrientationOnRobot(RevHubOrientationOnRobot.LogoFacingDirection.UP, RevHubOrientationOnRobot.UsbFacingDirection.FORWARD));
-        this.imu.initialize(imuParameters);
     }
 
     public Motor getFrontLeft() {
@@ -124,7 +124,7 @@ public class NewDrivetrain {
     }
 
     public NewDrivetrain fieldCentricDrive(double forward, double rightward, double rotational) {
-        double heading = imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);
+        double heading = imu.getYawRadians();
         double fixedForward = forward * Math.cos(-heading) - rightward * Math.sin(-heading);
         double fixedRightward = forward * Math.sin(-heading) + rightward * Math.cos(-heading);
 
@@ -157,30 +157,27 @@ public class NewDrivetrain {
         return this;
     }
 
-    public IMU.Parameters getIMUParameters() {
-        return imuParameters;
-    }
-
-    public NewDrivetrain setIMUParameters(IMU.Parameters parameters) {
-        imuParameters = parameters;
-        imu.initialize(imuParameters);
-        return this;
-    }
-
     public NewDrivetrain setIMUOrientation(RevHubOrientationOnRobot orientation) {
-        imuParameters = new IMU.Parameters(orientation);
-        imu.initialize(imuParameters);
+        imu.setOrientation(orientation);
         return this;
     }
 
     public NewDrivetrain setIMUOrientation(RevHubOrientationOnRobot.LogoFacingDirection logoFacingDirection, RevHubOrientationOnRobot.UsbFacingDirection usbFacingDirection) {
-        imuParameters = new IMU.Parameters(new RevHubOrientationOnRobot(logoFacingDirection, usbFacingDirection));
-        imu.initialize(imuParameters);
+        imu.setOrientation(logoFacingDirection, usbFacingDirection);
         return this;
     }
 
     public NewDrivetrain resetIMUYaw() {
         imu.resetYaw();
+        return this;
+    }
+
+    public BatteryVoltageSensor getBatteryVoltageSensor() {
+        return batteryVoltageSensor;
+    }
+
+    public NewDrivetrain setBatteryVoltageSensor(BatteryVoltageSensor batteryVoltageSensor) {
+        this.batteryVoltageSensor = batteryVoltageSensor;
         return this;
     }
 
@@ -223,9 +220,13 @@ public class NewDrivetrain {
 
         telemetry.addLine();
         telemetry.addLine("-----IMU Headings-----");
-        telemetry.addData("Yaw", imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES));
-        telemetry.addData("Pitch", imu.getRobotYawPitchRollAngles().getPitch(AngleUnit.DEGREES));
-        telemetry.addData("Roll", imu.getRobotYawPitchRollAngles().getRoll(AngleUnit.DEGREES));
+        telemetry.addData("Yaw", imu.getYawDegrees());
+        telemetry.addData("Pitch", imu.getPitchDegrees());
+        telemetry.addData("Roll", imu.getRollDegrees());
+
+        telemetry.addLine();
+        telemetry.addLine("-----Battery Voltage-----");
+        telemetry.addData("Voltage", batteryVoltageSensor.getBatteryVoltage());
 
         telemetry.addLine();
 

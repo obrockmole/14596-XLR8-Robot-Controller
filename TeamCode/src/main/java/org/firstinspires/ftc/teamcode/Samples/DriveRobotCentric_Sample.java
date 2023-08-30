@@ -10,7 +10,6 @@ import org.firstinspires.ftc.teamcode.Systems.Gamepad.Gamepad;
 import org.firstinspires.ftc.teamcode.Systems.Gamepad.GamepadButtons.Stick;
 import org.firstinspires.ftc.teamcode.Systems.Motors.Motor;
 import org.firstinspires.ftc.teamcode.Systems.Motors.MotorLookupTable;
-import org.firstinspires.ftc.teamcode.Systems.Sensors.BatteryVoltageSensor;
 
 @Disabled
 @TeleOp(group = "Samples")
@@ -31,7 +30,7 @@ public class DriveRobotCentric_Sample extends OpMode {
         Motor backRight = new Motor(hardwareMap, "backRight", MotorLookupTable.GOBILDA_435, Motor.Mode.POWER, 10, false);
         IMU imu = hardwareMap.get(IMU.class, "imu");
 
-        drivetrain = new Drivetrain(frontLeft, backLeft, frontRight, backRight, imu, new BatteryVoltageSensor(hardwareMap)); //Assign the motors and IMU to the drivetrain
+        drivetrain = new Drivetrain(frontLeft, backLeft, frontRight, backRight, imu); //Assign the motors and IMU to the drivetrain
     }
 
     @Override

@@ -59,11 +59,11 @@ public class IMU {
         return this;
     }
 
-    public IMU setParameters(RevHubOrientationOnRobot orientation) {
+    public IMU setOrientation(RevHubOrientationOnRobot orientation) {
         return setParameters(new Parameters(orientation));
     }
 
-    public IMU setParameters(LogoFacingDirection logoDirection, UsbFacingDirection usbDirection) {
+    public IMU setOrientation(LogoFacingDirection logoDirection, UsbFacingDirection usbDirection) {
         return setParameters(new Parameters(new RevHubOrientationOnRobot(logoDirection, usbDirection)));
     }
 

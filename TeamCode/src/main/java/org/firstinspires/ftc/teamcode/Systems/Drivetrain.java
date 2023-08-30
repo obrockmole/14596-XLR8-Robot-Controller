@@ -1,12 +1,10 @@
 package org.firstinspires.ftc.teamcode.Systems;
 
-import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
+import com.qualcomm.robotcore.hardware.IMU;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.Systems.Motors.Motor;
-import org.firstinspires.ftc.teamcode.Systems.Sensors.BatteryVoltageSensor;
-import org.firstinspires.ftc.teamcode.Systems.Sensors.IMU;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -14,21 +12,18 @@ import java.util.Arrays;
 public class Drivetrain {
     private Motor frontLeft, backLeft, frontRight, backRight;
     private IMU imu;
-    private BatteryVoltageSensor batteryVoltageSensor;
 
     int speedScale = 1;
 
     public Drivetrain() {}
 
-    public Drivetrain(Motor frontLeft, Motor backLeft, Motor frontRight, Motor backRight, IMU imu, BatteryVoltageSensor batteryVoltageSensor) {
+    public Drivetrain(Motor frontLeft, Motor backLeft, Motor frontRight, Motor backRight, IMU imu) {
         this.frontLeft = frontLeft;
         this.backLeft = backLeft;
         this.frontRight = frontRight;
         this.backRight = backRight;
 
         this.imu = imu;
-
-        this.batteryVoltageSensor = batteryVoltageSensor;
     }
 
     public ArrayList<Motor> getMotors() {
@@ -77,7 +72,7 @@ public class Drivetrain {
     }
 
     public Drivetrain fieldCentricDrive(double forward, double rightward, double rotational) {
-        double heading = imu.getYawRadians();
+        double heading = imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);
         double fixedForward = forward * Math.cos(-heading) - rightward * Math.sin(-heading);
         double fixedRightward = forward * Math.sin(-heading) + rightward * Math.cos(-heading);
 
@@ -105,12 +100,8 @@ public class Drivetrain {
         return this;
     }
 
-    public BatteryVoltageSensor getBatteryVoltageSensor() {
-        return batteryVoltageSensor;
-    }
-
-    public Drivetrain setBatteryVoltageSensor(BatteryVoltageSensor batteryVoltageSensor) {
-        this.batteryVoltageSensor = batteryVoltageSensor;
+    public Drivetrain resetIMUYaw() {
+        imu.resetYaw();
         return this;
     }
 
@@ -137,12 +128,9 @@ public class Drivetrain {
 
         telemetry.addLine();
         telemetry.addLine("-----IMU Headings-----");
-        telemetry.addData("Yaw: ", imu.getYawDegrees());
-        telemetry.addData("Pitch: ", imu.getPitchDegrees());
-        telemetry.addData("Roll: ", imu.getRollDegrees());
-
-        telemetry.addLine();
-        telemetry.addData("Battery Voltage: ", batteryVoltageSensor.getBatteryVoltage());
+        telemetry.addData("Yaw: ", imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES));
+        telemetry.addData("Pitch: ", imu.getRobotYawPitchRollAngles().getPitch(AngleUnit.DEGREES));
+        telemetry.addData("Roll: ", imu.getRobotYawPitchRollAngles().getRoll(AngleUnit.DEGREES));
 
         telemetry.addLine();
 

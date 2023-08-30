@@ -1,7 +1,6 @@
 package org.firstinspires.ftc.teamcode.Systems;
 
 import com.qualcomm.robotcore.hardware.HardwareMap;
-import com.qualcomm.robotcore.hardware.IMU;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.Systems.Motors.Motor;
@@ -9,7 +8,12 @@ import org.firstinspires.ftc.teamcode.Systems.Motors.MotorLookupTable;
 import org.firstinspires.ftc.teamcode.Systems.Odometry.Odometry;
 import org.firstinspires.ftc.teamcode.Systems.Odometry.OdometryPod;
 import org.firstinspires.ftc.teamcode.Systems.Sensors.Encoder;
+import org.firstinspires.ftc.teamcode.Systems.Sensors.IMU;
 import org.firstinspires.ftc.teamcode.Systems.Servos.PositionServo;
+import com.qualcomm.robotcore.hardware.IMU.Parameters;
+import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
+import com.qualcomm.hardware.rev.RevHubOrientationOnRobot.LogoFacingDirection;
+import com.qualcomm.hardware.rev.RevHubOrientationOnRobot.UsbFacingDirection;
 
 public class Robot extends NewDrivetrain {
     public Robot(HardwareMap hardwareMap) {
@@ -22,7 +26,7 @@ public class Robot extends NewDrivetrain {
                         new OdometryPod(new Encoder(hardwareMap, "backLeft", Encoder.Direction.FORWARD), new PositionServo(hardwareMap, "rightOdometryServo", 0, 1, false)),
                         new OdometryPod(new Encoder(hardwareMap, "frontRight", Encoder.Direction.FORWARD), new PositionServo(hardwareMap, "centerOdometryServo", 0, 1, false))
                 ),
-                hardwareMap.get(IMU.class, "imu")
+                new IMU(hardwareMap, "imu", new Parameters(new RevHubOrientationOnRobot(LogoFacingDirection.UP, UsbFacingDirection.FORWARD)))
        );
     }
 

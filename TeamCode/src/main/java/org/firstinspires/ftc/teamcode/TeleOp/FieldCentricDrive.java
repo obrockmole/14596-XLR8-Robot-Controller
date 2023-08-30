@@ -9,7 +9,7 @@ import org.firstinspires.ftc.teamcode.Systems.Gamepad.GamepadButtons.Stick;
 @TeleOp(group = "TeleOp")
 public class FieldCentricDrive extends BaseTele {
     public void loop() {
-        driver.onPress(Button.BACK, () -> drivetrain.resetIMU());
+        driver.onPress(Button.BACK, () -> drivetrain.resetIMUYaw());
 
         drivetrain.fieldCentricDrive(driver.getStickY(Stick.LEFT_STICK), driver.getStickX(Stick.LEFT_STICK), driver.getStickX(Stick.RIGHT_STICK))
                 .update();
