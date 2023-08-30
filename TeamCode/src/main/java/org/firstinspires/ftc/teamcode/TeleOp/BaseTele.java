@@ -7,6 +7,7 @@ import org.firstinspires.ftc.teamcode.Systems.Drivetrain;
 import org.firstinspires.ftc.teamcode.Systems.Gamepad.Gamepad;
 import org.firstinspires.ftc.teamcode.Systems.Motors.Motor;
 import org.firstinspires.ftc.teamcode.Systems.Motors.MotorLookupTable;
+import org.firstinspires.ftc.teamcode.Systems.Sensors.BatteryVoltageSensor;
 
 public class BaseTele extends OpMode {
     Drivetrain drivetrain;
@@ -21,7 +22,7 @@ public class BaseTele extends OpMode {
         Motor backRight = new Motor(hardwareMap, "backRight", MotorLookupTable.GOBILDA_435, Motor.Mode.POWER, 10, false);
         IMU imu = hardwareMap.get(IMU.class, "imu");
 
-        drivetrain = new Drivetrain(frontLeft, backLeft, frontRight, backRight, imu);
+        drivetrain = new Drivetrain(frontLeft, backLeft, frontRight, backRight, imu, new BatteryVoltageSensor(hardwareMap));
 
         driver = new Gamepad(gamepad1);
         manipulator = new Gamepad(gamepad2);
