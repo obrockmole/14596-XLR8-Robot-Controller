@@ -10,7 +10,7 @@ import org.firstinspires.ftc.teamcode.Systems.Gamepad.GamepadButtons.Stick;
 import org.firstinspires.ftc.teamcode.Systems.Gamepad.GamepadButtons.Trigger;
 
 @Disabled
-@TeleOp(group = "Samples")
+@TeleOp(group = "Samples", name = "Gamepad Sample")
 public class Gamepad_Sample extends OpMode {
     Gamepad driver, manipulator;
 

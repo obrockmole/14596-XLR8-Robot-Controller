@@ -9,7 +9,7 @@ import org.firstinspires.ftc.teamcode.Systems.Gamepad.GamepadButtons.Button;
 import org.firstinspires.ftc.teamcode.Systems.Timer;
 
 @Disabled
-@TeleOp(group = "Samples")
+@TeleOp(group = "Samples", name = "Timer Sample")
 public class Timer_Sample extends OpMode {
     Timer timer;
 

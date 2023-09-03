@@ -7,7 +7,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import org.firstinspires.ftc.teamcode.Systems.Sensors.TouchSensor;
 
 @Disabled
-@TeleOp(group = "Samples")
+@TeleOp(group = "Samples", name = "Touch Sensor Sample")
 public class SensorTouch_Sample extends OpMode {
     TouchSensor sensor;
 

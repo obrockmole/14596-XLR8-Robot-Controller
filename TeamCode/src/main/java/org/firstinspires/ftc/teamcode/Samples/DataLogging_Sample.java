@@ -13,7 +13,7 @@ import org.firstinspires.ftc.teamcode.Systems.Motors.MotorLookupTable;
 import org.firstinspires.ftc.teamcode.Systems.Stopwatch;
 
 @Disabled
-@TeleOp(group = "Testing")
+@TeleOp(group = "Samples", name = "Data Logging Sample")
 public class DataLogging_Sample extends OpMode {
     Motor motor; //This example uses custom motors. See Motor_Sample.java for more information
 

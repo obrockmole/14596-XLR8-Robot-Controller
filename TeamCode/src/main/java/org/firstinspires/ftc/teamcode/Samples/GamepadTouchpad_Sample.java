@@ -8,7 +8,7 @@ import org.firstinspires.ftc.teamcode.Systems.Gamepad.Gamepad;
 import org.firstinspires.ftc.teamcode.Systems.Gamepad.GamepadButtons.TouchpadFinger;
 
 @Disabled
-@TeleOp(group = "Samples")
+@TeleOp(group = "Samples", name = "Gamepad Touchpad Sample")
 public class GamepadTouchpad_Sample extends OpMode {
     Gamepad gamepad;
 

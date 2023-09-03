@@ -9,7 +9,7 @@ import org.firstinspires.ftc.teamcode.Systems.Gamepad.GamepadButtons.Button;
 import org.firstinspires.ftc.teamcode.Systems.Servos.ContinuousServo;
 
 @Disabled
-@TeleOp(group = "Samples")
+@TeleOp(group = "Samples", name = "Continuous Servo Sample")
 public class ServoContinuous_Sample extends OpMode {
     ContinuousServo servo;
 

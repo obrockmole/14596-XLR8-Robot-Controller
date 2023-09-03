@@ -8,13 +8,12 @@ import org.firstinspires.ftc.teamcode.Systems.Sensors.Encoder;
 import org.firstinspires.ftc.teamcode.Systems.Servos.PositionServo;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class Odometry extends ArrayList<OdometryPod> {
     public Odometry(OdometryPod... pods) {
         super();
-        for (OdometryPod pod : pods) {
-            add(pod);
-        }
+        this.addAll(Arrays.asList(pods));
     }
 
     public OdometryPod getPod(int index) {
@@ -32,9 +31,7 @@ public class Odometry extends ArrayList<OdometryPod> {
 
     public Odometry setPods(OdometryPod... pods) {
         clear();
-        for (OdometryPod pod : pods) {
-            add(pod);
-        }
+        this.addAll(Arrays.asList(pods));
         return this;
     }
 

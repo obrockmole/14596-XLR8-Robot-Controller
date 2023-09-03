@@ -4,19 +4,17 @@ import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.Range;
 
-import org.firstinspires.ftc.teamcode.Systems.Gamepad.GamepadButtons;
 import org.firstinspires.ftc.teamcode.Systems.Gamepad.GamepadButtons.Button;
+import org.firstinspires.ftc.teamcode.Systems.Gamepad.GamepadButtons.Stick;
 import org.firstinspires.ftc.teamcode.Systems.Vision.FIRST_AprilTagDetector;
-import org.firstinspires.ftc.vision.VisionPortal;
 import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
 
 import java.util.ArrayList;
 
 
-//TODO: MAKE WORK, driver and drivetrain are null object references
 //@Disabled
 @Config
-@TeleOp(group = "Testing")
+@TeleOp(group = "Testing", name = "Auto Drive to April Tag")
 public class AutoDriveToAprilTag extends BaseTele {
     private FIRST_AprilTagDetector aprilTagDetector;
     private AprilTagDetection detectedTag;
@@ -70,12 +68,12 @@ public class AutoDriveToAprilTag extends BaseTele {
             rotational = Range.clip(headingError * TURN_GAIN, -0.5, 0.5);
 
         } else {
-            forward = driver.getStickY(GamepadButtons.Stick.LEFT_STICK);
-            rightward = driver.getStickX(GamepadButtons.Stick.LEFT_STICK);
-            rotational = driver.getStickX(GamepadButtons.Stick.RIGHT_STICK);
+            forward = driver.getStickY(Stick.LEFT_STICK);
+            rightward = driver.getStickX(Stick.LEFT_STICK);
+            rotational = driver.getStickX(Stick.RIGHT_STICK);
         }
 
-        drivetrain.standardDrive(forward, rightward, rotational)
-                .update();
+        robot.standardDrive(forward, rightward, rotational);
+        updateSystems();
     }
 }

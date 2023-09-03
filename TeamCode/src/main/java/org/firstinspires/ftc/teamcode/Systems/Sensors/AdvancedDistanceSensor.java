@@ -6,7 +6,6 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.Systems.DataFilters.KalmanFilter;
 import org.firstinspires.ftc.teamcode.Systems.DataFilters.MovingAverageFilter;
-import org.firstinspires.ftc.teamcode.Systems.DataFilters.MultiVariableKalmanFilter;
 
 public class AdvancedDistanceSensor {
     private com.qualcomm.robotcore.hardware.DistanceSensor sensor;

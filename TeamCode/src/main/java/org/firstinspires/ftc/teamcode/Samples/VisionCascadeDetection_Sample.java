@@ -8,7 +8,7 @@ import org.firstinspires.ftc.robotcore.internal.system.AppUtil;
 import org.firstinspires.ftc.teamcode.Systems.Vision.CascadeDetector;
 
 @Disabled
-@TeleOp(group = "Samples")
+@TeleOp(group = "Samples", name = "Cascade Detection Sample")
 public class VisionCascadeDetection_Sample extends OpMode {
     CascadeDetector detector;
 

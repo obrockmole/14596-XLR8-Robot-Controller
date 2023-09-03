@@ -11,7 +11,7 @@ public class OdometryPod {
     private Encoder encoder;
     private PositionServo retractionServo;
 
-    //TODO: Figure out correct positions
+    //TODO: Figure out correct positions or remove if not needed
     private double extendedPosition = 0;
     private double retractedPosition = 0.5;
 

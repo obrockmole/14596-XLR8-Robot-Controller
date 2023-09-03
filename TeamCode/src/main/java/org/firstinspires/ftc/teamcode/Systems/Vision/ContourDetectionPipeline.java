@@ -10,7 +10,6 @@ import org.opencv.imgproc.Imgproc;
 import org.openftc.easyopencv.OpenCvPipeline;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class ContourDetectionPipeline extends OpenCvPipeline {
     Mat hsv = new Mat();

@@ -5,11 +5,10 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.Systems.Gamepad.Gamepad;
-import org.firstinspires.ftc.teamcode.Systems.Gamepad.GamepadButtons.Button;
 import org.firstinspires.ftc.teamcode.Systems.Gamepad.GamepadButtons.Trigger;
 
 @Disabled
-@TeleOp(group = "Samples")
+@TeleOp(group = "Samples", name = "Gamepad Rumble Control Sample")
 public class GamepadRumble_Sample extends OpMode {
     Gamepad gamepad;
 

@@ -16,6 +16,8 @@ import org.firstinspires.ftc.teamcode.Systems.Motors.MotorLookupTable;
 public class PIDTuner_PositionMotor extends OpMode {
     private Motor motor;
 
+    public static String MOTOR_NAME = "positionMotor";
+
     public static MotorLookupTable MOTOR_TYPE = MotorLookupTable.GOBILDA_435;
     public static PIDFCoefficients PIDF_COEFFICIENTS = new PIDFCoefficients(0, 0, 0, 0);
     public static int TARGET_POSITION = 0;
@@ -23,7 +25,7 @@ public class PIDTuner_PositionMotor extends OpMode {
 
     @Override
     public void init() {
-        motor = new Motor(hardwareMap, "positionMotor", MOTOR_TYPE, Motor.Mode.POSITION, TOLERANCE, false);
+        motor = new Motor(hardwareMap, MOTOR_NAME, MOTOR_TYPE, Motor.Mode.POSITION, TOLERANCE, false);
 
         telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
     }

@@ -10,7 +10,7 @@ import org.firstinspires.ftc.teamcode.Systems.Gamepad.Gamepad;
 import org.firstinspires.ftc.teamcode.Systems.Gamepad.GamepadButtons.Button;
 
 @Disabled
-@TeleOp(group = "Samples")
+@TeleOp(group = "Samples", name = "Blinkin LED Driver Sample")
 public class BlinkinLEDDriver_Sample extends OpMode {
     Gamepad gamepad; //This example uses a custom gamepad. See Gamepad_Sample.java for more information
 

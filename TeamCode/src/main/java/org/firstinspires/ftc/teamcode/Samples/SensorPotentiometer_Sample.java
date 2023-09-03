@@ -7,7 +7,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import org.firstinspires.ftc.teamcode.Systems.Sensors.Potentiometer;
 
 @Disabled
-@TeleOp(group = "Samples")
+@TeleOp(group = "Samples", name = "Potentiometer Sample")
 public class SensorPotentiometer_Sample extends OpMode {
     Potentiometer sensor;
 

@@ -7,7 +7,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import org.firstinspires.ftc.teamcode.Systems.Sensors.ColorSensor;
 
 @Disabled
-@TeleOp(group = "Samples")
+@TeleOp(group = "Samples", name = "Color Sensor Sample")
 public class SensorColor_Sample extends OpMode {
     ColorSensor sensor;
 

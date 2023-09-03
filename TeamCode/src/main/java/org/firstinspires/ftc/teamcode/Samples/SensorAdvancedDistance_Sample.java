@@ -1,16 +1,14 @@
 package org.firstinspires.ftc.teamcode.Samples;
 
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.Systems.DataFilters.KalmanFilter;
 import org.firstinspires.ftc.teamcode.Systems.DataFilters.MovingAverageFilter;
-import org.firstinspires.ftc.teamcode.Systems.DataFilters.MultiVariableKalmanFilter;
 import org.firstinspires.ftc.teamcode.Systems.Sensors.AdvancedDistanceSensor;
 
 //@Disabled
-@TeleOp(group = "Samples")
+@TeleOp(group = "Samples", name = "Advanced Distance Sensor Sample")
 public class SensorAdvancedDistance_Sample extends OpMode {
     AdvancedDistanceSensor sensor;
 

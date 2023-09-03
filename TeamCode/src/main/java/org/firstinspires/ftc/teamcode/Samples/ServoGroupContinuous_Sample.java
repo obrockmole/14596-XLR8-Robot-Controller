@@ -10,7 +10,7 @@ import org.firstinspires.ftc.teamcode.Systems.Servos.ContinuousServo;
 import org.firstinspires.ftc.teamcode.Systems.Servos.ContinuousServoGroup;
 
 @Disabled
-@TeleOp(group = "Samples")
+@TeleOp(group = "Samples", name = "Continuous Servo Group Sample")
 public class ServoGroupContinuous_Sample extends OpMode {
     ContinuousServoGroup servos;
 

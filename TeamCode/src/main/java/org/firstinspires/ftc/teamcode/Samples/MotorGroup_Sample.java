@@ -12,7 +12,7 @@ import org.firstinspires.ftc.teamcode.Systems.Motors.MotorGroup;
 import org.firstinspires.ftc.teamcode.Systems.Motors.MotorLookupTable;
 
 @Disabled
-@TeleOp(group = "Samples")
+@TeleOp(group = "Samples", name = "Motor Group Sample")
 public class MotorGroup_Sample extends OpMode {
     MotorGroup powerMotors, positionMotors;
 

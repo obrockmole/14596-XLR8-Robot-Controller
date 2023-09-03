@@ -10,7 +10,6 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-
 public class Motor {
     DcMotorEx motor;
     MotorLookupTable motorType;

@@ -7,7 +7,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import org.firstinspires.ftc.teamcode.Systems.Sensors.LimitSwitch;
 
 @Disabled
-@TeleOp(group = "Samples")
+@TeleOp(group = "Samples", name = "Limit Switch Sample")
 public class SensorLimitSwitch_Sample extends OpMode {
     LimitSwitch sensor;
 

@@ -1,21 +1,21 @@
 package org.firstinspires.ftc.teamcode.Systems;
 
+import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
+import com.qualcomm.hardware.rev.RevHubOrientationOnRobot.LogoFacingDirection;
+import com.qualcomm.hardware.rev.RevHubOrientationOnRobot.UsbFacingDirection;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.IMU.Parameters;
 
-import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.Systems.Motors.Motor;
 import org.firstinspires.ftc.teamcode.Systems.Motors.MotorLookupTable;
 import org.firstinspires.ftc.teamcode.Systems.Odometry.Odometry;
 import org.firstinspires.ftc.teamcode.Systems.Odometry.OdometryPod;
+import org.firstinspires.ftc.teamcode.Systems.Sensors.BatteryVoltageSensor;
 import org.firstinspires.ftc.teamcode.Systems.Sensors.Encoder;
 import org.firstinspires.ftc.teamcode.Systems.Sensors.IMU;
 import org.firstinspires.ftc.teamcode.Systems.Servos.PositionServo;
-import com.qualcomm.robotcore.hardware.IMU.Parameters;
-import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
-import com.qualcomm.hardware.rev.RevHubOrientationOnRobot.LogoFacingDirection;
-import com.qualcomm.hardware.rev.RevHubOrientationOnRobot.UsbFacingDirection;
 
-public class Robot extends NewDrivetrain {
+public class Robot extends Drivetrain {
     public Robot(HardwareMap hardwareMap) {
         super(new Motor(hardwareMap, "frontLeft", MotorLookupTable.GOBILDA_435, Motor.Mode.POWER, 10, false),
                 new Motor(hardwareMap, "backLeft", MotorLookupTable.GOBILDA_435, Motor.Mode.POWER, 10, false),
@@ -28,15 +28,6 @@ public class Robot extends NewDrivetrain {
                 ),
                 new IMU(hardwareMap, "imu", new Parameters(new RevHubOrientationOnRobot(LogoFacingDirection.UP, UsbFacingDirection.FORWARD)))
        );
-    }
-
-    public Robot update() {
-        super.update();
-        return this;
-    }
-
-    public Robot log(Telemetry telemetry) {
-        super.log(telemetry);
-        return this;
+        setBatteryVoltageSensor(new BatteryVoltageSensor(hardwareMap));
     }
 }

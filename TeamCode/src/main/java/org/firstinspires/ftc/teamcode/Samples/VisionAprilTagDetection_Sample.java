@@ -7,7 +7,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import org.firstinspires.ftc.teamcode.Systems.Vision.AprilTagDetector;
 
 @Disabled
-@TeleOp(group = "Samples")
+@TeleOp(group = "Samples", name = "April Tag Detection Sample")
 public class VisionAprilTagDetection_Sample extends OpMode {
     AprilTagDetector detector;
 

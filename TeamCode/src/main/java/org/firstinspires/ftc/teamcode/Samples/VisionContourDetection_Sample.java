@@ -8,7 +8,7 @@ import org.firstinspires.ftc.teamcode.Systems.Vision.ContourDetector;
 import org.opencv.core.Scalar;
 
 @Disabled
-@TeleOp(group = "Samples")
+@TeleOp(group = "Samples", name = "Contour Detection Sample")
 public class VisionContourDetection_Sample extends OpMode {
     ContourDetector detector;
 

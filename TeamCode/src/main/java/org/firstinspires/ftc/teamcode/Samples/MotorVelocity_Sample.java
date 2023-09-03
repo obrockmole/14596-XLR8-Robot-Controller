@@ -10,7 +10,7 @@ import org.firstinspires.ftc.teamcode.Systems.Motors.MotorLookupTable;
 import org.firstinspires.ftc.teamcode.Systems.Motors.VelocityMotor;
 
 @Disabled
-@TeleOp(group = "Samples")
+@TeleOp(group = "Samples", name = "Velocity Motor Sample")
 public class MotorVelocity_Sample extends OpMode {
     VelocityMotor motor;
 

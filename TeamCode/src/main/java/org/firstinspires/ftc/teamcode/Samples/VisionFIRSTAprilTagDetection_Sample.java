@@ -4,15 +4,13 @@ import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-import org.firstinspires.ftc.teamcode.Systems.Vision.AprilTagDetector;
 import org.firstinspires.ftc.teamcode.Systems.Vision.FIRST_AprilTagDetector;
-import org.firstinspires.ftc.vision.VisionPortal;
 import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
 
 import java.util.ArrayList;
 
 @Disabled
-@TeleOp(group = "Samples")
+@TeleOp(group = "Samples", name = "FIRST April Tag Detection Sample")
 public class VisionFIRSTAprilTagDetection_Sample extends OpMode {
     FIRST_AprilTagDetector aprilTagDetector;
     ArrayList<AprilTagDetection> detectedTags;

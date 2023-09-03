@@ -9,7 +9,7 @@ import org.firstinspires.ftc.teamcode.Systems.Gamepad.GamepadButtons.Button;
 import org.firstinspires.ftc.teamcode.Systems.Stopwatch;
 
 @Disabled
-@TeleOp(group = "Samples")
+@TeleOp(group = "Samples", name = "Stopwatch Sample")
 public class Stopwatch_Sample extends OpMode {
     Stopwatch stopwatch;
 

@@ -10,7 +10,7 @@ import org.firstinspires.ftc.teamcode.Systems.Servos.PositionServo;
 import org.firstinspires.ftc.teamcode.Systems.Servos.PositionServoGroup;
 
 @Disabled
-@TeleOp(group = "Samples")
+@TeleOp(group = "Samples", name = "Position Servo Group Sample")
 public class ServoGroupPosition_Sample extends OpMode {
     PositionServoGroup servos;
 

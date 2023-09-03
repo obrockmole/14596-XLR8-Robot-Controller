@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import org.firstinspires.ftc.teamcode.Systems.Vision.Pixy;
 
 //@Disabled
-@TeleOp(group = "Samples")
+@TeleOp(group = "Samples", name = "Pixy Cam Sample")
 public class VisionPixyCam_Sample extends OpMode {
     Pixy pixyCam;
 

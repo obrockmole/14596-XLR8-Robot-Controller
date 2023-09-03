@@ -3,7 +3,6 @@ package org.firstinspires.ftc.teamcode.Samples;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.IMU;
 
 import org.firstinspires.ftc.teamcode.Systems.Drivetrain;
 import org.firstinspires.ftc.teamcode.Systems.Gamepad.Gamepad;
@@ -11,9 +10,15 @@ import org.firstinspires.ftc.teamcode.Systems.Gamepad.GamepadButtons.Button;
 import org.firstinspires.ftc.teamcode.Systems.Gamepad.GamepadButtons.Stick;
 import org.firstinspires.ftc.teamcode.Systems.Motors.Motor;
 import org.firstinspires.ftc.teamcode.Systems.Motors.MotorLookupTable;
+import org.firstinspires.ftc.teamcode.Systems.Odometry.Odometry;
+import org.firstinspires.ftc.teamcode.Systems.Sensors.IMU;
+import com.qualcomm.robotcore.hardware.IMU.Parameters;
+import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
+import com.qualcomm.hardware.rev.RevHubOrientationOnRobot.LogoFacingDirection;
+import com.qualcomm.hardware.rev.RevHubOrientationOnRobot.UsbFacingDirection;
 
 @Disabled
-@TeleOp(group = "Samples")
+@TeleOp(group = "Samples", name = "Field Centric Drive Sample")
 public class DriveFieldCentric_Sample extends OpMode {
     Drivetrain drivetrain;
 
@@ -29,20 +34,20 @@ public class DriveFieldCentric_Sample extends OpMode {
         Motor backLeft = new Motor(hardwareMap, "backLeft", MotorLookupTable.GOBILDA_435, Motor.Mode.POWER, 10, false);
         Motor frontRight = new Motor(hardwareMap, "frontRight", MotorLookupTable.GOBILDA_435, Motor.Mode.POWER, 10, false);
         Motor backRight = new Motor(hardwareMap, "backRight", MotorLookupTable.GOBILDA_435, Motor.Mode.POWER, 10, false);
-        IMU imu = hardwareMap.get(IMU.class, "imu");
+        IMU imu = new IMU(hardwareMap, "imu", new Parameters(new RevHubOrientationOnRobot(LogoFacingDirection.UP, UsbFacingDirection.FORWARD)));
 
-        drivetrain = new Drivetrain(frontLeft, backLeft, frontRight, backRight, imu); //Assign the motors and IMU to the drivetrain
+        drivetrain = new Drivetrain(frontLeft, backLeft, frontRight, backRight, new Odometry(), imu); //Assign the motors and IMU to the drivetrain. Odometry is not used in this example so it is left blank.
     }
 
     @Override
     public void loop() {
-        driver.onPress(Button.BACK, () -> drivetrain.resetIMUYaw()) //Reset the IMU when the back button is pressed on the gamepad
+        driver.onPress(Button.BACK, () -> drivetrain.resetIMUYaw()) //Reset the IMU when the back button is pressed on the gamepad in order to reset orientation
                 .update(); //Update the gamepad
 
         /*
           The drivetrain has two drive modes: field centric and robot centric.
           Field centric means the robot will always move in relation to the field regardless of orientation.
-          This is controlled with the standardDrive() method and joystick values.
+          This is controlled with the fieldCentricDrive() method and joystick values.
          */
         drivetrain.fieldCentricDrive(driver.getStickY(Stick.LEFT_STICK), driver.getStickX(Stick.LEFT_STICK), driver.getStickX(Stick.RIGHT_STICK))
                 .log(telemetry) //Log drivetrain data to the telemetry

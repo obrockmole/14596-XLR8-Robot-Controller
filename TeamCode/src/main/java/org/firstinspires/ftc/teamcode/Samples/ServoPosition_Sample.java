@@ -9,7 +9,7 @@ import org.firstinspires.ftc.teamcode.Systems.Gamepad.GamepadButtons.Button;
 import org.firstinspires.ftc.teamcode.Systems.Servos.PositionServo;
 
 @Disabled
-@TeleOp(group = "Samples")
+@TeleOp(group = "Samples", name = "Position Servo Sample")
 public class ServoPosition_Sample extends OpMode {
     PositionServo servo;
 

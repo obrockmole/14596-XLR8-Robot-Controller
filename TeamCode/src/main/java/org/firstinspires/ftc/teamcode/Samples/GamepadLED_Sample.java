@@ -8,7 +8,7 @@ import org.firstinspires.ftc.teamcode.Systems.Gamepad.Gamepad;
 import org.firstinspires.ftc.teamcode.Systems.Gamepad.GamepadButtons.Button;
 
 @Disabled
-@TeleOp(group = "Samples")
+@TeleOp(group = "Samples", name = "Gamepad LED Control Sample")
 public class GamepadLED_Sample extends OpMode {
     Gamepad gamepad;
 
