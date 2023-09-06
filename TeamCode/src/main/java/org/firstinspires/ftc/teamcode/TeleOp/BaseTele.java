@@ -11,7 +11,6 @@ public class BaseTele extends OpMode {
 
     Robot robot;
 
-    @Override
     public void init() {
         robot = new Robot(hardwareMap);
 
@@ -19,7 +18,6 @@ public class BaseTele extends OpMode {
         manipulator = new Gamepad(gamepad2);
     }
 
-    @Override
     public void loop() {}
 
     public void updateSystems() {
