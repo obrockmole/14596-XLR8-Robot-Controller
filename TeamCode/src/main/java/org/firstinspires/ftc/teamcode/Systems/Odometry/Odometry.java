@@ -11,6 +11,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Odometry extends ArrayList<OdometryPod> {
+    private double xPosition, yPosition, rotation, trackwidth;
+
     public Odometry(OdometryPod... pods) {
         super();
         this.addAll(Arrays.asList(pods));
@@ -132,6 +134,21 @@ public class Odometry extends ArrayList<OdometryPod> {
         for (OdometryPod pod : this) {
             pod.update();
         }
+
+        double distanceCal = 0.000528179599805;
+
+        double lPos = getCurrentPosition(0);
+        double rPos = getCurrentPosition(1);
+        double pPos = getCurrentPosition(2);
+
+        double xDelta = ((lPos + rPos + pPos) * distanceCal) / 3;
+        double yDelta = ((lPos + rPos) * distanceCal) / 2;
+        double rDelta = ((lPos - rPos) * distanceCal) / trackwidth;
+
+        rotation += rDelta;
+        xPosition += yDelta * Math.cos(rotation) - xDelta * Math.sin(rotation);
+        yPosition += yDelta * Math.sin(rotation) + xDelta * Math.cos(rotation);
+
         return this;
     }
 
@@ -140,6 +157,10 @@ public class Odometry extends ArrayList<OdometryPod> {
             pod.log(telemetry, hardwareMap);
             telemetry.addLine();
         }
+        telemetry.addLine();
+        telemetry.addData("X Position", xPosition);
+        telemetry.addData("Y Position", yPosition);
+        telemetry.addData("Rotation (degrees)", rotation * 180 / Math.PI);
         return this;
     }
 }
