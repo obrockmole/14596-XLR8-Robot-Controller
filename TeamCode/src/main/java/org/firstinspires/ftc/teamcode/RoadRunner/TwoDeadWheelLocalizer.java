@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.RoadRunnerNew;
+package org.firstinspires.ftc.teamcode.RoadRunner;
 
 import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.roadrunner.DualNum;
@@ -11,6 +11,7 @@ import com.acmerobotics.roadrunner.ftc.FlightRecorder;
 import com.acmerobotics.roadrunner.ftc.PositionVelocityPair;
 import com.acmerobotics.roadrunner.ftc.RawEncoder;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.IMU;
 
@@ -34,9 +35,11 @@ public final class TwoDeadWheelLocalizer implements Localizer {
     private final double inPerTick;
 
     public TwoDeadWheelLocalizer(HardwareMap hardwareMap, IMU imu, double inPerTick) {
-        par = new RawEncoder(hardwareMap.get(DcMotorEx.class, "par"));
-        perp = new RawEncoder(hardwareMap.get(DcMotorEx.class, "perp"));
+        par = new RawEncoder(hardwareMap.get(DcMotorEx.class, "frontLeft"));
+        perp = new RawEncoder(hardwareMap.get(DcMotorEx.class, "frontRight"));
         this.imu = imu;
+
+        perp.setDirection(DcMotorSimple.Direction.REVERSE);
 
         lastParPos = par.getPositionAndVelocity().position;
         lastPerpPos = perp.getPositionAndVelocity().position;

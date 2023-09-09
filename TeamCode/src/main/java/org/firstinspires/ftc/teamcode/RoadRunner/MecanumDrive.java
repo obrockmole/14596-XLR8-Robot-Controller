@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.RoadRunnerNew;
+package org.firstinspires.ftc.teamcode.RoadRunner;
 
 import androidx.annotation.NonNull;
 
@@ -58,7 +58,7 @@ public final class MecanumDrive {
         public double kA = 0;
 
         // path profile parameters
-        public double maxWheelVel = 50;
+        public double maxWheelVel = 70;
         public double minProfileAccel = -30;
         public double maxProfileAccel = 50;
 
@@ -185,6 +185,9 @@ public final class MecanumDrive {
         leftBack.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         rightBack.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         rightFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
+        rightFront.setDirection(DcMotor.Direction.REVERSE);
+        rightBack.setDirection(DcMotor.Direction.REVERSE);
 
         imu = hardwareMap.get(IMU.class, "imu");
         IMU.Parameters parameters = new IMU.Parameters(new RevHubOrientationOnRobot(

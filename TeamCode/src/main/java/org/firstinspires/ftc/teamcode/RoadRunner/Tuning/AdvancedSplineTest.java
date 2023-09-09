@@ -1,13 +1,13 @@
-package org.firstinspires.ftc.teamcode.RoadRunnerNew.Tuning;
+package org.firstinspires.ftc.teamcode.RoadRunner.Tuning;
 
 import com.acmerobotics.roadrunner.Pose2d;
 import com.acmerobotics.roadrunner.Vector2d;
 import com.acmerobotics.roadrunner.ftc.Actions;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
-import org.firstinspires.ftc.teamcode.RoadRunnerNew.MecanumDrive;
+import org.firstinspires.ftc.teamcode.RoadRunner.MecanumDrive;
 
-public final class SplineTest extends LinearOpMode {
+public final class AdvancedSplineTest extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
         if (TuningOpModes.DRIVE_CLASS.equals(MecanumDrive.class)) {
@@ -17,8 +17,10 @@ public final class SplineTest extends LinearOpMode {
 
             Actions.runBlocking(
                 drive.actionBuilder(drive.pose)
-                        .splineTo(new Vector2d(30, 30), Math.PI / 2)
-                        .splineTo(new Vector2d(60, 0), Math.PI)
+                        .splineTo(new Vector2d(24, 0), 0)
+                        .splineTo(new Vector2d(24, -24), -Math.PI / 2)
+                        .splineTo(new Vector2d(48, -20), 0)
+                        .splineTo(new Vector2d(64, -24), 0)
                         .build());
         } else {
             throw new AssertionError();

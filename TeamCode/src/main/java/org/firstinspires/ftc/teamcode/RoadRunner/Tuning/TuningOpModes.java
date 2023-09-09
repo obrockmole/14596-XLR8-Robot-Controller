@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.RoadRunnerNew.Tuning;
+package org.firstinspires.ftc.teamcode.RoadRunner.Tuning;
 
 import com.acmerobotics.roadrunner.Pose2d;
 import com.acmerobotics.roadrunner.ftc.AngularRampLogger;
@@ -18,9 +18,9 @@ import com.qualcomm.robotcore.eventloop.opmode.OpModeManager;
 import com.qualcomm.robotcore.eventloop.opmode.OpModeRegistrar;
 
 import org.firstinspires.ftc.robotcore.internal.opmode.OpModeMeta;
-import org.firstinspires.ftc.teamcode.RoadRunnerNew.MecanumDrive;
-import org.firstinspires.ftc.teamcode.RoadRunnerNew.ThreeDeadWheelLocalizer;
-import org.firstinspires.ftc.teamcode.RoadRunnerNew.TwoDeadWheelLocalizer;
+import org.firstinspires.ftc.teamcode.RoadRunner.MecanumDrive;
+import org.firstinspires.ftc.teamcode.RoadRunner.ThreeDeadWheelLocalizer;
+import org.firstinspires.ftc.teamcode.RoadRunner.TwoDeadWheelLocalizer;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -110,6 +110,7 @@ public final class TuningOpModes {
 
         manager.register(metaForClass(ManualFeedbackTuner.class), ManualFeedbackTuner.class);
         manager.register(metaForClass(SplineTest.class), SplineTest.class);
+        manager.register(metaForClass(AdvancedSplineTest.class), AdvancedSplineTest.class);
         manager.register(metaForClass(LocalizationTest.class), LocalizationTest.class);
     }
 }

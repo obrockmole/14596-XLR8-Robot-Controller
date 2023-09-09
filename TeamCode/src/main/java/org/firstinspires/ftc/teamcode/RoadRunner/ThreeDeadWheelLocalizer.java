@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.RoadRunnerNew;
+package org.firstinspires.ftc.teamcode.RoadRunner;
 
 import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.roadrunner.DualNum;
@@ -10,6 +10,7 @@ import com.acmerobotics.roadrunner.ftc.FlightRecorder;
 import com.acmerobotics.roadrunner.ftc.PositionVelocityPair;
 import com.acmerobotics.roadrunner.ftc.RawEncoder;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 @Config
@@ -32,6 +33,8 @@ public final class ThreeDeadWheelLocalizer implements Localizer {
         par0 = new RawEncoder(hardwareMap.get(DcMotorEx.class, "frontLeft"));
         par1 = new RawEncoder(hardwareMap.get(DcMotorEx.class, "backLeft"));
         perp = new RawEncoder(hardwareMap.get(DcMotorEx.class, "frontRight"));
+
+        perp.setDirection(DcMotorSimple.Direction.REVERSE);
 
         lastPar0Pos = par0.getPositionAndVelocity().position;
         lastPar1Pos = par1.getPositionAndVelocity().position;
