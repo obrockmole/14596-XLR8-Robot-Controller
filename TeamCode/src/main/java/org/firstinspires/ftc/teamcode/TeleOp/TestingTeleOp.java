@@ -1,22 +1,25 @@
 package org.firstinspires.ftc.teamcode.TeleOp;
 
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.teamcode.Systems.Gamepad.GamepadButtons;
 
 //@Disabled
 @TeleOp(group = "TeleOp", name = "Testing TeleOp")
 public class TestingTeleOp extends BaseTele {
-    public void loop() {
-        robot.standardDrive(driver.getStickY(GamepadButtons.Stick.LEFT_STICK), driver.getStickX(GamepadButtons.Stick.LEFT_STICK), driver.getStickX(GamepadButtons.Stick.RIGHT_STICK));
-        //robot.fieldCentricDrive(driver.getStickY(GamepadButtons.Stick.LEFT_STICK), driver.getStickX(GamepadButtons.Stick.LEFT_STICK), driver.getStickX(GamepadButtons.Stick.RIGHT_STICK));
+    double forward = 0, rightward = 0, rotational = 0;
 
-        driver.onPress(GamepadButtons.Button.DPAD_LEFT, () -> robot.getOdometry().toggleServoRetraction(0))
-                .onPress(GamepadButtons.Button.DPAD_RIGHT, () -> robot.getOdometry().toggleServoRetraction(1))
-                .onPress(GamepadButtons.Button.DPAD_UP, () -> robot.getOdometry().toggleServoRetraction(2))
-                .onPress(GamepadButtons.Button.A, () -> robot.getOdometry().extendAllPods())
-                .onPress(GamepadButtons.Button.B, () -> robot.getOdometry().retractAllPods())
-                .onPress(GamepadButtons.Button.X, () -> robot.getOdometry().toggleAllPods());
+    public void loop() {
+        forward = driver.getStickY(GamepadButtons.Stick.LEFT_STICK);
+        rightward = driver.getStickX(GamepadButtons.Stick.LEFT_STICK);
+        rotational = driver.getStickX(GamepadButtons.Stick.RIGHT_STICK);
+
+        if (inBackstage)
+            forward = Range.clip(forward, -1, 0);
+
+        robot.standardDrive(forward, rightward, rotational);
+        //robot.fieldCentricDrive(forward, rightward, rotational);
 
         updateSystems();
         logSystems();

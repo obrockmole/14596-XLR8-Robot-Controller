@@ -5,7 +5,6 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.Systems.Sensors.Encoder;
-import org.firstinspires.ftc.teamcode.Systems.Servos.PositionServo;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -76,65 +75,7 @@ public class Odometry extends ArrayList<OdometryPod> {
         return get(index).getCorrectedVelocity();
     }
 
-    public PositionServo getRetractionServo(int index) {
-        return get(index).getRetractionServo();
-    }
-
-    public Odometry setRetractionServo(PositionServo retractionServo, int index) {
-        get(index).setRetractionServo(retractionServo);
-        return this;
-    }
-
-    public Odometry setRetractionServo(HardwareMap hardwareMap, String name, int index) {
-        get(index).setRetractionServo(hardwareMap, name);
-        return this;
-    }
-
-    public Odometry extendServo(int index) {
-        get(index).extendServo();
-        return this;
-    }
-
-    public Odometry retractServo(int index) {
-        get(index).retractServo();
-        return this;
-    }
-
-    public Odometry toggleServoRetraction(int index) {
-        get(index).toggleServoRetraction();
-        return this;
-    }
-
-    public Odometry extendAllPods() {
-        for (OdometryPod pod : this) {
-            pod.extendServo();
-        }
-        return this;
-    }
-
-    public Odometry retractAllPods() {
-        for (OdometryPod pod : this) {
-            pod.retractServo();
-        }
-        return this;
-    }
-
-    public Odometry toggleAllPods() {
-        for (OdometryPod pod : this) {
-            pod.toggleServoRetraction();
-        }
-        return this;
-    }
-
-    public boolean isRetracted(int index) {
-        return get(index).isRetracted();
-    }
-
     public Odometry update() {
-        for (OdometryPod pod : this) {
-            pod.update();
-        }
-
         double distanceCal = 0.000528179599805;
 
         double lPos = getCurrentPosition(0);
