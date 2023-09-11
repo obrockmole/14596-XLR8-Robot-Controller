@@ -16,7 +16,7 @@ public class TestingTeleOp extends BaseTele {
         rotational = driver.getStickX(GamepadButtons.Stick.RIGHT_STICK);
 
         if (inBackstage)
-            forward = Range.clip(forward, -1, 0);
+            forward = Range.clip(forward, 0, 1);
 
         robot.standardDrive(forward, rightward, rotational);
         //robot.fieldCentricDrive(forward, rightward, rotational);

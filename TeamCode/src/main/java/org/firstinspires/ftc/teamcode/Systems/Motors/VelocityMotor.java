@@ -17,6 +17,7 @@ public class VelocityMotor {
 
     public VelocityMotor(DcMotorEx motor, MotorLookupTable motorType, boolean reversed) {
         this.motor = motor;
+        this.motor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         this.motor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         this.motorType = motorType;
         setReversed(reversed);

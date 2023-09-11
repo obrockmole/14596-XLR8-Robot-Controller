@@ -40,23 +40,26 @@ public class BaseTele extends OpMode {
         robot.update();
 
         ArrayList<AprilTagDetection> detections = aprilTagDetector.getDetections();
-        ArrayList<AprilTagDetection> backdropDetections = new ArrayList<AprilTagDetection>();
-        for (AprilTagDetection detection : detections) {
-            if (detection.metadata != null && detection.id >= 1 && detection.id <= 6) {
-                tagDetected = true;
-                backdropDetections.add(detection);
+        ArrayList<AprilTagDetection> backdropDetections = new ArrayList<>();
+        if (detections.size() > 0) {
+            for (AprilTagDetection detection : detections) {
+                if (detection.metadata != null && detection.id >= 1 && detection.id <= 6) {
+                    tagDetected = true;
+                    backdropDetections.add(detection);
+                }
             }
+        } else {
+            tagDetected = false;
         }
 
-        if (tagDetected) {
+        if (tagDetected && backdropDetections.size() > 0) {
             AprilTagDetection closestTag = backdropDetections.get(0);
             for (AprilTagDetection detection : backdropDetections) {
                 if (detection.ftcPose.range < closestTag.ftcPose.range)
                     closestTag = detection;
             }
 
-            if (closestTag.ftcPose.range < 8)
-                inBackstage = true;
+            inBackstage = closestTag.ftcPose.range < 6;
         }
     }
 

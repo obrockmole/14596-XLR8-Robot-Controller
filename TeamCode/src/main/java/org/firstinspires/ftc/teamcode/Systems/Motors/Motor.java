@@ -31,6 +31,7 @@ public class Motor {
 
     public Motor(DcMotorEx motor, MotorLookupTable motorType, Mode mode, int tolerance, boolean reversed) {
         this.motor = motor;
+        this.motor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         this.mode = mode;
         this.motorType = motorType;
         this.tolerance = tolerance;
