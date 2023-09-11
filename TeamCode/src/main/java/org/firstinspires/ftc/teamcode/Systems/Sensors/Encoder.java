@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.Systems.Sensors;
 
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -32,6 +33,10 @@ public class Encoder {
     private double lastUpdateTime;
 
     public Encoder(DcMotorEx motor, Direction direction) {
+        DcMotor.RunMode currentRunMode = motor.getMode();
+        motor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        motor.setMode(currentRunMode);
+
         this.motor = motor;
         this.direction = direction;
         stopwatch = new Stopwatch();

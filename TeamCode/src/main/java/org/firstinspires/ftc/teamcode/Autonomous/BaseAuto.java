@@ -26,7 +26,11 @@ public abstract class BaseAuto extends OpMode {
     }
 
     public void init() {
-        /*drive = new SampleMecanumDrive(hardwareMap);
+        /*stopwatch = new Stopwatch();
+
+        drive = new SampleMecanumDrive(hardwareMap);
+
+        initTrajectories();
 
         stateMachine = new StateMachineBuilder()
                 .state(States.START)
@@ -43,7 +47,6 @@ public abstract class BaseAuto extends OpMode {
                     stopwatch.restart();
                 })
                 .transition(() -> stopwatch.getTimeSeconds() > 6 && drive.isBusy(), States.FALLBACK2, () -> telemetry.addLine("Falling back!"))
-
 
 
                 .state(States.FALLBACK1, true)

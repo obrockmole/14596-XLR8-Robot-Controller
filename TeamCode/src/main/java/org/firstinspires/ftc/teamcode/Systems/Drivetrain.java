@@ -203,16 +203,16 @@ public class Drivetrain {
         telemetry.addData("Back Right Position", backRight.getCurrentPosition());
 
         telemetry.addLine();
-        telemetry.addLine("-----Odometry Positions-----");
+        telemetry.addLine("-----Odometry Pod Positions-----");
         telemetry.addData("Left Pod Position", odometry.getCurrentPosition(0));
         telemetry.addData("Right Pod Position", odometry.getCurrentPosition(1));
         telemetry.addData("Center Pod Position", odometry.getCurrentPosition(2));
 
         telemetry.addLine();
-        telemetry.addLine("-----Odometry Retraction-----");
-        telemetry.addData("Left Pod Retracted", odometry.isRetracted(0));
-        telemetry.addData("Right Pod Retracted", odometry.isRetracted(1));
-        telemetry.addData("Center Pod Retracted", odometry.isRetracted(2));
+        telemetry.addLine("-----Robot Position-----");
+        telemetry.addData("X (IN)", odometry.getXPosition());
+        telemetry.addData("Y (IN)", odometry.getYPosition());
+        telemetry.addData("Rotation (DEG)", odometry.getRotation() * 180 / Math.PI);
 
         telemetry.addLine();
         telemetry.addLine("-----IMU Headings-----");

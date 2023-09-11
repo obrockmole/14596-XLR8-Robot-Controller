@@ -75,6 +75,18 @@ public class Odometry extends ArrayList<OdometryPod> {
         return get(index).getCorrectedVelocity();
     }
 
+    public double getXPosition() {
+        return xPosition;
+    }
+
+    public double getYPosition() {
+        return yPosition;
+    }
+
+    public double getRotation() {
+        return rotation;
+    }
+
     public Odometry update() {
         double distanceCal = 0.000528179599805;
 
