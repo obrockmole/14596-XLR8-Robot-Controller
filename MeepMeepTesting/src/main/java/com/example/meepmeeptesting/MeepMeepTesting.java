@@ -1,6 +1,7 @@
 package com.example.meepmeeptesting;
 
 import com.acmerobotics.roadrunner.geometry.Pose2d;
+import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.noahbres.meepmeep.MeepMeep;
 import com.noahbres.meepmeep.roadrunner.DefaultBotBuilder;
 import com.noahbres.meepmeep.roadrunner.entity.RoadRunnerBotEntity;
@@ -10,14 +11,25 @@ public class MeepMeepTesting {
         MeepMeep meepMeep = new MeepMeep(800);
 
         RoadRunnerBotEntity myBot = new DefaultBotBuilder(meepMeep)
-                .setConstraints(75, 60, Math.toRadians(200), Math.toRadians(180), 15)
+                .setConstraints(70, 50, Math.toRadians(180), Math.toRadians(180), 16)
                 .followTrajectorySequence(drive ->
-                        drive.trajectorySequenceBuilder(new Pose2d(-40, 0, Math.toRadians(90)))
-                                //Drive in a circle
-                                .splineToSplineHeading(new Pose2d(0, 40, 0), 0)
-                                .splineToSplineHeading(new Pose2d(40, 0, Math.toRadians(270)), Math.toRadians(270))
-                                .splineToSplineHeading(new Pose2d(0, -40, Math.toRadians(180)), Math.toRadians(180))
-                                .splineToSplineHeading(new Pose2d(-40, 0, Math.toRadians(90)), Math.toRadians(90))
+                            drive.trajectorySequenceBuilder(new Pose2d(64, -36, Math.toRadians(180)))
+                                .lineToSplineHeading(new Pose2d(36, -40, Math.toRadians(90)))
+                                .lineTo(new Vector2d(24, -60))
+                                .waitSeconds(2)
+
+                                .splineToConstantHeading(new Vector2d(12, -40), Math.toRadians(90))
+                                .splineTo(new Vector2d(12, 24), Math.toRadians(90))
+                                .splineToLinearHeading(new Pose2d(36, 40, Math.toRadians(90)), Math.toRadians(0))
+                                .waitSeconds(3)
+
+                                .splineToLinearHeading(new Pose2d(12, 20, Math.toRadians(90)), Math.toRadians(-90))
+                                .lineTo(new Vector2d(12, -60))
+                                .waitSeconds(2)
+
+                                .splineTo(new Vector2d(12, 24), Math.toRadians(90))
+                                .splineToLinearHeading(new Pose2d(36, 40, Math.toRadians(90)), Math.toRadians(0))
+                                .waitSeconds(3)
                                 .build()
                 );
 
