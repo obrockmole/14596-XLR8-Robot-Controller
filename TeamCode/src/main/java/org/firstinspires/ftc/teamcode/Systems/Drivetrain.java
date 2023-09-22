@@ -7,7 +7,6 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.Systems.Motors.Motor;
 import org.firstinspires.ftc.teamcode.Systems.Odometry.Odometry;
 import org.firstinspires.ftc.teamcode.Systems.Odometry.OdometryPod;
-import org.firstinspires.ftc.teamcode.Systems.Sensors.BatteryVoltageSensor;
 import org.firstinspires.ftc.teamcode.Systems.Sensors.IMU;
 
 import java.util.ArrayList;
@@ -17,7 +16,6 @@ public class Drivetrain {
     private Motor frontLeft, backLeft, frontRight, backRight;
     private Odometry odometry;
     private IMU imu;
-    private BatteryVoltageSensor batteryVoltageSensor;
 
     private int speedScale = 1;
 
@@ -168,15 +166,6 @@ public class Drivetrain {
         return this;
     }
 
-    public BatteryVoltageSensor getBatteryVoltageSensor() {
-        return batteryVoltageSensor;
-    }
-
-    public Drivetrain setBatteryVoltageSensor(BatteryVoltageSensor batteryVoltageSensor) {
-        this.batteryVoltageSensor = batteryVoltageSensor;
-        return this;
-    }
-
     public Drivetrain update() {
         frontLeft.update();
         backLeft.update();
@@ -189,18 +178,11 @@ public class Drivetrain {
     }
 
     public Drivetrain log(Telemetry telemetry) {
-        telemetry.addLine("-----Motor Powers-----");
+        telemetry.addLine("-----Drive Motor Powers-----");
         telemetry.addData("Front Left Power", frontLeft.getPower());
         telemetry.addData("Back Left Power", backLeft.getPower());
         telemetry.addData("Front Right Power", frontRight.getPower());
         telemetry.addData("Back Right Power", backRight.getPower());
-
-        telemetry.addLine();
-        telemetry.addLine("-----Motor Positions-----");
-        telemetry.addData("Front Left Position", frontLeft.getCurrentPosition());
-        telemetry.addData("Back Left Position", backLeft.getCurrentPosition());
-        telemetry.addData("Front Right Position", frontRight.getCurrentPosition());
-        telemetry.addData("Back Right Position", backRight.getCurrentPosition());
 
         telemetry.addLine();
         telemetry.addLine("-----Odometry Pod Positions-----");
@@ -219,10 +201,6 @@ public class Drivetrain {
         telemetry.addData("Yaw", imu.getYawDegrees());
         telemetry.addData("Pitch", imu.getPitchDegrees());
         telemetry.addData("Roll", imu.getRollDegrees());
-
-        telemetry.addLine();
-        telemetry.addLine("-----Battery Voltage-----");
-        telemetry.addData("Voltage", batteryVoltageSensor.getBatteryVoltage());
 
         telemetry.addLine();
 
