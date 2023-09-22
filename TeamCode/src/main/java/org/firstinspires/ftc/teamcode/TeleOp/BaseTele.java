@@ -65,6 +65,7 @@ public class BaseTele extends OpMode {
 
     public void logSystems() {
         robot.log(telemetry);
+
         telemetry.addLine("-----Other-----");
         telemetry.addData("Runtime", getRuntime());
         telemetry.addData("In Backstage", inBackstage);

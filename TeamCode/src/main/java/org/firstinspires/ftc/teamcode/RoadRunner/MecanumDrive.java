@@ -48,21 +48,21 @@ import java.util.List;
 public final class MecanumDrive {
     public static class Params {
         // drive model parameters
-        public double inPerTick = 0;
-        public double lateralInPerTick = 1;
-        public double trackWidthTicks = 0;
+        public double inPerTick = 0.000528179599805;
+        public double lateralInPerTick = 0.0004167555401332256; //TODO: Update this value with the new inPerTick
+        public double trackWidthTicks = 26565.75492213009;
 
-        // feedforward parameters in tick units
-        public double kS = 0;
-        public double kV = 0;
-        public double kA = 0;
+        // feedforward parameters (in tick units)
+        public double kS = 1.8597831009618542;
+        public double kV = 0.0000728882027913431;
+        public double kA = 0.0000165;
 
-        // path profile parameters
+        // path profile parameters (in inches)
         public double maxWheelVel = 70;
         public double minProfileAccel = -30;
         public double maxProfileAccel = 50;
 
-        // turn profile parameters
+        // turn profile parameters (in radians)
         public double maxAngVel = Math.PI; // shared with path
         public double maxAngAccel = Math.PI;
 
@@ -186,8 +186,8 @@ public final class MecanumDrive {
         rightBack.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         rightFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
-        rightFront.setDirection(DcMotor.Direction.REVERSE);
-        rightBack.setDirection(DcMotor.Direction.REVERSE);
+        leftFront.setDirection(DcMotor.Direction.REVERSE);
+        leftBack.setDirection(DcMotor.Direction.REVERSE);
 
         imu = hardwareMap.get(IMU.class, "imu");
         IMU.Parameters parameters = new IMU.Parameters(new RevHubOrientationOnRobot(
@@ -204,7 +204,7 @@ public final class MecanumDrive {
 
     public void setDrivePowers(PoseVelocity2d powers) {
         MecanumKinematics.WheelVelocities<Time> wheelVels = new MecanumKinematics(1).inverse(
-                PoseVelocity2dDual.constant(powers, 1));
+                PoseVelocity2dDual.constant(powers, 1)); //TODO: The parameter passed in MecanumKinematics might need to be PARAMS.inPerTick * PARAMS.trackWidthTicks as defined on line 82
 
         double maxPowerMag = 1;
         for (DualNum<Time> power : wheelVels.all()) {

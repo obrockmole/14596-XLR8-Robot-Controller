@@ -10,7 +10,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Odometry extends ArrayList<OdometryPod> {
-    private double xPosition, yPosition, rotation, trackwidth;
+    private double xPosition, yPosition, rotation, trackwidth = 16;
+    private double lastLPos = 0, lastRPos = 0, lastPPos = 0;
 
     public Odometry(OdometryPod... pods) {
         super();
@@ -90,9 +91,13 @@ public class Odometry extends ArrayList<OdometryPod> {
     public Odometry update() {
         double distanceCal = 0.000528179599805;
 
-        double lPos = getCurrentPosition(0);
-        double rPos = getCurrentPosition(1);
-        double pPos = getCurrentPosition(2);
+        double lPos = getCurrentPosition(0) - lastLPos;
+        double rPos = getCurrentPosition(1) - lastRPos;
+        double pPos = getCurrentPosition(2) - lastPPos;
+
+        lastLPos += lPos;
+        lastRPos += rPos;
+        lastPPos += pPos;
 
         double xDelta = ((lPos + rPos + pPos) * distanceCal) / 3;
         double yDelta = ((lPos + rPos) * distanceCal) / 2;
