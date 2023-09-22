@@ -2,7 +2,10 @@ package org.firstinspires.ftc.teamcode.Autonomous;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.sfdev.assembly.state.StateMachine;
+import com.sfdev.assembly.state.StateMachineBuilder;
 
+import org.firstinspires.ftc.teamcode.RoadRunner.Drive.SampleMecanumDrive;
+import org.firstinspires.ftc.teamcode.RoadRunner.TrajectorySequence.TrajectorySequence;
 import org.firstinspires.ftc.teamcode.Systems.Robot;
 import org.firstinspires.ftc.teamcode.Systems.Stopwatch;
 
@@ -11,8 +14,8 @@ public abstract class BaseAuto extends OpMode {
     protected StateMachine stateMachine;
     protected Stopwatch stopwatch;
 
-    //protected SampleMecanumDrive drive;
-    //public TrajectorySequence sequence1, sequence2;
+    protected SampleMecanumDrive drive;
+    public TrajectorySequence sequence1, sequence2;
 
     enum States {
         START, END,
@@ -26,7 +29,7 @@ public abstract class BaseAuto extends OpMode {
     }
 
     public void init() {
-        /*stopwatch = new Stopwatch();
+        stopwatch = new Stopwatch();
 
         drive = new SampleMecanumDrive(hardwareMap);
 
@@ -68,11 +71,11 @@ public abstract class BaseAuto extends OpMode {
                     stopwatch.restart();
                     telemetry.addLine("Returning to main machine");
                 })
-                .build();*/
+                .build();
     }
 
     public void loop() {
-        //drive.update();
+        drive.update();
         stateMachine.update();
         telemetry.update();
     }
