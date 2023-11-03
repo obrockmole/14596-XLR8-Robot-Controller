@@ -31,8 +31,8 @@ public class Robot extends Drivetrain {
                 new Motor(hardwareMap, "backRight", MotorLookupTable.GOBILDA_435, Motor.Mode.POWER, false),
                 new Odometry(
                         new OdometryPod(new Encoder(hardwareMap, "frontLeft", Encoder.Direction.FORWARD)),
-                        new OdometryPod(new Encoder(hardwareMap, "backLeft", Encoder.Direction.FORWARD)),
-                        new OdometryPod(new Encoder(hardwareMap, "frontRight", Encoder.Direction.FORWARD))
+                        new OdometryPod(new Encoder(hardwareMap, "backRight", Encoder.Direction.FORWARD)),
+                        new OdometryPod(new Encoder(hardwareMap, "perpOdom", Encoder.Direction.FORWARD))
                 ),
                 new IMU(hardwareMap, "imu", new Parameters(new RevHubOrientationOnRobot(LogoFacingDirection.UP, UsbFacingDirection.FORWARD)))
        );

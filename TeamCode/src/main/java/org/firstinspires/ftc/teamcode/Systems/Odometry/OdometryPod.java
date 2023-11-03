@@ -44,18 +44,9 @@ public class OdometryPod {
         return encoder.getCurrentPosition();
     }
 
-    public double getRawVelocity() {
-        return encoder.getRawVelocity();
-    }
-
-    public double getCorrectedVelocity() {
-        return encoder.getCorrectedVelocity();
-    }
-
     public OdometryPod log(Telemetry telemetry, HardwareMap hardwareMap) {
-        telemetry.addData("Encoder", hardwareMap.getNamesOf(encoder.getMotor()).toArray()[0]);
+        telemetry.addData("Encoder", hardwareMap.getNamesOf(getEncoderMotor()).toArray()[0]);
         telemetry.addData("Encoder Position", getCurrentPosition());
-        telemetry.addData("Encoder Velocity", getCorrectedVelocity());
         return this;
     }
 }

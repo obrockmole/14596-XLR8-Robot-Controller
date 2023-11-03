@@ -58,15 +58,15 @@ public class ColorSensor {
         return rgbaValues[3];
     }
 
-    public float getHue() {
+    public double getHue() {
         return hsvValues[0];
     }
 
-    public float getSaturation() {
+    public double getSaturation() {
         return hsvValues[1];
     }
 
-    public float getValue() {
+    public double getValue() {
         return hsvValues[2];
     }
 

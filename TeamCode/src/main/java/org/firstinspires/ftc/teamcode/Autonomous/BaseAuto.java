@@ -4,17 +4,22 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.sfdev.assembly.state.StateMachine;
 import com.sfdev.assembly.state.StateMachineBuilder;
 
-import org.firstinspires.ftc.teamcode.RoadRunner.Drive.SampleMecanumDrive;
+import org.firstinspires.ftc.teamcode.RoadRunner.Drive.MecanumDrive;
 import org.firstinspires.ftc.teamcode.RoadRunner.TrajectorySequence.TrajectorySequence;
+import org.firstinspires.ftc.teamcode.Systems.AutoMenu.Menu;
+import org.firstinspires.ftc.teamcode.Systems.AutoMenu.MenuItem;
 import org.firstinspires.ftc.teamcode.Systems.Robot;
 import org.firstinspires.ftc.teamcode.Systems.Stopwatch;
+import org.firstinspires.ftc.teamcode.Systems.Gamepad.GamepadButtons.Button;
+
+import java.util.HashMap;
 
 public abstract class BaseAuto extends OpMode {
     protected Robot robot;
     protected StateMachine stateMachine;
     protected Stopwatch stopwatch;
 
-    protected SampleMecanumDrive drive;
+    protected MecanumDrive drive;
     public TrajectorySequence sequence1, sequence2;
 
     enum States {
@@ -23,15 +28,10 @@ public abstract class BaseAuto extends OpMode {
         FALLBACK1, FALLBACK2
     }
 
-    public void start() {
-        stopwatch.start();
-        stateMachine.start();
-    }
-
     public void init() {
         stopwatch = new Stopwatch();
 
-        drive = new SampleMecanumDrive(hardwareMap);
+        drive = new MecanumDrive(hardwareMap);
 
         initTrajectories();
 
@@ -72,6 +72,11 @@ public abstract class BaseAuto extends OpMode {
                     telemetry.addLine("Returning to main machine");
                 })
                 .build();
+    }
+
+    public void start() {
+        stopwatch.start();
+        stateMachine.start();
     }
 
     public void loop() {

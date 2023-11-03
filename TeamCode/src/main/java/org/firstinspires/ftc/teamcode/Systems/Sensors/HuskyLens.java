@@ -10,7 +10,7 @@ import java.util.concurrent.TimeUnit;
 public class HuskyLens {
     private com.qualcomm.hardware.dfrobot.HuskyLens huskyLens;
     private com.qualcomm.hardware.dfrobot.HuskyLens.Algorithm algorithm;
-    private Deadline rateLimit;
+    private final Deadline rateLimit;
 
     private com.qualcomm.hardware.dfrobot.HuskyLens.Block[] blocks;
     private com.qualcomm.hardware.dfrobot.HuskyLens.Arrow[] arrows;
@@ -71,8 +71,8 @@ public class HuskyLens {
         return this;
     }
 
-    public HuskyLens log(Telemetry telemetry) {
-        telemetry.addData("Sensor", huskyLens.getDeviceName());
+    public HuskyLens log(Telemetry telemetry, HardwareMap hardwareMap) {
+        telemetry.addData("Sensor", hardwareMap.getNamesOf(huskyLens).toArray()[0]);
         telemetry.addData("Algorithm", getAlgorithm().toString());
         telemetry.addData(algorithm == com.qualcomm.hardware.dfrobot.HuskyLens.Algorithm.LINE_TRACKING ? "# of Arrows" : "# of Blocks", algorithm == com.qualcomm.hardware.dfrobot.HuskyLens.Algorithm.LINE_TRACKING ? getArrows().length : getBlocks().length);
         return this;

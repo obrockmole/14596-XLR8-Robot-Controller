@@ -5,7 +5,10 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
-import org.firstinspires.ftc.teamcode.RoadRunner.Drive.SampleMecanumDrive;
+import org.firstinspires.ftc.teamcode.RoadRunner.Drive.MecanumDrive;
+import org.firstinspires.ftc.teamcode.Systems.Odometry.Odometry;
+import org.firstinspires.ftc.teamcode.Systems.Odometry.OdometryPod;
+import org.firstinspires.ftc.teamcode.Systems.Sensors.Encoder;
 
 /**
  * This is a simple teleop routine for testing localization. Drive the robot around like a normal
@@ -18,7 +21,12 @@ import org.firstinspires.ftc.teamcode.RoadRunner.Drive.SampleMecanumDrive;
 public class LocalizationTest extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
-        SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
+        MecanumDrive drive = new MecanumDrive(hardwareMap);
+        Odometry odometry = new Odometry(
+                new OdometryPod(new Encoder(hardwareMap, "frontLeft", Encoder.Direction.FORWARD)),
+                new OdometryPod(new Encoder(hardwareMap, "backRight", Encoder.Direction.FORWARD)),
+                new OdometryPod(new Encoder(hardwareMap, "perpOdom", Encoder.Direction.FORWARD))
+        );
 
         drive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
@@ -34,11 +42,16 @@ public class LocalizationTest extends LinearOpMode {
             );
 
             drive.update();
+            odometry.update();
 
             Pose2d poseEstimate = drive.getPoseEstimate();
             telemetry.addData("x", poseEstimate.getX());
             telemetry.addData("y", poseEstimate.getY());
             telemetry.addData("heading", poseEstimate.getHeading());
+            telemetry.addLine();
+            telemetry.addData("left", odometry.getCurrentPosition(0));
+            telemetry.addData("right", odometry.getCurrentPosition(1));
+            telemetry.addData("perp", odometry.getCurrentPosition(2));
             telemetry.update();
         }
     }

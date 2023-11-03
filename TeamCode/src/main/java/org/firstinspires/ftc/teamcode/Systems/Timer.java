@@ -2,20 +2,20 @@ package org.firstinspires.ftc.teamcode.Systems;
 
 public class Timer {
     private Stopwatch stopwatch;
-    private float length;
+    private double length;
     private Runnable action;
 
-    public Timer(float length, Runnable action) {
+    public Timer(double length, Runnable action) {
         stopwatch = new Stopwatch();
         this.length = length;
         this.action = action;
     }
 
-    public float getLength() {
+    public double getLength() {
         return length;
     }
 
-    public void setLength(float length) {
+    public void setLength(double length) {
         this.length = length;
     }
 
@@ -47,11 +47,11 @@ public class Timer {
         stopwatch.restart();
     }
 
-    public float getTimeLeft() {
+    public double getTimeLeft() {
         return length - stopwatch.getTime();
     }
 
-    public float getTimeLeftSeconds() {
+    public double getTimeLeftSeconds() {
         return getTimeLeft() / 1000;
     }
 

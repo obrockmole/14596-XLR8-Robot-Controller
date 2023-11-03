@@ -18,7 +18,7 @@ public class VisionHuskyLensTag_Sample extends OpMode {
     @Override
     public void loop() {
         huskyLens.update();
-        huskyLens.log(telemetry);
+        huskyLens.log(telemetry, hardwareMap);
 
         telemetry.addLine();
         telemetry.addLine();

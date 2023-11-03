@@ -68,14 +68,6 @@ public class Odometry extends ArrayList<OdometryPod> {
         return get(index).getCurrentPosition();
     }
 
-    public double getRawVelocity(int index) {
-        return get(index).getRawVelocity();
-    }
-
-    public double getCorrectedVelocity(int index) {
-        return get(index).getCorrectedVelocity();
-    }
-
     public double getXPosition() {
         return xPosition;
     }
@@ -86,6 +78,10 @@ public class Odometry extends ArrayList<OdometryPod> {
 
     public double getRotation() {
         return rotation;
+    }
+
+    public double getRotationDegrees() {
+        return rotation * 180 / Math.PI;
     }
 
     public Odometry update() {
@@ -115,6 +111,7 @@ public class Odometry extends ArrayList<OdometryPod> {
             pod.log(telemetry, hardwareMap);
             telemetry.addLine();
         }
+
         telemetry.addLine();
         telemetry.addData("X Position", xPosition);
         telemetry.addData("Y Position", yPosition);

@@ -10,13 +10,16 @@ import org.openftc.easyopencv.OpenCvPipeline;
 import java.util.ArrayList;
 
 public class AprilTagDetectionPipeline extends OpenCvPipeline {
-    private Mat gray = new Mat();
-    private Scalar blue = new Scalar(7,197,235,255);
+    private final Mat gray = new Mat();
+    private final Scalar blue = new Scalar(7, 197, 235, 255);
 
     private long detectorPointer;
 
-    private double fx, fy, cx, cy;
-    private double tagsize; // Units in meters
+    private final double fx;
+    private final double fy;
+    private final double cx;
+    private final double cy;
+    private final double tagsize; // Units in meters
 
     private float decimation;
     private boolean needToSetDecimation;
@@ -36,8 +39,7 @@ public class AprilTagDetectionPipeline extends OpenCvPipeline {
         detectorPointer = AprilTagDetectorJNI.createApriltagDetector(AprilTagDetectorJNI.TagFamily.TAG_36h11.string, 3, 3);
     }
 
-    @Override
-    public void finalize() {
+    protected void finalize() {
         if (detectorPointer != 0) {
             AprilTagDetectorJNI.releaseApriltagDetector(detectorPointer);
             detectorPointer = 0;
@@ -46,7 +48,6 @@ public class AprilTagDetectionPipeline extends OpenCvPipeline {
         }
     }
 
-    @Override
     public Mat processFrame(Mat input) {
         Imgproc.cvtColor(input, gray, Imgproc.COLOR_RGB2GRAY);
 

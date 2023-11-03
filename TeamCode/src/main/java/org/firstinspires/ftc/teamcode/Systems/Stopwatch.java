@@ -1,7 +1,7 @@
 package org.firstinspires.ftc.teamcode.Systems;
 
 public class Stopwatch {
-    private float startTime, endTime;
+    private double startTime, endTime;
     private boolean running;
 
     public Stopwatch() {}
@@ -31,22 +31,22 @@ public class Stopwatch {
         running = true;
     }
 
-    public float getTime() {
+    public double getTime() {
         if (running)
             return (int)((System.nanoTime() - startTime) / 1000000);
         else
             return (int)((endTime - startTime) / 1000000);
     }
 
-    public float getTimeSeconds() {
+    public double getTimeSeconds() {
         return getTime() / 1000;
     }
 
-    public float getStartTime() {
+    public double getStartTime() {
         return startTime;
     }
 
-    public float getEndTime() {
+    public double getEndTime() {
         return endTime;
     }
 

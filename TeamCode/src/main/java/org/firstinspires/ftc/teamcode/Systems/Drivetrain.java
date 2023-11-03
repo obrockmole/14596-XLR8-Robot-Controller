@@ -20,7 +20,7 @@ public class Drivetrain {
     private int speedScale = 1;
 
     public Drivetrain(Motor frontLeft, Motor backLeft, Motor frontRight, Motor backRight, Odometry odometry, IMU imu) {
-        this.frontLeft = frontLeft;
+        this.frontLeft = frontLeft.setReversed(true);
         this.backLeft = backLeft;
         this.frontRight = frontRight;
         this.backRight = backRight;
@@ -194,7 +194,7 @@ public class Drivetrain {
         telemetry.addLine("-----Robot Position-----");
         telemetry.addData("X (IN)", odometry.getXPosition());
         telemetry.addData("Y (IN)", odometry.getYPosition());
-        telemetry.addData("Rotation (DEG)", odometry.getRotation() * 180 / Math.PI);
+        telemetry.addData("Rotation (DEG)", odometry.getRotationDegrees());
 
         telemetry.addLine();
         telemetry.addLine("-----IMU Headings-----");

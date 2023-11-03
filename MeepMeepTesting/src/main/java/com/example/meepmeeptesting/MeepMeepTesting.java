@@ -11,29 +11,53 @@ public class MeepMeepTesting {
         MeepMeep meepMeep = new MeepMeep(800);
 
         RoadRunnerBotEntity myBot = new DefaultBotBuilder(meepMeep)
-                .setConstraints(70, 50, Math.toRadians(180), Math.toRadians(180), 16)
+                .setConstraints(65, 50, Math.toRadians(120), Math.toRadians(120), 16)
                 .followTrajectorySequence(drive ->
-                            drive.trajectorySequenceBuilder(new Pose2d(64, -36, Math.toRadians(180)))
-                                .lineToSplineHeading(new Pose2d(36, -40, Math.toRadians(90)))
-                                .lineTo(new Vector2d(24, -60))
-                                .waitSeconds(2)
+                            drive.trajectorySequenceBuilder(new Pose2d(-36, -64, Math.toRadians(90)))
+                                //Place purple pixel
+                                .lineToSplineHeading(new Pose2d(-36, -36, Math.toRadians(0)))
 
-                                .splineToConstantHeading(new Vector2d(12, -40), Math.toRadians(90))
-                                .splineTo(new Vector2d(12, 24), Math.toRadians(90))
-                                .splineToLinearHeading(new Pose2d(36, 40, Math.toRadians(90)), Math.toRadians(0))
-                                .waitSeconds(3)
+                                //Pick up white pixel from stack (Cycle one)
+                                .setTangent(Math.toRadians(90))
+                                .splineToConstantHeading(new Vector2d(-60, -12), Math.toRadians(180))
+                                .waitSeconds(1)
 
-                                .splineToLinearHeading(new Pose2d(12, 20, Math.toRadians(90)), Math.toRadians(-90))
-                                .lineTo(new Vector2d(12, -60))
-                                .waitSeconds(2)
+                                //Drive to backboard and place yellow and white pixel (Cycle one)
+                                .setTangent(Math.toRadians(0))
+                                .splineToConstantHeading(new Vector2d(-32, -12), Math.toRadians(0))
+                                .splineTo(new Vector2d(24, -12), Math.toRadians(0))
+                                .splineToLinearHeading(new Pose2d(40, -32, Math.toRadians(0)), Math.toRadians(-90))
+                                .waitSeconds(1)
 
-                                .splineTo(new Vector2d(12, 24), Math.toRadians(90))
-                                .splineToLinearHeading(new Pose2d(36, 40, Math.toRadians(90)), Math.toRadians(0))
-                                .waitSeconds(3)
+                                //Drive to stack and pick up two white pixels (Cycle two)
+                                .setTangent(Math.toRadians(90))
+                                .splineToLinearHeading(new Pose2d(24, -12, Math.toRadians(0)), Math.toRadians(180))
+                                .lineTo(new Vector2d(-60, -12))
+                                .waitSeconds(1)
+
+                                //Drive to backboard and place two white pixels (Cycle two)
+                                .lineTo(new Vector2d(24, -12))
+                                .splineToLinearHeading(new Pose2d(40, -32, Math.toRadians(0)), Math.toRadians(-90))
+                                .waitSeconds(1)
+
+                                //Drive to stack and pick up two white pixels (Cycle three)
+                                .setTangent(Math.toRadians(90))
+                                .splineToLinearHeading(new Pose2d(24, -12, Math.toRadians(0)), Math.toRadians(180))
+                                .lineTo(new Vector2d(-60, -12))
+                                .waitSeconds(1)
+
+                                //Drive to backboard and place two white pixels (Cycle three)
+                                .lineTo(new Vector2d(24, -12))
+                                .splineToLinearHeading(new Pose2d(40, -32, Math.toRadians(0)), Math.toRadians(-90))
+                                .waitSeconds(1)
+
+                                //Park
+                                .lineTo(new Vector2d(44, -12))
+
                                 .build()
                 );
 
-        meepMeep.setBackground(MeepMeep.Background.FIELD_POWERPLAY_OFFICIAL)
+        meepMeep.setBackground(MeepMeep.Background.FIELD_CENTERSTAGE_JUICE_DARK)
                 .setDarkMode(true)
                 .setBackgroundAlpha(0.9f)
                 .addEntity(myBot)

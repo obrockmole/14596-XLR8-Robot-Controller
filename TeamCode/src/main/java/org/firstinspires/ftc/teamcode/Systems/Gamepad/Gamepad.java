@@ -158,19 +158,19 @@ public class Gamepad {
         return gamepadTouchpad.get(finger).getPositionDelta();
     }
 
-    public float getFingerX(TouchpadFinger finger) {
+    public double getFingerX(TouchpadFinger finger) {
         return gamepadTouchpad.get(finger).getX();
     }
 
-    public float getFingerXDelta(TouchpadFinger finger) {
+    public double getFingerXDelta(TouchpadFinger finger) {
         return gamepadTouchpad.get(finger).getXDelta();
     }
 
-    public float getFingerY(TouchpadFinger finger) {
+    public double getFingerY(TouchpadFinger finger) {
         return gamepadTouchpad.get(finger).getY();
     }
 
-    public float getFingerYDelta(TouchpadFinger finger) {
+    public double getFingerYDelta(TouchpadFinger finger) {
         return gamepadTouchpad.get(finger).getYDelta();
     }
 
@@ -336,9 +336,8 @@ public class Gamepad {
         return this;
     }
 
-    public Gamepad runRumbleEffect(RumbleEffect effect) {
+    public void runRumbleEffect(RumbleEffect effect) {
         gamepad.runRumbleEffect(effect.build());
-        return this;
     }
 
     public Gamepad stopRumble() {
@@ -375,9 +374,8 @@ public class Gamepad {
         return ledFlash(r, g, b, count, 250, 100);
     }
 
-    public Gamepad runLEDEffect(LEDEffect effect) {
+    public void runLEDEffect(LEDEffect effect) {
         gamepad.runLedEffect(effect.build());
-        return this;
     }
 
     public void update() {

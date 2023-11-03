@@ -38,8 +38,8 @@ public class TouchpadHandler {
         return new Vector2D(getXDelta(), getYDelta());
     }
 
-    public float getX() {
-        float fingerX = 0;
+    public double getX() {
+        double fingerX = 0;
         if (isDown()) switch (finger) {
             case FINGER_1:
                 fingerX = gamepad.getGamepad().touchpad_finger_1_x;
@@ -53,12 +53,12 @@ public class TouchpadHandler {
         return fingerX;
     }
 
-    public float getXDelta() {
-        return (float) (currentPos.getX() - previousPos.getX());
+    public double getXDelta() {
+        return currentPos.getX() - previousPos.getX();
     }
 
-    public float getY() {
-        float fingerY = 0;
+    public double getY() {
+        double fingerY = 0;
         if (isDown()) switch (finger) {
             case FINGER_1:
                 fingerY = gamepad.getGamepad().touchpad_finger_1_y;
@@ -72,8 +72,8 @@ public class TouchpadHandler {
         return fingerY;
     }
 
-    public float getYDelta() {
-        return (float) (currentPos.getY() - previousPos.getY());
+    public double getYDelta() {
+        return currentPos.getY() - previousPos.getY();
     }
 
     public boolean isDown() {

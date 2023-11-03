@@ -12,12 +12,6 @@ public class ButtonHandler {
         previousState = currentState;
     }
 
-    public ButtonHandler(BooleanSupplier button) {
-        this.button = button;
-        currentState = this.button.getAsBoolean();
-        previousState = currentState;
-    }
-
     public boolean isDown() {
         return button.getAsBoolean();
     }
