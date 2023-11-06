@@ -28,6 +28,7 @@ public class Drivetrain {
         this.odometry = odometry;
 
         this.imu = imu;
+        resetIMUYaw();
     }
 
     public Motor getFrontLeft() {
@@ -172,8 +173,6 @@ public class Drivetrain {
         frontRight.update();
         backRight.update();
 
-        odometry.update();
-
         return this;
     }
 
@@ -189,12 +188,6 @@ public class Drivetrain {
         telemetry.addData("Left Pod Position", odometry.getCurrentPosition(0));
         telemetry.addData("Right Pod Position", odometry.getCurrentPosition(1));
         telemetry.addData("Center Pod Position", odometry.getCurrentPosition(2));
-
-        telemetry.addLine();
-        telemetry.addLine("-----Robot Position-----");
-        telemetry.addData("X (IN)", odometry.getXPosition());
-        telemetry.addData("Y (IN)", odometry.getYPosition());
-        telemetry.addData("Rotation (DEG)", odometry.getRotationDegrees());
 
         telemetry.addLine();
         telemetry.addLine("-----IMU Headings-----");

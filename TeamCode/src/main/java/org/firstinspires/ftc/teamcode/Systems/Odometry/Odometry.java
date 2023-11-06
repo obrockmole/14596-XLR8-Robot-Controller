@@ -10,10 +10,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Odometry extends ArrayList<OdometryPod> {
-    private double xPosition, yPosition, rotation, trackwidth = 16;
-    private double lastLPos = 0, lastRPos = 0, lastPPos = 0;
-
-    public Odometry(OdometryPod... pods) {
+   public Odometry(OdometryPod... pods) {
         super();
         this.addAll(Arrays.asList(pods));
     }
@@ -68,54 +65,11 @@ public class Odometry extends ArrayList<OdometryPod> {
         return get(index).getCurrentPosition();
     }
 
-    public double getXPosition() {
-        return xPosition;
-    }
-
-    public double getYPosition() {
-        return yPosition;
-    }
-
-    public double getRotation() {
-        return rotation;
-    }
-
-    public double getRotationDegrees() {
-        return rotation * 180 / Math.PI;
-    }
-
-    public Odometry update() {
-        double distanceCal = 0.000528179599805;
-
-        double lPos = getCurrentPosition(0) - lastLPos;
-        double rPos = getCurrentPosition(1) - lastRPos;
-        double pPos = getCurrentPosition(2) - lastPPos;
-
-        lastLPos += lPos;
-        lastRPos += rPos;
-        lastPPos += pPos;
-
-        double xDelta = ((lPos + rPos + pPos) * distanceCal) / 3;
-        double yDelta = ((lPos + rPos) * distanceCal) / 2;
-        double rDelta = ((lPos - rPos) * distanceCal) / trackwidth;
-
-        rotation += rDelta;
-        xPosition += yDelta * Math.cos(rotation) - xDelta * Math.sin(rotation);
-        yPosition += yDelta * Math.sin(rotation) + xDelta * Math.cos(rotation);
-
-        return this;
-    }
-
     public Odometry log(Telemetry telemetry, HardwareMap hardwareMap) {
         for (OdometryPod pod : this) {
             pod.log(telemetry, hardwareMap);
             telemetry.addLine();
         }
-
-        telemetry.addLine();
-        telemetry.addData("X Position", xPosition);
-        telemetry.addData("Y Position", yPosition);
-        telemetry.addData("Rotation (degrees)", rotation * 180 / Math.PI);
         return this;
     }
 }

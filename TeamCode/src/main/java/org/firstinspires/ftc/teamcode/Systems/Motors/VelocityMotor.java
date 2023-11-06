@@ -9,22 +9,20 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 public class VelocityMotor {
     DcMotorEx motor;
-    MotorLookupTable motorType;
 
     double targetVelocity = 0;
 
     boolean reversed = false;
 
-    public VelocityMotor(DcMotorEx motor, MotorLookupTable motorType, boolean reversed) {
+    public VelocityMotor(DcMotorEx motor, boolean reversed) {
         this.motor = motor;
         this.motor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         this.motor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        this.motorType = motorType;
         setReversed(reversed);
     }
 
-    public VelocityMotor(HardwareMap hardwareMap, String name, MotorLookupTable motorType, boolean reversed) {
-        this(hardwareMap.get(DcMotorEx.class, name), motorType, reversed);
+    public VelocityMotor(HardwareMap hardwareMap, String name, boolean reversed) {
+        this(hardwareMap.get(DcMotorEx.class, name), reversed);
     }
 
     public DcMotorEx getMotor() {
@@ -38,15 +36,6 @@ public class VelocityMotor {
 
     public VelocityMotor setMotor(HardwareMap hardwareMap, String name) {
         this.motor = hardwareMap.get(DcMotorEx.class, name);
-        return this;
-    }
-
-    public MotorLookupTable getMotorType() {
-        return motorType;
-    }
-
-    public VelocityMotor setMotorType(MotorLookupTable motorType) {
-        this.motorType = motorType;
         return this;
     }
 
@@ -87,34 +76,6 @@ public class VelocityMotor {
 
     public double getVelocityError() {
         return Math.abs(targetVelocity - getVelocity());
-    }
-
-    public int getFreeRPM() {
-        return motorType.freeRPM;
-    }
-
-    public double getRPM() {
-        return motorType.RPM;
-    }
-
-    public double getTicksPerRotation() {
-        return motorType.TPR;
-    }
-
-    public double getTicksPerDegree() {
-        return motorType.TPD;
-    }
-
-    public double getTicksPerSecond() {
-        return motorType.TPS;
-    }
-
-    public double getGearRatio() {
-        return motorType.gearRatio;
-    }
-
-    public int getEncoderResolution() {
-        return motorType.resolution;
     }
 
     public PIDFCoefficients getPIDF() {

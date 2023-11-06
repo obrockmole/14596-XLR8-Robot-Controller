@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.TeleOp;
+package org.firstinspires.ftc.teamcode.CenterStage.TeleOp;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -20,7 +20,6 @@ public class EncoderTest extends OpMode {
     }
 
     public void loop() {
-        odometry.update()
-                .log(telemetry, hardwareMap);
+        odometry.log(telemetry, hardwareMap);
     }
 }

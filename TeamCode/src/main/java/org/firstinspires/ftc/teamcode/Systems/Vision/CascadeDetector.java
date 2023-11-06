@@ -8,10 +8,10 @@ import org.openftc.easyopencv.OpenCvCameraFactory;
 
 public class CascadeDetector {
     private CascadeDetectionPipeline pipeline;
-    private WebcamName webcamName;
-    private OpenCvCamera camera;
-    private int cameraMonitorViewId;
-    private String cascadeFile;
+    private final WebcamName webcamName;
+    private final OpenCvCamera camera;
+    private final int cameraMonitorViewId;
+    private final String cascadeFile;
 
     public CascadeDetector(HardwareMap hardwareMap, String cameraName, String cascadeFile) {
         this(hardwareMap, hardwareMap.get(WebcamName.class, cameraName), cascadeFile);

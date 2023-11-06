@@ -1,6 +1,6 @@
 package org.firstinspires.ftc.teamcode.Systems.Motors;
 
-public enum MotorLookupTable {
+public enum MotorList {
     /* Gobilda motors are named by RPM */
     GOBILDA_6000(6000, 1, 28),
     GOBILDA_1620(6000, 1 + (46.0 / 17.0), 28),
@@ -48,7 +48,7 @@ public enum MotorLookupTable {
     public final double gearRatio;
     public final int resolution;
 
-    MotorLookupTable(int freeRPM, double gearRatio, int resolution) {
+    MotorList(int freeRPM, double gearRatio, int resolution) {
         this.freeRPM = freeRPM;
         this.RPM = freeRPM / gearRatio;
         this.TPR = gearRatio * resolution;
@@ -58,7 +58,7 @@ public enum MotorLookupTable {
         this.resolution = resolution;
     }
 
-    MotorLookupTable(MotorLookupTable motorType) {
-        this(motorType.freeRPM, motorType.gearRatio, motorType.resolution);
+    MotorList(MotorList motor) {
+        this(motor.freeRPM, motor.gearRatio, motor.resolution);
     }
 }

@@ -12,9 +12,9 @@ import java.util.ArrayList;
 
 public class ContourDetector {
     private ContourDetectionPipeline pipeline;
-    private WebcamName webcamName;
-    private OpenCvCamera camera;
-    private int cameraMonitorViewId;
+    private final WebcamName webcamName;
+    private final OpenCvCamera camera;
+    private final int cameraMonitorViewId;
 
     public ContourDetector(HardwareMap hardwareMap, String cameraName) {
         this(hardwareMap, hardwareMap.get(WebcamName.class, cameraName));

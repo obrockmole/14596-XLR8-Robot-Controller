@@ -9,6 +9,8 @@ import org.firstinspires.ftc.teamcode.RoadRunner.Drive.MecanumDrive;
 /*
  * This is a simple routine to test turning capabilities.
  */
+
+//@Disabled
 @Config
 @Autonomous(group = "roadrunner")
 public class TurnTest extends LinearOpMode {

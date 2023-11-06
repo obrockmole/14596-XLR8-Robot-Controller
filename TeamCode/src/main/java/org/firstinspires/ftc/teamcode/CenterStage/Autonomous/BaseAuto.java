@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.Autonomous;
+package org.firstinspires.ftc.teamcode.CenterStage.Autonomous;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.sfdev.assembly.state.StateMachine;
@@ -6,13 +6,8 @@ import com.sfdev.assembly.state.StateMachineBuilder;
 
 import org.firstinspires.ftc.teamcode.RoadRunner.Drive.MecanumDrive;
 import org.firstinspires.ftc.teamcode.RoadRunner.TrajectorySequence.TrajectorySequence;
-import org.firstinspires.ftc.teamcode.Systems.AutoMenu.Menu;
-import org.firstinspires.ftc.teamcode.Systems.AutoMenu.MenuItem;
-import org.firstinspires.ftc.teamcode.Systems.Robot;
+import org.firstinspires.ftc.teamcode.CenterStage.Robot;
 import org.firstinspires.ftc.teamcode.Systems.Stopwatch;
-import org.firstinspires.ftc.teamcode.Systems.Gamepad.GamepadButtons.Button;
-
-import java.util.HashMap;
 
 public abstract class BaseAuto extends OpMode {
     protected Robot robot;

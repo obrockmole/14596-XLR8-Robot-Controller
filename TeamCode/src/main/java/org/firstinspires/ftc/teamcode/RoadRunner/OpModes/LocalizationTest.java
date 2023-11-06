@@ -17,16 +17,13 @@ import org.firstinspires.ftc.teamcode.Systems.Sensors.Encoder;
  * exercise is to ascertain whether the localizer has been configured properly (note: the pure
  * encoder localizer heading may be significantly off if the track width has not been tuned).
  */
+
+//@Disabled
 @TeleOp(group = "roadrunner")
 public class LocalizationTest extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
         MecanumDrive drive = new MecanumDrive(hardwareMap);
-        Odometry odometry = new Odometry(
-                new OdometryPod(new Encoder(hardwareMap, "frontLeft", Encoder.Direction.FORWARD)),
-                new OdometryPod(new Encoder(hardwareMap, "backRight", Encoder.Direction.FORWARD)),
-                new OdometryPod(new Encoder(hardwareMap, "perpOdom", Encoder.Direction.FORWARD))
-        );
 
         drive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
@@ -42,16 +39,11 @@ public class LocalizationTest extends LinearOpMode {
             );
 
             drive.update();
-            odometry.update();
 
             Pose2d poseEstimate = drive.getPoseEstimate();
             telemetry.addData("x", poseEstimate.getX());
             telemetry.addData("y", poseEstimate.getY());
             telemetry.addData("heading", poseEstimate.getHeading());
-            telemetry.addLine();
-            telemetry.addData("left", odometry.getCurrentPosition(0));
-            telemetry.addData("right", odometry.getCurrentPosition(1));
-            telemetry.addData("perp", odometry.getCurrentPosition(2));
             telemetry.update();
         }
     }

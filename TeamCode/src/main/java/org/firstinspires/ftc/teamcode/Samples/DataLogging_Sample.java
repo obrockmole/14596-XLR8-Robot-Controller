@@ -9,7 +9,7 @@ import org.firstinspires.ftc.teamcode.Systems.DataLogger;
 import org.firstinspires.ftc.teamcode.Systems.Gamepad.Gamepad;
 import org.firstinspires.ftc.teamcode.Systems.Gamepad.GamepadButtons.Button;
 import org.firstinspires.ftc.teamcode.Systems.Motors.Motor;
-import org.firstinspires.ftc.teamcode.Systems.Motors.MotorLookupTable;
+import org.firstinspires.ftc.teamcode.Systems.Motors.MotorList;
 import org.firstinspires.ftc.teamcode.Systems.Stopwatch;
 
 @Disabled
@@ -27,7 +27,7 @@ public class DataLogging_Sample extends OpMode {
     public void init() {
         gamepad =  new Gamepad(gamepad1); //Initialize custom gamepad
 
-        motor = new Motor(hardwareMap, "motor", MotorLookupTable.GOBILDA_435, Motor.Mode.POSITION, 10, false); //Initialize custom motor
+        motor = new Motor(hardwareMap, "motor", MotorList.GOBILDA_435, Motor.Mode.POSITION, 10, false); //Initialize custom motor
         positions = new int[]{0, 400, 750, 1200}; //Define list of positions to switch between
 
         motor.setPIDF(0.05, 0, 0.001, 0.2) //Set PIDF coefficients

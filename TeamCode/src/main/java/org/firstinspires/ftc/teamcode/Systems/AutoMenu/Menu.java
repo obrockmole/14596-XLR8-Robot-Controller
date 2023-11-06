@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.Systems.AutoMenu;
 
+import org.firstinspires.ftc.teamcode.Systems.Gamepad.Gamepad;
+
 /*
 menu = new Menu(new MenuItem[] {
         new MenuItem("Park Location", new HashMap<String, Button>() {{
@@ -10,8 +12,7 @@ menu = new Menu(new MenuItem[] {
 });
  */
 
-import org.firstinspires.ftc.teamcode.Systems.Gamepad.Gamepad;
-
+//TODO: do it
 public class Menu {
     private MenuItem[] menuItems;
     private int totalPages, currentPage = 1;

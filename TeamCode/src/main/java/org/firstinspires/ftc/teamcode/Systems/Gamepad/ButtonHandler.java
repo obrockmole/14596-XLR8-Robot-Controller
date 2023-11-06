@@ -4,7 +4,7 @@ import java.util.function.BooleanSupplier;
 
 public class ButtonHandler {
     private boolean currentState, previousState;
-    private BooleanSupplier button;
+    private final BooleanSupplier button;
 
     public ButtonHandler(Gamepad gamepad, GamepadButtons.Button button) {
         this.button = () -> gamepad.getButton(button);

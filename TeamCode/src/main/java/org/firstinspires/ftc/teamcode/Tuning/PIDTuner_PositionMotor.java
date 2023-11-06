@@ -8,7 +8,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 
 import org.firstinspires.ftc.teamcode.Systems.Motors.Motor;
-import org.firstinspires.ftc.teamcode.Systems.Motors.MotorLookupTable;
+import org.firstinspires.ftc.teamcode.Systems.Motors.MotorList;
 
 //@Disabled
 @Config
@@ -18,7 +18,7 @@ public class PIDTuner_PositionMotor extends OpMode {
 
     public static String MOTOR_NAME = "positionMotor";
 
-    public static MotorLookupTable MOTOR_TYPE = MotorLookupTable.GOBILDA_435;
+    public static MotorList MOTOR_TYPE = MotorList.GOBILDA_435;
     public static PIDFCoefficients PIDF_COEFFICIENTS = new PIDFCoefficients(0, 0, 0, 0);
     public static int TARGET_POSITION = 0;
     public static int TOLERANCE = 0;

@@ -3,8 +3,8 @@ package org.firstinspires.ftc.teamcode.Systems.Gamepad;
 import org.firstinspires.ftc.teamcode.Systems.Gamepad.GamepadButtons.Trigger;
 
 public class TriggerHandler {
-    private Gamepad gamepad;
-    private Trigger trigger;
+    private final Gamepad gamepad;
+    private final Trigger trigger;
 
     private boolean currentState, previousState;
     private double limit;

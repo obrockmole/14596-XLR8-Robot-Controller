@@ -1,15 +1,9 @@
-package org.firstinspires.ftc.teamcode.TeleOp;
+package org.firstinspires.ftc.teamcode.CenterStage.TeleOp;
 
-import com.acmerobotics.dashboard.FtcDashboard;
-import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.Range;
 
-import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.Systems.Gamepad.GamepadButtons;
-import org.firstinspires.ftc.teamcode.Systems.Motors.Motor;
-import org.firstinspires.ftc.teamcode.Systems.Servos.PositionServo;
 
 //@Disabled
 @TeleOp(group = "TeleOp", name = "Testing TeleOp")

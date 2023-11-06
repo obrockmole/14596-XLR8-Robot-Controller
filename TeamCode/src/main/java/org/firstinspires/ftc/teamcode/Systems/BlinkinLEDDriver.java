@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 public class BlinkinLEDDriver {
-    private RevBlinkinLedDriver blinkin;
+    private final RevBlinkinLedDriver blinkin;
     private Pattern pattern;
 
     public enum Pattern {
@@ -120,8 +120,8 @@ public class BlinkinLEDDriver {
         DARK_GRAY(RevBlinkinLedDriver.BlinkinPattern.DARK_GRAY),
         BLACK(RevBlinkinLedDriver.BlinkinPattern.BLACK);
 
-        private RevBlinkinLedDriver.BlinkinPattern pattern;
-        private static Pattern[] elements = values();
+        private final RevBlinkinLedDriver.BlinkinPattern pattern;
+        private static final Pattern[] elements = values();
 
         Pattern(RevBlinkinLedDriver.BlinkinPattern pattern) {
             this.pattern = pattern;

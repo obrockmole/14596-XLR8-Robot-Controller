@@ -4,8 +4,8 @@ import java.util.LinkedList;
 import java.util.Queue;
 
 public class MovingAverageFilter {
-    private Queue<Double> buffer;
-    private int windowSize;
+    private final Queue<Double> buffer;
+    private final int windowSize;
     private double sum;
     private double stateEstimate;
 

@@ -35,11 +35,11 @@ public class MotorGroup {
         return this;
     }
 
-    public MotorLookupTable getMotorType() {
+    public MotorList getMotorType() {
         return motors.get(0).getMotorType();
     }
 
-    public MotorGroup setMotorType(MotorLookupTable motorType) {
+    public MotorGroup setMotorType(MotorList motorType) {
         for (Motor motor : motors) motor.setMotorType(motorType);
         return this;
     }

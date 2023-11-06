@@ -1,9 +1,9 @@
-package org.firstinspires.ftc.teamcode.TeleOp;
+package org.firstinspires.ftc.teamcode.CenterStage.TeleOp;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
 import org.firstinspires.ftc.teamcode.Systems.Gamepad.Gamepad;
-import org.firstinspires.ftc.teamcode.Systems.Robot;
+import org.firstinspires.ftc.teamcode.CenterStage.Robot;
 import org.firstinspires.ftc.teamcode.Systems.Vision.FIRST_AprilTagDetector;
 import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
 

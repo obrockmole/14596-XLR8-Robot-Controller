@@ -1,7 +1,7 @@
 package org.firstinspires.ftc.teamcode.Systems;
 
 public class Timer {
-    private Stopwatch stopwatch;
+    private final Stopwatch stopwatch;
     private double length;
     private Runnable action;
 

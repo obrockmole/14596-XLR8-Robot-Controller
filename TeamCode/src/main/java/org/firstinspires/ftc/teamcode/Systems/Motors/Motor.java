@@ -12,7 +12,7 @@ import java.util.Arrays;
 
 public class Motor {
     DcMotorEx motor;
-    MotorLookupTable motorType;
+    MotorList motorType;
 
     double targetPower = 0;
     double speedScale = 1;
@@ -29,7 +29,7 @@ public class Motor {
     }
     Mode mode;
 
-    public Motor(DcMotorEx motor, MotorLookupTable motorType, Mode mode, int tolerance, boolean reversed) {
+    public Motor(DcMotorEx motor, MotorList motorType, Mode mode, int tolerance, boolean reversed) {
         this.motor = motor;
         this.motor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         resetEncoder();
@@ -40,15 +40,15 @@ public class Motor {
         setReversed(reversed);
     }
 
-    public Motor(HardwareMap hardwareMap, String name, MotorLookupTable motorType, Mode mode, int tolerance, boolean reversed) {
+    public Motor(HardwareMap hardwareMap, String name, MotorList motorType, Mode mode, int tolerance, boolean reversed) {
         this(hardwareMap.get(DcMotorEx.class, name), motorType, mode, tolerance, reversed);
     }
 
-    public Motor(DcMotorEx motor, MotorLookupTable motorType, Mode mode, boolean reversed) {
+    public Motor(DcMotorEx motor, MotorList motorType, Mode mode, boolean reversed) {
         this(motor, motorType, mode, 10, reversed);
     }
 
-    public Motor(HardwareMap hardwareMap, String name, MotorLookupTable motorType, Mode mode, boolean reversed) {
+    public Motor(HardwareMap hardwareMap, String name, MotorList motorType, Mode mode, boolean reversed) {
         this(hardwareMap.get(DcMotorEx.class, name), motorType, mode, 10, reversed);
     }
 
@@ -66,11 +66,11 @@ public class Motor {
         return this;
     }
 
-    public MotorLookupTable getMotorType() {
+    public MotorList getMotorType() {
         return motorType;
     }
 
-    public Motor setMotorType(MotorLookupTable motorType) {
+    public Motor setMotorType(MotorList motorType) {
         this.motorType = motorType;
         return this;
     }

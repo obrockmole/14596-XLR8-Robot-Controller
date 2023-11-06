@@ -19,10 +19,9 @@ public class Timer_Sample extends OpMode {
         STATE_1,
         STATE_2,
         STATE_3 {
-            @Override
             public State next() {
                 return values()[0]; //Rollover to the first state
-            };
+            }
         };
 
         public State next() { //Get the next state

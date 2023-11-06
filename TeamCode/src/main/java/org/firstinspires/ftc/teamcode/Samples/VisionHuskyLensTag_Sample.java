@@ -3,7 +3,7 @@ package org.firstinspires.ftc.teamcode.Samples;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-import org.firstinspires.ftc.teamcode.Systems.Sensors.HuskyLens;
+import org.firstinspires.ftc.teamcode.Systems.Vision.HuskyLens;
 
 //@Disabled
 @TeleOp(group = "Samples", name = "Husky Lens Tag Recognition Sample")

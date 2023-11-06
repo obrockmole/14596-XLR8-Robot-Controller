@@ -9,9 +9,9 @@ import org.openftc.easyopencv.OpenCvCameraFactory;
 
 public class AprilTagDetector {
     private AprilTagDetectionPipeline pipeline;
-    private WebcamName webcamName;
-    private OpenCvCamera camera;
-    private int cameraMonitorViewId;
+    private final WebcamName webcamName;
+    private final OpenCvCamera camera;
+    private final int cameraMonitorViewId;
 
     public AprilTagDetector(HardwareMap hardwareMap, String cameraName) {
         this(hardwareMap, hardwareMap.get(WebcamName.class, cameraName));

@@ -5,11 +5,11 @@ import org.firstinspires.ftc.teamcode.Systems.Gamepad.GamepadButtons.TouchpadFin
 import java.util.function.BooleanSupplier;
 
 public class TouchpadHandler {
-    private Gamepad gamepad;
+    private final Gamepad gamepad;
     private boolean currentState, previousState;
     private Vector2D currentPos, previousPos;
     private BooleanSupplier fingerBool;
-    private TouchpadFinger finger;
+    private final TouchpadFinger finger;
 
     public TouchpadHandler(Gamepad gamepad, TouchpadFinger finger) {
         this.gamepad = gamepad;

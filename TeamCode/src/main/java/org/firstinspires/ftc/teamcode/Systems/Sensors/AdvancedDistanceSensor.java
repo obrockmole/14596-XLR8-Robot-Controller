@@ -8,10 +8,10 @@ import org.firstinspires.ftc.teamcode.Systems.DataFilters.KalmanFilter;
 import org.firstinspires.ftc.teamcode.Systems.DataFilters.MovingAverageFilter;
 
 public class AdvancedDistanceSensor {
-    private com.qualcomm.robotcore.hardware.DistanceSensor sensor;
+    private final com.qualcomm.robotcore.hardware.DistanceSensor sensor;
 
-    private MovingAverageFilter movingAverageFilter;
-    private KalmanFilter kalmanFilter;
+    private final MovingAverageFilter movingAverageFilter;
+    private final KalmanFilter kalmanFilter;
 
     public AdvancedDistanceSensor(HardwareMap hardwareMap, String name, MovingAverageFilter movingAverageFilter, KalmanFilter kalmanFilter) {
         this.sensor = hardwareMap.get(com.qualcomm.robotcore.hardware.DistanceSensor.class, name);
