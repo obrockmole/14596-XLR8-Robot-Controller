@@ -1,11 +1,13 @@
 package org.firstinspires.ftc.teamcode.Samples;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.Systems.Vision.HuskyLens;
 
-//@Disabled
+/* WARNING: UNTESTED, MAY NOT WORK */
+@Disabled
 @TeleOp(group = "Samples", name = "Husky Lens Object Recognition Sample")
 public class VisionHuskyLensObject_Sample extends OpMode {
     HuskyLens huskyLens;

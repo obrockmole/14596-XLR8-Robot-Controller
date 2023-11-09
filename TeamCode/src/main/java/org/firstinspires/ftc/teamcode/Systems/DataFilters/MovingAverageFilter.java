@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.Systems.DataFilters;
 import java.util.LinkedList;
 import java.util.Queue;
 
+/* WARNING: UNTESTED, MAY NOT WORK */
 public class MovingAverageFilter {
     private final Queue<Double> buffer;
     private final int windowSize;

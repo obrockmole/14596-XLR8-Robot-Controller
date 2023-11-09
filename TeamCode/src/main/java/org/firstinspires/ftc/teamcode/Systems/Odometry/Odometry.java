@@ -10,9 +10,23 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Odometry extends ArrayList<OdometryPod> {
-   public Odometry(OdometryPod... pods) {
+    public Odometry(OdometryPod... pods) {
         super();
         this.addAll(Arrays.asList(pods));
+    }
+
+    public Odometry(HardwareMap hardwareMap, String... names) {
+        super();
+        for (String name : names) {
+            this.add(new OdometryPod(hardwareMap, name));
+        }
+    }
+
+    public Odometry(HardwareMap hardwareMap, Encoder.Direction direction, String... names) {
+        super();
+        for (String name : names) {
+            this.add(new OdometryPod(hardwareMap, name, direction));
+        }
     }
 
     public OdometryPod getPod(int index) {

@@ -18,8 +18,6 @@ public class BaseTele extends OpMode {
     private FIRST_AprilTagDetector aprilTagDetector;
     private boolean tagDetected = false;
 
-    boolean inBackstage = false;
-
     public void init() {
         driver = new Gamepad(gamepad1);
         manipulator = new Gamepad(gamepad2);
@@ -33,7 +31,7 @@ public class BaseTele extends OpMode {
 
     public void loop() {}
 
-    public void updateSystems() {
+    public void update() {
         driver.update();
         manipulator.update();
 
@@ -58,17 +56,14 @@ public class BaseTele extends OpMode {
                 if (detection.ftcPose.range < closestTag.ftcPose.range)
                     closestTag = detection;
             }
-
-            inBackstage = closestTag.ftcPose.range < 6;
         }
     }
 
-    public void logSystems() {
+    public void log() {
         robot.log(telemetry);
 
         telemetry.addLine("-----Other-----");
         telemetry.addData("Runtime", getRuntime());
-        telemetry.addData("In Backstage", inBackstage);
         telemetry.update();
     }
 }

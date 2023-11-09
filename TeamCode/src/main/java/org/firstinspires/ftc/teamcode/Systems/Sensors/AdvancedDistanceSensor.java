@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.Systems.Sensors;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
@@ -7,6 +8,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.Systems.DataFilters.KalmanFilter;
 import org.firstinspires.ftc.teamcode.Systems.DataFilters.MovingAverageFilter;
 
+/* WARNING: UNTESTED, MAY NOT WORK */
 public class AdvancedDistanceSensor {
     private final com.qualcomm.robotcore.hardware.DistanceSensor sensor;
 

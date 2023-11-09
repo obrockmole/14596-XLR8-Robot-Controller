@@ -1,12 +1,14 @@
 package org.firstinspires.ftc.teamcode.Samples;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.Systems.DataFilters.MultiVariableKalmanFilter;
 import org.firstinspires.ftc.teamcode.Systems.Sensors.DistanceSensor;
 
-//@Disabled
+/* WARNING: UNTESTED, MAY NOT WORK */
+@Disabled
 @TeleOp(group = "Samples", name = "Mutli-Variable Kalman Filter Sample")
 public class MultiVariableKalmanFilter_Sample extends OpMode {
     DistanceSensor sensor1, sensor2;

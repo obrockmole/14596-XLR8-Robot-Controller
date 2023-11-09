@@ -107,7 +107,6 @@ public class MecanumDrive extends com.acmerobotics.roadrunner.drive.MecanumDrive
         rightFront = hardwareMap.get(DcMotorEx.class, "frontRight");
         rightRear = hardwareMap.get(DcMotorEx.class, "backRight");
 
-        //TODO: maybe error with order motors are listed?? i think rightFront was moved before rightRear above cuz it makes more sense tho and this is correct
         motors = Arrays.asList(leftFront, leftRear, rightRear, rightFront);
 
         for (DcMotorEx motor : motors) {

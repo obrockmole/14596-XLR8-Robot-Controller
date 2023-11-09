@@ -15,36 +15,43 @@ public class Timer {
         return length;
     }
 
-    public void setLength(double length) {
+    public Timer setLength(double length) {
         this.length = length;
+        return this;
     }
 
     public Runnable getAction() {
         return action;
     }
 
-    public void setAction(Runnable action) {
+    public Timer setAction(Runnable action) {
         this.action = action;
+        return this;
     }
 
-    public void start() {
+    public Timer start() {
         stopwatch.start();
+        return this;
     }
 
-    public void begin() {
+    public Timer begin() {
         start();
+        return this;
     }
 
-    public void stop() {
+    public Timer stop() {
         stopwatch.stop();
+        return this;
     }
 
-    public void end() {
+    public Timer end() {
         stop();
+        return this;
     }
 
-    public void restart() {
+    public Timer restart() {
         stopwatch.restart();
+        return this;
     }
 
     public double getTimeLeft() {
@@ -59,11 +66,12 @@ public class Timer {
         return stopwatch.isRunning();
     }
 
-    public void update(boolean restart) {
+    public Timer update(boolean restart) {
         if (isRunning() && getTimeLeft() <= 0) {
             action.run();
             if (restart) restart();
             else stop();
         }
+        return this;
     }
 }

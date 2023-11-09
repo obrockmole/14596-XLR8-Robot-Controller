@@ -17,7 +17,7 @@ public class Drivetrain {
     private Odometry odometry;
     private IMU imu;
 
-    private int speedScale = 1;
+    private double speedScale = 0.8;
 
     public Drivetrain(Motor frontLeft, Motor backLeft, Motor frontRight, Motor backRight, Odometry odometry, IMU imu) {
         this.frontLeft = frontLeft.setReversed(true);
@@ -29,6 +29,10 @@ public class Drivetrain {
 
         this.imu = imu;
         resetIMUYaw();
+    }
+
+    public Drivetrain(Motor frontLeft, Motor backLeft, Motor frontRight, Motor backRight, IMU imu) {
+        this(frontLeft, backLeft, frontRight, backRight, null, imu);
     }
 
     public Motor getFrontLeft() {
@@ -88,16 +92,25 @@ public class Drivetrain {
         return this;
     }
 
+    public Drivetrain setOdometry(OdometryPod... pods) {
+        odometry = new Odometry(pods);
+        return this;
+    }
+
+    public ArrayList<OdometryPod> getOdometryPods() {
+        return odometry.getPods();
+    }
+
     public Drivetrain setOdometryPods(OdometryPod... pods) {
         odometry = new Odometry(pods);
         return this;
     }
 
-    public int getSpeedScale() {
+    public double getSpeedScale() {
         return speedScale;
     }
 
-    public Drivetrain setSpeedScale(int speedScale) {
+    public Drivetrain setSpeedScale(double speedScale) {
         this.speedScale = speedScale;
         return this;
     }
@@ -183,11 +196,13 @@ public class Drivetrain {
         telemetry.addData("Front Right Power", frontRight.getPower());
         telemetry.addData("Back Right Power", backRight.getPower());
 
-        telemetry.addLine();
-        telemetry.addLine("-----Odometry Pod Positions-----");
-        telemetry.addData("Left Pod Position", odometry.getCurrentPosition(0));
-        telemetry.addData("Right Pod Position", odometry.getCurrentPosition(1));
-        telemetry.addData("Center Pod Position", odometry.getCurrentPosition(2));
+        if (odometry != null) {
+            telemetry.addLine();
+            telemetry.addLine("-----Odometry Pod Positions-----");
+            telemetry.addData("Left Pod Position", odometry.getCurrentPosition(0));
+            telemetry.addData("Right Pod Position", odometry.getCurrentPosition(1));
+            telemetry.addData("Center Pod Position", odometry.getCurrentPosition(2));
+        }
 
         telemetry.addLine();
         telemetry.addLine("-----IMU Headings-----");

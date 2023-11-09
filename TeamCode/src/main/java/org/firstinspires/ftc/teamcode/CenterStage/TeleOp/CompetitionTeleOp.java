@@ -11,7 +11,7 @@ public class CompetitionTeleOp extends BaseTele {
         robot.standardDrive(driver.getStickY(GamepadButtons.Stick.LEFT_STICK), driver.getStickX(GamepadButtons.Stick.LEFT_STICK), driver.getStickX(GamepadButtons.Stick.RIGHT_STICK));
         //robot.fieldCentricDrive(driver.getStickY(GamepadButtons.Stick.LEFT_STICK), driver.getStickX(GamepadButtons.Stick.LEFT_STICK), driver.getStickX(GamepadButtons.Stick.RIGHT_STICK));
 
-        updateSystems();
-        logSystems();
+        update();
+        log();
     }
 }

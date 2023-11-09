@@ -33,12 +33,12 @@ public class Encoder {
         this.direction = direction;
     }
 
-    public Encoder(HardwareMap hardwareMap, String name, Direction direction) {
-        this(hardwareMap.get(DcMotorEx.class, name), direction);
-    }
-
     public Encoder(DcMotorEx motor) {
         this(motor, Direction.FORWARD);
+    }
+
+    public Encoder(HardwareMap hardwareMap, String name, Direction direction) {
+        this(hardwareMap.get(DcMotorEx.class, name), direction);
     }
 
     public Encoder(HardwareMap hardwareMap, String name) {

@@ -13,6 +13,22 @@ public class OdometryPod {
         this.encoder = encoder;
     }
 
+    public OdometryPod(HardwareMap hardwareMap, String name) {
+        this(new Encoder(hardwareMap, name));
+    }
+
+    public OdometryPod(HardwareMap hardwareMap, String name, Encoder.Direction direction) {
+        this(new Encoder(hardwareMap, name, direction));
+    }
+
+    public OdometryPod(DcMotorEx motor) {
+        this(new Encoder(motor));
+    }
+
+    public OdometryPod(DcMotorEx motor, Encoder.Direction direction) {
+        this(new Encoder(motor, direction));
+    }
+
     public Encoder getEncoder() {
         return encoder;
     }

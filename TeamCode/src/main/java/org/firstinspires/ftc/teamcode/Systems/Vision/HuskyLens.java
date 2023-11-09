@@ -7,6 +7,7 @@ import org.firstinspires.ftc.robotcore.internal.system.Deadline;
 
 import java.util.concurrent.TimeUnit;
 
+/* WARNING: UNTESTED, MAY NOT WORK */
 public class HuskyLens {
     private com.qualcomm.hardware.dfrobot.HuskyLens huskyLens;
     private com.qualcomm.hardware.dfrobot.HuskyLens.Algorithm algorithm;

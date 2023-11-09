@@ -6,29 +6,34 @@ public class Stopwatch {
 
     public Stopwatch() {}
 
-    public void start() {
-        if (running) return;
+    public Stopwatch start() {
+        if (!running) {
+            startTime = System.nanoTime();
+            running = true;
+        }
+        return this;
+    }
+
+    public Stopwatch begin() {
+        return start();
+    }
+
+    public Stopwatch stop() {
+        if (running) {
+            endTime = System.nanoTime();
+            running = false;
+        }
+        return this;
+    }
+
+    public Stopwatch end() {
+        return stop();
+    }
+
+    public Stopwatch restart() {
         startTime = System.nanoTime();
         running = true;
-    }
-
-    public void begin() {
-        start();
-    }
-
-    public void stop() {
-        if (!running) return;
-        endTime = System.nanoTime();
-        running = false;
-    }
-
-    public void end() {
-        stop();
-    }
-
-    public void restart() {
-        startTime = System.nanoTime();
-        running = true;
+        return this;
     }
 
     public double getTime() {
