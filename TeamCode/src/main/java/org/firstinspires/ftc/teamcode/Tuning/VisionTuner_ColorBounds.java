@@ -26,7 +26,6 @@ public class VisionTuner_ColorBounds extends OpMode {
     public static HSV weakLowHSV = new HSV(0, 0, 0), weakHighHSV = new HSV(0, 0, 0);
     public static HSV strictLowHSV = new HSV(0, 0, 0), strictHighHSV = new HSV(0, 0, 0);
 
-    @Override
     public void init() {
         cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         webcamName = hardwareMap.get(WebcamName.class, "Webcam");
@@ -36,25 +35,21 @@ public class VisionTuner_ColorBounds extends OpMode {
 
         camera.setPipeline(pipeline);
         camera.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
-            @Override
             public void onOpened() {
                 //TODO: Get proper resolution values for the camera
                 camera.startStreaming(640, 480);
             }
 
-            @Override
             public void onError(int errorCode) {}
         });
 
         FtcDashboard.getInstance().startCameraStream(camera, 30);
     }
 
-    @Override
     public void init_loop() {
         pipeline.setHSV(weakLowHSV.toScalar(), weakHighHSV.toScalar(), strictLowHSV.toScalar(), strictHighHSV.toScalar());
     }
 
-    @Override
     public void loop() {}
 }
 
@@ -75,7 +70,6 @@ class VisionTunerPipeline extends OpenCvPipeline {
         this.strictHighHSV = strictHighHSV;
     }
 
-    @Override
     public Mat processFrame(Mat input) {
         Imgproc.cvtColor(input, hsv, Imgproc.COLOR_RGB2HSV);
 
@@ -89,8 +83,7 @@ class VisionTunerPipeline extends OpenCvPipeline {
 
         Core.inRange(scaledMask, strictLowHSV, strictHighHSV, strictMask);
 
-        Core.bitwise_and(hsv, hsv, strictColoredMask, strictMask);
-        Imgproc.cvtColor(strictColoredMask, strictColoredMask, Imgproc.COLOR_HSV2RGB);
+        Core.bitwise_and(input, input, strictColoredMask, strictMask);
 
         return strictColoredMask;
     }
@@ -103,7 +96,7 @@ class VisionTunerPipeline extends OpenCvPipeline {
     }
 }
 
-class HSV {
+class HSV { //Scalar wont show up on FTC Dashboard so we need to use this instead
     public double h;
     public double s;
     public double v;
