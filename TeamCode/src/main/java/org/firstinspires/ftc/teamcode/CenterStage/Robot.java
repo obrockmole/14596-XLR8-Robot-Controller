@@ -86,6 +86,37 @@ public class Robot extends Drivetrain {
         batteryVoltageSensor = new BatteryVoltageSensor(hardwareMap);
     }
 
+    public Robot setSpeedScale(boolean slow, boolean fast) {
+        if (slow == fast) setSpeedScale(0.8);
+        else if (slow) setSpeedScale(0.5);
+        else setSpeedScale(1);
+        return this;
+    }
+
+    public Robot setLiftPower(double power) {
+        if (lift.getMode() != Motor.Mode.POWER && power > lift.getPower()) lift.setMode(Motor.Mode.POWER);
+        lift.setTargetPower(power);
+        return this;
+    }
+
+    public Robot setLiftPosition(int position) {
+        if (lift.getMode() != Motor.Mode.POSITION) lift.setMode(Motor.Mode.POSITION);
+        lift.setTargetPosition(liftPositions[position]);
+        return this;
+    }
+
+    public Robot setLiftAnglePower(double power) {
+        if (liftAngle.getMode() != Motor.Mode.POWER && power > liftAngle.getPower()) liftAngle.setMode(Motor.Mode.POWER);
+        liftAngle.setTargetPower(power);
+        return this;
+    }
+
+    public Robot setLiftAnglePosition(int position) {
+        if (liftAngle.getMode() != Motor.Mode.POSITION) liftAngle.setMode(Motor.Mode.POSITION);
+        liftAngle.setTargetPosition(liftAngles[position]);
+        return this;
+    }
+
     public Robot update() {
         super.update();
 

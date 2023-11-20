@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.CenterStage.TeleOp;
 
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.teamcode.Systems.Gamepad.GamepadButtons.Button;
 import org.firstinspires.ftc.teamcode.Systems.Gamepad.GamepadButtons.Stick;
@@ -10,49 +11,73 @@ import org.firstinspires.ftc.teamcode.Systems.Gamepad.GamepadButtons.Trigger;
 //@Disabled
 @TeleOp(group = "TeleOp", name = "Testing TeleOp")
 public class TestingTeleOp extends BaseTele {
-    double forward = 0, rightward = 0, rotational = 0;
-
     public void loop() {
         /* DRIVER */
-        forward = driver.getStickY(Stick.LEFT_STICK);
-        rightward = driver.getStickX(Stick.LEFT_STICK);
-        rotational = driver.getStickX(Stick.RIGHT_STICK);
+        //Driving
+        robot.standardDrive(driver.getStickY(Stick.LEFT_STICK), driver.getStickX(Stick.LEFT_STICK), driver.getStickX(Stick.RIGHT_STICK));
 
-        driver.onDown(Button.LEFT_BUMPER, () -> robot.setSpeedScale(0.5))
-                .onDown(Button.RIGHT_BUMPER, () -> robot.setSpeedScale(1))
-                .onUp(Button.LEFT_BUMPER, () -> robot.setSpeedScale(0.8))
-                .onUp(Button.RIGHT_BUMPER, () -> robot.setSpeedScale(0.8));
+        //Driving speed, left bumper = slow, right bumper = fast
+        robot.setSpeedScale(driver.isDown(Button.LEFT_BUMPER), driver.isDown(Button.RIGHT_BUMPER));
 
-        robot.standardDrive(forward, rightward, rotational);
-
+        //Winch Extension, right trigger = extend, left trigger = retract
         robot.winchExtension.setPower(driver.getTrigger(Trigger.RIGHT_TRIGGER) - driver.getTrigger(Trigger.LEFT_TRIGGER));
-        driver.onDown(Button.A, () -> robot.winch.setPosition(1))
-                .onUp(Button.A, () -> robot.winch.setPosition(0));
+        //Actuate winch, button down = open, button up = close
+        if (driver.isDown(Button.A)) robot.winch.setPosition(1);
+        else robot.winch.setPosition(0);
+
+        //Drone launcher angle, toggle between down and up with X
+        driver.onPress(Button.X, () -> robot.droneAngle.setTargetPosition(robot.droneAngle.getTargetPosition() == 1 ? 0 : 1));
+
 
         /* MANIPULATOR */
+        //Intake, right trigger = intake, left trigger = outtake
         robot.intake.setPower(manipulator.getTrigger(Trigger.RIGHT_TRIGGER) - manipulator.getTrigger(Trigger.LEFT_TRIGGER));
-        robot.lift.setPower(manipulator.getStickY(Stick.LEFT_STICK));
 
-        manipulator.onPress(Button.DPAD_UP, () -> robot.liftAngle.setTargetPosition(robot.liftAngles[0]))
-                        .onPress(Button.DPAD_DOWN, () -> robot.liftAngle.setTargetPosition(robot.liftAngles[1]))
-                        .onPress(Button.DPAD_LEFT, () -> robot.liftAngle.setTargetPosition(robot.liftAngles[2]))
-                        .onPress(Button.DPAD_RIGHT, () -> robot.liftAngle.setTargetPosition(robot.liftAngles[3]))
-                        .onPress(Button.B, () -> robot.intakeGate.setPosition(1))
-                        .onRelease(Button.B, () -> robot.intakeGate.setPosition(0))
-                        .onPress(Button.X, () -> robot.droneAngle.setPosition(1))
-                        .onRelease(Button.X, () -> robot.droneAngle.setPosition(0))
-                        .onPress(Button.Y, () -> robot.droneLauncher.setPosition(1))
-                        .onDown(Button.A, () -> robot.pixelDepositAngle.setPosition(1))
-                        .onUp(Button.A, () -> robot.pixelDepositAngle.setPosition(0));
+        //Manual lift control, stick up = extend, stick down = retract
+        robot.setLiftPower(manipulator.getStickY(Stick.LEFT_STICK));
+        //Manual lift angle control, stick up = angle up, stick down = angle down
+        robot.setLiftAnglePower(manipulator.getStickY(Stick.RIGHT_STICK));
 
-        if (robot.droneAngle.getTargetPosition() == 1) { //Zak'z big red button
+        //Intake gate, button down = up, button up = down
+        if (manipulator.isDown(Button.RIGHT_BUMPER)) robot.intakeGate.setTargetPosition(1);
+        else robot.intakeGate.setTargetPosition(0);
+
+        //Pixel depositor, button down = open, button up = closed
+        if (manipulator.isDown(Button.LEFT_BUMPER)) robot.pixelDepositSlide.setTargetPosition(1);
+        else robot.pixelDepositSlide.setTargetPosition(0);
+
+        //Pre-programmed lift positions, dpad-down = down, dpad-left = short, dpad-up = medium, dpad-right = max
+        manipulator.onPress(Button.DPAD_UP, () -> robot.setLiftPosition(0))
+                .onPress(Button.DPAD_DOWN, () -> robot.setLiftPosition(1))
+                .onPress(Button.DPAD_LEFT, () -> robot.setLiftPosition(2))
+                .onPress(Button.DPAD_RIGHT, () -> robot.setLiftPosition(3))
+                .onPress(Button.LEFT_STICK, () -> robot.setLiftPosition(0))
+
+                //Pre-programmed lift angles, A = ___, X = ___, Y = ___, B = ___
+                .onDown(Button.A, () -> robot.setLiftAnglePosition(0))
+                .onPress(Button.X, () -> robot.setLiftAnglePosition(1))
+                .onDown(Button.Y, () -> robot.setLiftAnglePosition(2))
+                .onDown(Button.B, () -> robot.setLiftAnglePosition(3))
+                .onDown(Button.RIGHT_STICK, () -> robot.setLiftAnglePosition(0))
+
+                //Auto score
+                .onPress(Button.START, () -> scoringMachine.start());
+
+
+        //Zak's big red button
+        if (robot.droneAngle.getTargetPosition() == 1) {
+            driver.setLEDColor(255, 0, 0, -1)
+                    .onPress(TouchpadFinger.FINGER_1, () -> robot.droneLauncher.setPosition(1));
+
             manipulator.setLEDColor(255, 0, 0, -1)
-                    .rumble(-1)
                     .onPress(TouchpadFinger.FINGER_1, () -> robot.droneLauncher.setPosition(1));
         } else {
-            manipulator.setLEDColor(0, 0, 0, -1)
-                    .stopRumble();
+            driver.setLEDColor(0, 0, 0, -1);
+            manipulator.setLEDColor(0, 0, 0, -1);
         }
+
+        //Automatically adjust pixel deposit angle based on lift angle
+        robot.pixelDepositAngle.setTargetPosition(Range.scale(robot.liftAngle.getCurrentPosition(0), robot.liftAngles[0], robot.liftAngles[robot.liftAngles.length - 1], 0, 1));
 
         update();
         log();
