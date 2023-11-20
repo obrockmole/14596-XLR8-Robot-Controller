@@ -7,10 +7,10 @@ import org.firstinspires.ftc.teamcode.RoadRunner.Drive.MecanumDrive;
 import org.firstinspires.ftc.teamcode.RoadRunner.TrajectorySequence.TrajectorySequence;
 
 public abstract class BaseAuto extends OpMode {
-    Robot robot;
+    public Robot robot;
 
-    MecanumDrive drive;
-    TrajectorySequence sequence;
+    public MecanumDrive drive;
+    public TrajectorySequence sequence;
 
     public void init() {
         robot = new Robot(hardwareMap);
