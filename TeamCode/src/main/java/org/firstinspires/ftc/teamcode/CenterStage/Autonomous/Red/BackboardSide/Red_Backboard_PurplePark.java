@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.CenterStage.Autonomous.Red;
+package org.firstinspires.ftc.teamcode.CenterStage.Autonomous.Red.BackboardSide;
 
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.geometry.Vector2d;
@@ -11,7 +11,8 @@ public class Red_Backboard_PurplePark extends BaseAuto {
     public void initTrajectory() {
         sequence = drive.trajectorySequenceBuilder(new Pose2d(12, -64, Math.toRadians(90)))
                 //Place purple pixel
-                .lineToSplineHeading(new Pose2d(12, -36, Math.toRadians(0)))
+                .lineTo(new Vector2d(12, -36))
+                .waitSeconds(1)
 
                 //Park
                 .setTangent(Math.toRadians(-90))
