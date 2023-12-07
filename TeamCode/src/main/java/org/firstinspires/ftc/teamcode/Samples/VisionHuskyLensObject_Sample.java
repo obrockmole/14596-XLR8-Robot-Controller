@@ -6,7 +6,6 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.Systems.Vision.HuskyLens;
 
-/* WARNING: UNTESTED, MAY NOT WORK */
 @Disabled
 @TeleOp(group = "Samples", name = "Husky Lens Object Recognition Sample")
 public class VisionHuskyLensObject_Sample extends OpMode {
@@ -15,6 +14,11 @@ public class VisionHuskyLensObject_Sample extends OpMode {
     @Override
     public void init() {
         huskyLens = new HuskyLens(hardwareMap, "husky", com.qualcomm.hardware.dfrobot.HuskyLens.Algorithm.OBJECT_RECOGNITION);
+
+        if (huskyLens.knock())
+            telemetry.addLine("HuskyLens knocked successfully.");
+        else
+            telemetry.addLine("HuskyLens knock failed.");
     }
 
     @Override

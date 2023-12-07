@@ -7,7 +7,6 @@ import org.firstinspires.ftc.robotcore.internal.system.Deadline;
 
 import java.util.concurrent.TimeUnit;
 
-/* WARNING: UNTESTED, MAY NOT WORK */
 public class HuskyLens {
     private com.qualcomm.hardware.dfrobot.HuskyLens huskyLens;
     private com.qualcomm.hardware.dfrobot.HuskyLens.Algorithm algorithm;
@@ -44,6 +43,10 @@ public class HuskyLens {
         return setHuskyLens(hardwareMap.get(com.qualcomm.hardware.dfrobot.HuskyLens.class, name));
     }
 
+    public boolean knock() {
+        return huskyLens.knock();
+    }
+
     public com.qualcomm.hardware.dfrobot.HuskyLens.Algorithm getAlgorithm() {
         return algorithm;
     }
@@ -63,7 +66,7 @@ public class HuskyLens {
     }
 
     public HuskyLens update() {
-        if (!rateLimit.hasExpired()) {
+        if (rateLimit.hasExpired()) {
             rateLimit.reset();
 
             blocks = algorithm != com.qualcomm.hardware.dfrobot.HuskyLens.Algorithm.LINE_TRACKING ? huskyLens.blocks() : new com.qualcomm.hardware.dfrobot.HuskyLens.Block[0];

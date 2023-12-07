@@ -6,7 +6,6 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.Systems.Vision.HuskyLens;
 
-/* WARNING: UNTESTED, MAY NOT WORK */
 @Disabled
 @TeleOp(group = "Samples", name = "Husky Lens Tag Recognition Sample")
 public class VisionHuskyLensTag_Sample extends OpMode {
