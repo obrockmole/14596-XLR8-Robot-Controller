@@ -2,14 +2,24 @@ package org.firstinspires.ftc.teamcode.CenterStage.TeleOp;
 
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-import org.firstinspires.ftc.teamcode.Systems.Gamepad.GamepadButtons;
+import org.firstinspires.ftc.teamcode.Systems.Gamepad.GamepadButtons.Button;
+import org.firstinspires.ftc.teamcode.Systems.Gamepad.GamepadButtons.Stick;
+import org.firstinspires.ftc.teamcode.Systems.Gamepad.GamepadButtons.Trigger;
 
 //@Disabled
 @TeleOp(group = "TeleOp", name = "TeleOp")
 public class CompetitionTeleOp extends BaseTele {
     public void loop() {
-        robot.standardDrive(driver.getStickY(GamepadButtons.Stick.LEFT_STICK), driver.getStickX(GamepadButtons.Stick.LEFT_STICK), driver.getStickX(GamepadButtons.Stick.RIGHT_STICK));
-        //robot.fieldCentricDrive(driver.getStickY(GamepadButtons.Stick.LEFT_STICK), driver.getStickX(GamepadButtons.Stick.LEFT_STICK), driver.getStickX(GamepadButtons.Stick.RIGHT_STICK));
+        /* DRIVER */
+        //Driving
+        robot.standardDrive(driver.getStickY(Stick.LEFT_STICK), driver.getStickX(Stick.LEFT_STICK), driver.getStickX(Stick.RIGHT_STICK));
+
+        //Driving speed, left bumper = slow, right bumper = fast
+        robot.setSpeedScale(driver.isDown(Button.LEFT_BUMPER), driver.isDown(Button.RIGHT_BUMPER));
+
+        /* MANIPULATOR */
+        //Intake, left trigger = intake, right trigger = outtake
+        robot.intake.setPower(manipulator.getTrigger(Trigger.LEFT_TRIGGER) - manipulator.getTrigger(Trigger.RIGHT_TRIGGER));
 
         update();
         log();

@@ -2,7 +2,6 @@ package org.firstinspires.ftc.teamcode.CenterStage.TeleOp;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.sfdev.assembly.state.StateMachine;
-import com.sfdev.assembly.state.StateMachineBuilder;
 
 import org.firstinspires.ftc.teamcode.CenterStage.Robot;
 import org.firstinspires.ftc.teamcode.Systems.Gamepad.Gamepad;
@@ -27,7 +26,7 @@ public class BaseTele extends OpMode {
 
         robot = new Robot(hardwareMap);
 
-        scoringMachine = new StateMachineBuilder()
+        /*scoringMachine = new StateMachineBuilder()
                 .state(ScoringStages.EXTEND_LIFT)
                 .onEnter(() -> robot.setLiftPosition(robot.liftPositions.length - 1))
                 .transition(() -> Math.abs(robot.lift.getCurrentPosition() - robot.lift.getTargetPosition()) < robot.lift.getTolerance(), ScoringStages.DEPLOY_PIXEL)
@@ -41,7 +40,7 @@ public class BaseTele extends OpMode {
                     robot.setLiftPosition(0);
                     robot.pixelDepositSlide.setTargetPosition(0);
                 })
-                .build();
+                .build();*/
     }
 
     public void loop() {}
@@ -52,7 +51,7 @@ public class BaseTele extends OpMode {
 
         robot.update();
 
-        scoringMachine.update();
+//        scoringMachine.update();
     }
 
     public void log() {

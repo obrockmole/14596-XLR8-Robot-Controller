@@ -12,7 +12,9 @@ import org.firstinspires.ftc.teamcode.Systems.Gamepad.GamepadButtons.Trigger;
 @TeleOp(group = "TeleOp", name = "Testing TeleOp")
 public class TestingTeleOp extends BaseTele {
     public void loop() {
-        /* DRIVER */
+        /*
+
+        // DRIVER \\
         //Driving
         robot.standardDrive(driver.getStickY(Stick.LEFT_STICK), driver.getStickX(Stick.LEFT_STICK), driver.getStickX(Stick.RIGHT_STICK));
 
@@ -29,7 +31,7 @@ public class TestingTeleOp extends BaseTele {
         driver.onPress(Button.X, () -> robot.droneAngle.setTargetPosition(robot.droneAngle.getTargetPosition() == 1 ? 0 : 1));
 
 
-        /* MANIPULATOR */
+        // MANIPULATOR \\
         //Intake, right trigger = intake, left trigger = outtake
         robot.intake.setPower(manipulator.getTrigger(Trigger.RIGHT_TRIGGER) - manipulator.getTrigger(Trigger.LEFT_TRIGGER));
 
@@ -81,5 +83,7 @@ public class TestingTeleOp extends BaseTele {
 
         update();
         log();
+
+        */
     }
 }

@@ -3,14 +3,13 @@ package org.firstinspires.ftc.teamcode.CenterStage.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-import org.firstinspires.ftc.teamcode.Systems.Vision.ContourDetectionProcessorVP;
 import org.firstinspires.ftc.teamcode.Systems.Vision.HuskyLens;
 
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-@TeleOp(name = "HuskyLens Vision Test", group = "Testing")
+@TeleOp(group = "Testing", name = "HuskyLens Vision Test")
 public class HuskyLensVisionTest extends OpMode {
     HuskyLens huskyLens;
 
@@ -18,7 +17,7 @@ public class HuskyLensVisionTest extends OpMode {
     int currentPropPosition = -1;
 
     public void init() {
-        huskyLens = new HuskyLens(hardwareMap, "husky", com.qualcomm.hardware.dfrobot.HuskyLens.Algorithm.OBJECT_RECOGNITION);
+        huskyLens = new HuskyLens(hardwareMap, "husky", com.qualcomm.hardware.dfrobot.HuskyLens.Algorithm.OBJECT_TRACKING);
 
         if (huskyLens.knock())
             telemetry.addLine("HuskyLens knocked successfully.");

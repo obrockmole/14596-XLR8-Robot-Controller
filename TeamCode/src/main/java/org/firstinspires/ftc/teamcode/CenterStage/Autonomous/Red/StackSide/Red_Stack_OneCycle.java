@@ -3,9 +3,11 @@ package org.firstinspires.ftc.teamcode.CenterStage.Autonomous.Red.StackSide;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
 import org.firstinspires.ftc.teamcode.CenterStage.Autonomous.BaseAuto;
 
+@Disabled
 @Autonomous(group = "Red", name = "One Cycle - Red Side Stack")
 public class Red_Stack_OneCycle extends BaseAuto {
     public void initTrajectory() {

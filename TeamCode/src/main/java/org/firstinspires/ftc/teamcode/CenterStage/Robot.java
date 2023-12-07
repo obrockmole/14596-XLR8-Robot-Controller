@@ -22,13 +22,14 @@ import org.firstinspires.ftc.teamcode.Systems.Servos.PositionServo;
 import org.firstinspires.ftc.teamcode.Systems.Servos.PositionServoGroup;
 
 public class Robot extends Drivetrain {
-    public final Motor intake, lift;
-    public final MotorGroup liftAngle;
+//    public final Motor intake, lift;
+    public final Motor intake;
+//    public final MotorGroup liftAngle;
 
-    public final PositionServo droneLauncher, droneAngle;
-    public final PositionServoGroup intakeGate, pixelDepositAngle, pixelDepositSlide, winch;
+//    public final PositionServo droneLauncher, droneAngle;
+//    public final PositionServoGroup intakeGate, pixelDepositAngle, pixelDepositSlide, winch;
 
-    public final ContinuousServoGroup winchExtension;
+//    public final ContinuousServoGroup winchExtension;
 
     private final BatteryVoltageSensor batteryVoltageSensor;
 
@@ -51,7 +52,7 @@ public class Robot extends Drivetrain {
        );
 
         intake = new Motor(hardwareMap, "intake", MotorList.GOBILDA_435, Motor.Mode.POWER, false);
-        lift = new Motor(hardwareMap, "lift", MotorList.REV_PLAN_25, Motor.Mode.POSITION, false);
+        /*lift = new Motor(hardwareMap, "lift", MotorList.REV_PLAN_25, Motor.Mode.POSITION, false);
 
         liftAngle = new MotorGroup(
                 new Motor(hardwareMap, "liftAngleLeft", MotorList.GOBILDA_1620, Motor.Mode.POSITION, false),
@@ -81,7 +82,7 @@ public class Robot extends Drivetrain {
         winchExtension = new ContinuousServoGroup(
                 new ContinuousServo(hardwareMap, "winchExtensionLeft", false),
                 new ContinuousServo(hardwareMap, "winchExtensionRight", false)
-        );
+        );*/
 
         batteryVoltageSensor = new BatteryVoltageSensor(hardwareMap);
     }
@@ -93,7 +94,7 @@ public class Robot extends Drivetrain {
         return this;
     }
 
-    public Robot setLiftPower(double power) {
+    /*public Robot setLiftPower(double power) {
         if (lift.getMode() != Motor.Mode.POWER && power > lift.getPower()) lift.setMode(Motor.Mode.POWER);
         lift.setTargetPower(power);
         return this;
@@ -115,13 +116,13 @@ public class Robot extends Drivetrain {
         if (liftAngle.getMode() != Motor.Mode.POSITION) liftAngle.setMode(Motor.Mode.POSITION);
         liftAngle.setTargetPosition(liftAngles[position]);
         return this;
-    }
+    }*/
 
     public Robot update() {
         super.update();
 
         intake.update();
-        lift.update();
+        /*lift.update();
 
         liftAngle.update();
 
@@ -133,7 +134,7 @@ public class Robot extends Drivetrain {
         pixelDepositSlide.update();
         winch.update();
 
-        winchExtension.update();
+        winchExtension.update();*/
 
         return this;
     }
