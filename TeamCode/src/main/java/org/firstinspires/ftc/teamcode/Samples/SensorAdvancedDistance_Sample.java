@@ -8,6 +8,7 @@ import org.firstinspires.ftc.teamcode.Systems.DataFilters.KalmanFilter;
 import org.firstinspires.ftc.teamcode.Systems.DataFilters.MovingAverageFilter;
 import org.firstinspires.ftc.teamcode.Systems.Sensors.AdvancedDistanceSensor;
 
+/*FIXME*/
 /* WARNING: UNTESTED, MAY NOT WORK */
 @Disabled
 @TeleOp(group = "Samples", name = "Advanced Distance Sensor Sample")

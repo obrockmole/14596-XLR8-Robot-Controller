@@ -22,7 +22,7 @@ public class TestingTeleOp extends BaseTele {
         robot.setSpeedScale(driver.isDown(Button.LEFT_BUMPER), driver.isDown(Button.RIGHT_BUMPER));
 
         //Winch Extension, right trigger = extend, left trigger = retract
-        robot.winchExtension.setPower(driver.getTrigger(Trigger.RIGHT_TRIGGER) - driver.getTrigger(Trigger.LEFT_TRIGGER));
+        robot.winchExtension.setTargetPower(driver.getTrigger(Trigger.RIGHT_TRIGGER) - driver.getTrigger(Trigger.LEFT_TRIGGER));
         //Actuate winch, button down = open, button up = close
         if (driver.isDown(Button.A)) robot.winch.setPosition(1);
         else robot.winch.setPosition(0);
@@ -33,7 +33,7 @@ public class TestingTeleOp extends BaseTele {
 
         // MANIPULATOR \\
         //Intake, right trigger = intake, left trigger = outtake
-        robot.intake.setPower(manipulator.getTrigger(Trigger.RIGHT_TRIGGER) - manipulator.getTrigger(Trigger.LEFT_TRIGGER));
+        robot.intake.setTargetPower(manipulator.getTrigger(Trigger.LEFT_TRIGGER) - manipulator.getTrigger(Trigger.RIGHT_TRIGGER));
 
         //Manual lift control, stick up = extend, stick down = retract
         robot.setLiftPower(manipulator.getStickY(Stick.LEFT_STICK));

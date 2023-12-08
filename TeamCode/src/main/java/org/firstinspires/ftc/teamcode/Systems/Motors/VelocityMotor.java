@@ -56,21 +56,20 @@ public class VelocityMotor {
         return motor.getPower();
     }
 
+    public double getVelocity() {
+        return motor.getVelocity();
+    }
+
+    private void setVelocity(double velocity) {
+        motor.setVelocity(velocity);
+    }
+
     public double getTargetVelocity() {
         return targetVelocity;
     }
 
     public VelocityMotor setTargetVelocity(double targetVelocity) {
         this.targetVelocity = targetVelocity;
-        return this;
-    }
-
-    public double getVelocity() {
-        return motor.getVelocity();
-    }
-
-    public VelocityMotor setVelocity(double velocity) {
-        motor.setVelocity(velocity);
         return this;
     }
 

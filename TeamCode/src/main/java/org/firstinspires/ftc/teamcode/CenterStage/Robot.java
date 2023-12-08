@@ -142,6 +142,11 @@ public class Robot extends Drivetrain {
     public Robot log(Telemetry telemetry) {
         super.log(telemetry);
 
+        telemetry.addLine("-----Intake-----");
+        telemetry.addData("Mode", intake.getMode());
+        telemetry.addData("Power", intake.getPower());
+        telemetry.addLine();
+
         telemetry.addLine("-----Battery Voltage-----");
         telemetry.addData("Voltage", batteryVoltageSensor.getBatteryVoltage());
 

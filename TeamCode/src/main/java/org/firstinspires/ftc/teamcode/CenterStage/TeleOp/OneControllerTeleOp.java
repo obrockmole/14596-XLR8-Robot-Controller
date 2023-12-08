@@ -7,8 +7,8 @@ import org.firstinspires.ftc.teamcode.Systems.Gamepad.GamepadButtons.Stick;
 import org.firstinspires.ftc.teamcode.Systems.Gamepad.GamepadButtons.Trigger;
 
 //@Disabled
-@TeleOp(group = "TeleOp", name = "TeleOp")
-public class CompetitionTeleOp extends BaseTele {
+@TeleOp(group = "TeleOp", name = "One Controller TeleOp")
+public class OneControllerTeleOp extends BaseTele {
     public void loop() {
         /* DRIVER */
         //Driving
@@ -17,9 +17,8 @@ public class CompetitionTeleOp extends BaseTele {
         //Driving speed, left bumper = slow, right bumper = fast
         robot.setSpeedScale(driver.isDown(Button.LEFT_BUMPER), driver.isDown(Button.RIGHT_BUMPER));
 
-        /* MANIPULATOR */
         //Intake, left trigger = intake, right trigger = outtake
-        robot.intake.setTargetPower(manipulator.getTrigger(Trigger.LEFT_TRIGGER) - manipulator.getTrigger(Trigger.RIGHT_TRIGGER));
+        robot.intake.setTargetPower(driver.getTrigger(Trigger.LEFT_TRIGGER) - driver.getTrigger(Trigger.RIGHT_TRIGGER));
 
         update();
         log();

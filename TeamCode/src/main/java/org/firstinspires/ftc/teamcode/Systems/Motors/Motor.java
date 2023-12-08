@@ -115,9 +115,8 @@ public class Motor {
         return motor.getPower();
     }
 
-    public Motor setPower(double power) {
+    private void setPower(double power) {
         motor.setPower(power * speedScale);
-        return this;
     }
 
     public double getTargetPower() {

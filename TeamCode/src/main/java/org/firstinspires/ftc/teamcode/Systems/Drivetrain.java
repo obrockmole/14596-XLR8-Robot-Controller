@@ -123,7 +123,7 @@ public class Drivetrain {
         double frPower =  -forward - rightward - rotational;
         double brPower =  -forward + rightward - rotational;
 
-        frontLeft.setTargetPower((flPower / normalizer) * speedScale);
+        frontLeft.setTargetPower(-(flPower / normalizer) * speedScale);
         backLeft.setTargetPower((blPower / normalizer) * speedScale);
         frontRight.setTargetPower((frPower / normalizer) * speedScale);
         backRight.setTargetPower((brPower / normalizer) * speedScale);
@@ -143,7 +143,7 @@ public class Drivetrain {
         double frPower =  -fixedForward - fixedRightward - rotational;
         double brPower =  -fixedForward + fixedRightward - rotational;
 
-        frontLeft.setTargetPower((flPower / normalizer) * speedScale);
+        frontLeft.setTargetPower(-(flPower / normalizer) * speedScale);
         backLeft.setTargetPower((blPower / normalizer) * speedScale);
         frontRight.setTargetPower((frPower / normalizer) * speedScale);
         backRight.setTargetPower((brPower / normalizer) * speedScale);
