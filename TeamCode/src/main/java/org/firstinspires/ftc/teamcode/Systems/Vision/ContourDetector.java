@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.Systems.Vision;
 
+import com.arcrobotics.ftclib.geometry.Vector2d;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
@@ -8,17 +9,11 @@ import org.opencv.core.Scalar;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
 
-import java.util.ArrayList;
-
 public class ContourDetector {
-    private ContourDetectionPipeline pipeline;
+    private ContourDetectionPipeline contourDetectionPipeline;
     private final WebcamName webcamName;
     private final OpenCvCamera camera;
     private final int cameraMonitorViewId;
-
-    public ContourDetector(HardwareMap hardwareMap, String cameraName) {
-        this(hardwareMap, hardwareMap.get(WebcamName.class, cameraName));
-    }
 
     public ContourDetector(HardwareMap hardwareMap, WebcamName webcamName) {
         cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
@@ -26,84 +21,38 @@ public class ContourDetector {
         camera = OpenCvCameraFactory.getInstance().createWebcam(webcamName, cameraMonitorViewId);
     }
 
-    public void start(Scalar weakLowHSV, Scalar weakHighHSV, Scalar strictLowHSV, Scalar strictHighHSV) {
-        pipeline = new ContourDetectionPipeline(weakLowHSV, weakHighHSV, strictLowHSV, strictHighHSV);
+    public ContourDetector(HardwareMap hardwareMap, String cameraName) {
+        this(hardwareMap, hardwareMap.get(WebcamName.class, cameraName));
+    }
 
-        camera.setPipeline(pipeline);
+    public void start(Scalar weakLowHSV, Scalar weakHighHSV, Scalar strictLowHSV, Scalar strictHighHSV, double minArea, double leftBounds, double rightBounds) {
+        contourDetectionPipeline = new ContourDetectionPipeline(weakLowHSV, weakHighHSV, strictLowHSV, strictHighHSV, minArea, leftBounds, rightBounds);
+
+        camera.setPipeline(contourDetectionPipeline);
         camera.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
-            @Override
             public void onOpened() {
                 //TODO: Get proper resolution values for the camera
                 camera.startStreaming(640, 480);
             }
 
-            @Override
             public void onError(int errorCode) {}
         });
     }
 
-    public Scalar getWeakLowHSV() {
-        return pipeline.getWeakLowHSV();
+    public ContourDetectionPipeline.PropPositions getPropPosition() {
+        return contourDetectionPipeline.getPropPosition();
     }
 
-    public ContourDetector setWeakLowHSV(Scalar weakLowHSV) {
-        pipeline.setWeakLowHSV(weakLowHSV);
-        return this;
+    public MatOfPoint getLargestContour() {
+        return contourDetectionPipeline.getLargestContour();
     }
 
-    public Scalar getWeakHighHSV() {
-        return pipeline.getWeakHighHSV();
+    public Vector2d getLargestContourPos() {
+        return contourDetectionPipeline.getLargestContourPos();
     }
 
-    public ContourDetector setWeakHighHSV(Scalar weakHighHSV) {
-        pipeline.setWeakHighHSV(weakHighHSV);
-        return this;
-    }
-
-    public Scalar getStrictLowHSV() {
-        return pipeline.getStrictLowHSV();
-    }
-
-    public ContourDetector setStrictLowHSV(Scalar strictLowHSV) {
-        pipeline.setStrictLowHSV(strictLowHSV);
-        return this;
-    }
-
-    public Scalar getStrictHighHSV() {
-        return pipeline.getStrictHighHSV();
-    }
-
-    public ContourDetector setStrictHighHSV(Scalar strictHighHSV) {
-        pipeline.setStrictHighHSV(strictHighHSV);
-        return this;
-    }
-
-    public ContourDetector setWeakHSV(Scalar weakLowHSV, Scalar weakHighHSV) {
-        pipeline.setWeakHSV(weakLowHSV, weakHighHSV);
-        return this;
-    }
-
-    public ContourDetector setStrictHSV(Scalar strictLowHSV, Scalar strictHighHSV) {
-        pipeline.setStrictHSV(strictLowHSV, strictHighHSV);
-        return this;
-    }
-
-    public ContourDetector setHSV(Scalar weakLowHSV, Scalar weakHighHSV, Scalar strictLowHSV, Scalar strictHighHSV) {
-        pipeline.setHSV(weakLowHSV, weakHighHSV, strictLowHSV, strictHighHSV);
-        return this;
-    }
-
-    public ArrayList<MatOfPoint> getContours() {
-        return pipeline.getContours();
-    }
-
-    public ContourDetectionPipeline getPipeline() {
-        return pipeline;
-    }
-
-    public ContourDetector setPipeline(ContourDetectionPipeline pipeline) {
-        this.pipeline = pipeline;
-        return this;
+    public double getLargestContourArea() {
+        return contourDetectionPipeline.getLargestContourArea();
     }
 
     public WebcamName getWebcamName() {

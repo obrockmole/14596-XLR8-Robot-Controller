@@ -1,51 +1,83 @@
 package org.firstinspires.ftc.teamcode.Systems.Vision;
 
+import com.arcrobotics.ftclib.geometry.Vector2d;
+
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfPoint;
 import org.opencv.core.Point;
 import org.opencv.core.Rect;
 import org.opencv.core.Scalar;
+import org.opencv.core.Size;
 import org.opencv.imgproc.Imgproc;
+import org.opencv.imgproc.Moments;
 import org.openftc.easyopencv.OpenCvPipeline;
 
 import java.util.ArrayList;
 
 public class ContourDetectionPipeline extends OpenCvPipeline {
-    Mat hsv = new Mat();
-    Mat lowMask = new Mat();
-    Mat lowColoredMask = new Mat();
-    Mat scaledMask = new Mat();
-    Mat strictMask = new Mat();
-    Mat strictColoredMask = new Mat();
+    public enum PropPositions {
+        LEFT,
+        RIGHT,
+        CENTER,
+        NULL
+    }
 
-    Scalar weakLowHSV, weakHighHSV, strictLowHSV, strictHighHSV;
+    private final Mat hsv = new Mat();
+    private final Mat weakMask = new Mat();
+    private final Mat coloredWeakMask = new Mat();
+    private final Mat scaledMask = new Mat();
+    private final Mat strictMask = new Mat();
 
-    ArrayList<MatOfPoint> contours = new ArrayList<>();
+    private final Mat kernelErosion, kernelDilation;
 
-    public ContourDetectionPipeline(Scalar weakLowHSV, Scalar weakHighHSV, Scalar strictLowHSV, Scalar strictHighHSV) {
+    private final Scalar weakLowHSV, weakHighHSV, strictLowHSV, strictHighHSV;
+
+    private final double minArea;
+    private final double leftBounds;
+    private final double rightBounds;
+
+    private ArrayList<MatOfPoint> contours;
+    private MatOfPoint largestContour;
+    private Vector2d largestContourPos;
+    private double largestContourArea;
+
+    private PropPositions previousPropPosition, currentPropPosition;
+
+    public ContourDetectionPipeline(Scalar weakLowHSV, Scalar weakHighHSV, Scalar strictLowHSV, Scalar strictHighHSV, double minArea, double leftBounds, double rightBounds) {
         this.weakLowHSV = weakLowHSV;
         this.weakHighHSV = weakHighHSV;
         this.strictLowHSV = strictLowHSV;
         this.strictHighHSV = strictHighHSV;
+
+        this.minArea = minArea;
+        this.leftBounds = leftBounds;
+        this.rightBounds = rightBounds;
+
+        kernelErosion = Imgproc.getStructuringElement(Imgproc.MORPH_RECT, new Size(5, 5));
+        kernelDilation = Imgproc.getStructuringElement(Imgproc.MORPH_RECT, new Size(4, 4));
     }
 
-    @Override
     public Mat processFrame(Mat input) {
         //Convert input to HSV
         Imgproc.cvtColor(input, hsv, Imgproc.COLOR_RGB2HSV);
 
-        //Apply weak detection and output 'lowMask'
-        Core.inRange(hsv, weakLowHSV, weakHighHSV, lowMask);
+        //Apply weak detection and output 'weakMask'
+        Core.inRange(hsv, weakLowHSV, weakHighHSV, weakMask);
 
-        //Reapply the colors from 'hsv' to the white areas in 'lowMask' and output 'lowColoredMask'
-        Core.bitwise_and(hsv, hsv, lowColoredMask, lowMask);
+        //Erode and dilate 'weakMask' and output 'weakMask'
+        Imgproc.erode(weakMask, weakMask, kernelErosion);
+        Imgproc.dilate(weakMask, weakMask, kernelDilation);
 
-        //Find the average color in 'lowColoredMask'
-        Scalar average = Core.mean(lowColoredMask, lowMask);
+        //Reapply the colors from 'hsv' to the white areas in 'weakMask' and output 'coloredWeakMask'
+        coloredWeakMask.release();
+        Core.bitwise_not(hsv, coloredWeakMask, weakMask);
 
-        //Scale 'lowColoredMask' values based on the average color and output 'scaledMask;
-        lowColoredMask.convertTo(scaledMask, -1, 150 / average.val[1], 0);
+        //Find the average color in 'coloredWeakMask'
+        Scalar average = Core.mean(coloredWeakMask, weakMask);
+
+        //Scale 'coloredWeakMask' values based on the average color and output 'scaledMask;
+        coloredWeakMask.convertTo(scaledMask, -1, 150 / average.val[1], 0);
 
         //Apply strict detection and output 'strictMask'
         Core.inRange(scaledMask, strictLowHSV, strictHighHSV, strictMask);
@@ -54,74 +86,60 @@ public class ContourDetectionPipeline extends OpenCvPipeline {
         contours.clear();
         Imgproc.findContours(strictMask, contours, new Mat(), Imgproc.RETR_LIST, Imgproc.CHAIN_APPROX_SIMPLE);
 
+        largestContourArea = -1;
+        largestContour = null;
+
         for (MatOfPoint contour : contours) {
-            if (Imgproc.contourArea(contour) > 50) {
-                Rect rect = Imgproc.boundingRect(contour);
-                Imgproc.rectangle(input, new Point(rect.x, rect.y),
-                        new Point(rect.x + rect.width, rect.y + rect.height), new Scalar(0, 255, 0), 2);
+            double area = Imgproc.contourArea(contour);
+            if (area > largestContourArea && area > minArea) {
+                largestContour = contour;
+                largestContourArea = area;
             }
         }
+
+        if (largestContour != null) {
+            Moments moment = Imgproc.moments(largestContour);
+            largestContourPos = new Vector2d(moment.m10 / moment.m00, moment.m01 / moment.m00);
+
+            Rect rect = Imgproc.boundingRect(largestContour);
+            Imgproc.rectangle(input, rect, new Scalar(0, 255, 0));
+        } else {
+            largestContourPos = new Vector2d(-1, -1);
+        }
+
+        Imgproc.line(input, new Point(leftBounds, 0), new Point(leftBounds, input.rows()), new Scalar(0, 0, 255));
+        Imgproc.line(input, new Point(rightBounds, 0), new Point(rightBounds, input.rows()), new Scalar(0, 0, 255));
+
+        PropPositions propPosition;
+        if (largestContour == null)
+            propPosition = PropPositions.NULL;
+        else if (largestContourPos.getX() < leftBounds)
+            propPosition = PropPositions.LEFT;
+        else if (largestContourPos.getX() > rightBounds)
+            propPosition = PropPositions.RIGHT;
+        else
+            propPosition = PropPositions.CENTER;
+
+        if (propPosition != previousPropPosition && propPosition != PropPositions.NULL)
+            currentPropPosition = propPosition;
+        previousPropPosition = propPosition;
 
         return input;
     }
 
-    public Scalar getWeakLowHSV() {
-        return weakLowHSV;
+    public PropPositions getPropPosition() {
+        return currentPropPosition;
     }
 
-    public ContourDetectionPipeline setWeakLowHSV(Scalar weakLowHSV) {
-        this.weakLowHSV = weakLowHSV;
-        return this;
+    public MatOfPoint getLargestContour() {
+        return largestContour;
     }
 
-    public Scalar getWeakHighHSV() {
-        return weakHighHSV;
+    public Vector2d getLargestContourPos() {
+        return largestContourPos;
     }
 
-    public ContourDetectionPipeline setWeakHighHSV(Scalar weakHighHSV) {
-        this.weakHighHSV = weakHighHSV;
-        return this;
-    }
-
-    public Scalar getStrictLowHSV() {
-        return strictLowHSV;
-    }
-
-    public ContourDetectionPipeline setStrictLowHSV(Scalar strictLowHSV) {
-        this.strictLowHSV = strictLowHSV;
-        return this;
-    }
-
-    public Scalar getStrictHighHSV() {
-        return strictHighHSV;
-    }
-
-    public ContourDetectionPipeline setStrictHighHSV(Scalar strictHighHSV) {
-        this.strictHighHSV = strictHighHSV;
-        return this;
-    }
-
-    public ContourDetectionPipeline setWeakHSV(Scalar weakLowHSV, Scalar weakHighHSV) {
-        this.weakLowHSV = weakLowHSV;
-        this.weakHighHSV = weakHighHSV;
-        return this;
-    }
-
-    public ContourDetectionPipeline setStrictHSV(Scalar strictLowHSV, Scalar strictHighHSV) {
-        this.strictLowHSV = strictLowHSV;
-        this.strictHighHSV = strictHighHSV;
-        return this;
-    }
-
-    public ContourDetectionPipeline setHSV(Scalar weakLowHSV, Scalar weakHighHSV, Scalar strictLowHSV, Scalar strictHighHSV) {
-        this.weakLowHSV = weakLowHSV;
-        this.weakHighHSV = weakHighHSV;
-        this.strictLowHSV = strictLowHSV;
-        this.strictHighHSV = strictHighHSV;
-        return this;
-    }
-
-    public ArrayList<MatOfPoint> getContours() {
-        return new ArrayList<>(contours);
+    public double getLargestContourArea() {
+        return largestContourArea;
     }
 }

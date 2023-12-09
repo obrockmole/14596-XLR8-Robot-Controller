@@ -8,23 +8,41 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
+import org.opencv.core.MatOfPoint;
+import org.opencv.core.Rect;
 import org.opencv.core.Scalar;
+import org.opencv.core.Size;
 import org.opencv.imgproc.Imgproc;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvPipeline;
 
+import java.util.ArrayList;
+
 //@Disabled
 @Config
 @TeleOp(group = "Tuning")
 public class VisionTuner_ColorBounds extends OpMode {
+    public enum VisionSteps {
+        INPUT,
+        HSV,
+        WEAK_MASK,
+        WEAK_COLORED,
+        WEAK_AVERAGE,
+        STRICT_MASK,
+        STRICT_COLORED,
+        CONTOURS
+    }
+
     VisionTunerPipeline pipeline;
     WebcamName webcamName;
     OpenCvCamera camera;
     int cameraMonitorViewId;
 
-    public static HSV weakLowHSV = new HSV(0, 0, 0), weakHighHSV = new HSV(0, 0, 0);
-    public static HSV strictLowHSV = new HSV(0, 0, 0), strictHighHSV = new HSV(0, 0, 0);
+    public static HSV weakLowHSV = new HSV(0, 0, 0), weakHighHSV = new HSV(179, 255, 255);
+    public static HSV strictLowHSV = new HSV(0, 0, 0), strictHighHSV = new HSV(179, 255, 255);
+
+    public static VisionTuner_ColorBounds.VisionSteps returnVisionStep = VisionTuner_ColorBounds.VisionSteps.INPUT;
 
     public void init() {
         cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
@@ -48,44 +66,92 @@ public class VisionTuner_ColorBounds extends OpMode {
 
     public void init_loop() {
         pipeline.setHSV(weakLowHSV.toScalar(), weakHighHSV.toScalar(), strictLowHSV.toScalar(), strictHighHSV.toScalar());
+        pipeline.setReturnStep(returnVisionStep);
     }
 
     public void loop() {}
 }
 
 class VisionTunerPipeline extends OpenCvPipeline {
-    Mat hsv = new Mat();
-    Mat lowMask = new Mat();
-    Mat lowColoredMask = new Mat();
-    Mat scaledMask = new Mat();
-    Mat strictMask = new Mat();
-    Mat strictColoredMask = new Mat();
+    private final Mat hsv = new Mat();
+    private final Mat weakMask = new Mat();
+    private final Mat coloredWeakMask = new Mat();
+    private final Mat scaledMask = new Mat();
+    private final Mat strictMask = new Mat();
+    private final Mat coloredStrictMask = new Mat();
 
-    Scalar weakLowHSV, weakHighHSV, strictLowHSV, strictHighHSV;
+    private final Mat kernelErosion, kernelDilation;
+
+    private Scalar weakLowHSV, weakHighHSV, strictLowHSV, strictHighHSV;
+    private VisionTuner_ColorBounds.VisionSteps returnStep;
+
+    private final ArrayList<MatOfPoint> contours = new ArrayList<>();
+    private MatOfPoint largestContour;
 
     public VisionTunerPipeline(Scalar weakLowHSV, Scalar weakHighHSV, Scalar strictLowHSV, Scalar strictHighHSV) {
         this.weakLowHSV = weakLowHSV;
         this.weakHighHSV = weakHighHSV;
         this.strictLowHSV = strictLowHSV;
         this.strictHighHSV = strictHighHSV;
+
+        kernelErosion = Imgproc.getStructuringElement(Imgproc.MORPH_RECT, new Size(5, 5));
+        kernelDilation = Imgproc.getStructuringElement(Imgproc.MORPH_RECT, new Size(4, 4));
     }
 
     public Mat processFrame(Mat input) {
         Imgproc.cvtColor(input, hsv, Imgproc.COLOR_RGB2HSV);
 
-        Core.inRange(hsv, weakLowHSV, weakHighHSV, lowMask);
+        Core.inRange(hsv, weakLowHSV, weakHighHSV, weakMask);
 
-        Core.bitwise_and(hsv, hsv, lowColoredMask, lowMask);
+        Imgproc.erode(weakMask, weakMask, kernelErosion);
+        Imgproc.dilate(weakMask, weakMask, kernelDilation);
 
-        Scalar average = Core.mean(lowColoredMask, lowMask);
+        coloredWeakMask.release();
+        Core.bitwise_not(input, coloredWeakMask, weakMask);
 
-        lowColoredMask.convertTo(scaledMask, -1, 150 / average.val[1], 0);
+        Scalar average = Core.mean(coloredWeakMask, weakMask);
+        coloredWeakMask.convertTo(scaledMask, -1, 150 / average.val[1], 0);
 
         Core.inRange(scaledMask, strictLowHSV, strictHighHSV, strictMask);
+        coloredStrictMask.release();
+        Core.bitwise_not(hsv, coloredStrictMask, strictMask);
 
-        Core.bitwise_and(input, input, strictColoredMask, strictMask);
+        contours.clear();
+        Imgproc.findContours(strictMask, contours, new Mat(), Imgproc.RETR_LIST, Imgproc.CHAIN_APPROX_SIMPLE);
 
-        return strictColoredMask;
+        double largestContourArea = -1;
+        largestContour = null;
+
+        for (MatOfPoint contour : contours) {
+            double area = Imgproc.contourArea(contour);
+            if (area > largestContourArea) {
+                largestContour = contour;
+                largestContourArea = area;
+            }
+        }
+
+        if (largestContour != null && returnStep == VisionTuner_ColorBounds.VisionSteps.CONTOURS) {
+            Rect rect = Imgproc.boundingRect(largestContour);
+
+            Imgproc.rectangle(input, rect, new Scalar(0, 255, 0));
+        }
+
+        switch (returnStep) {
+            case HSV:
+                return hsv;
+            case WEAK_MASK:
+                return weakMask;
+            case WEAK_COLORED:
+                return coloredWeakMask;
+            case WEAK_AVERAGE:
+                return scaledMask;
+            case STRICT_MASK:
+                return strictMask;
+            case STRICT_COLORED:
+                return coloredStrictMask;
+            default:
+                return input;
+        }
     }
 
     public void setHSV(Scalar weakLowHSV, Scalar weakHighHSV, Scalar strictLowHSV, Scalar strictHighHSV) {
@@ -93,6 +159,10 @@ class VisionTunerPipeline extends OpenCvPipeline {
         this.weakHighHSV = weakHighHSV;
         this.strictLowHSV = strictLowHSV;
         this.strictHighHSV = strictHighHSV;
+    }
+
+    public void setReturnStep(VisionTuner_ColorBounds.VisionSteps returnStep) {
+        this.returnStep = returnStep;
     }
 }
 
