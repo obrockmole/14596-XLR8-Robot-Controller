@@ -4,18 +4,26 @@ import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-import org.firstinspires.ftc.teamcode.Systems.Vision.ContourDetector;
+import org.firstinspires.ftc.teamcode.Systems.Vision.ContourDetectionPipeline;
+import org.firstinspires.ftc.teamcode.Systems.Vision.DrawStrategy;
+import org.firstinspires.ftc.teamcode.Systems.Vision.VisionDetector;
+import org.opencv.core.Mat;
+import org.opencv.core.Rect;
 import org.opencv.core.Scalar;
+import org.opencv.imgproc.Imgproc;
 
 @Disabled
 @TeleOp(group = "Samples", name = "Contour Detection Sample")
-public class VisionContourDetection_Sample extends OpMode {
-    ContourDetector detector;
+public class VisionContourDetection_Sample extends OpMode implements DrawStrategy {
+    VisionDetector contourDetector;
+    ContourDetectionPipeline pipeline;
 
     @Override
     public void init() {
-        detector = new ContourDetector(hardwareMap, "Webcam"); //Initialize the detector
-        detector.start(new Scalar(0, 0, 0), new Scalar(179, 255, 255), new Scalar(80, 100, 100), new Scalar(160, 200, 200)); //Start the detector.
+        pipeline = new ContourDetectionPipeline(this, new Scalar(0, 0, 0), new Scalar(179, 255, 255), new Scalar(80, 100, 100), new Scalar(160, 200, 200), 100); //Initialize the pipeline.
+        contourDetector = new VisionDetector(hardwareMap, "Webcam", pipeline); //Initialize the detector
+        contourDetector.start(); //Start the detector.
+
         /*
             Note: The four Scalar parameters are the lower and upper bounds of the HSV color range to detect for both the first (weak) and second (strict) detections.
             OpenCV HSV ranges are 0-179 for H, 0-255 for S, and 0-255 for V.
@@ -30,4 +38,9 @@ public class VisionContourDetection_Sample extends OpMode {
 
     @Override
     public void loop() {}
+
+    public void drawOnFrame(Mat frame) {
+        Rect rect = Imgproc.boundingRect(contourDetector.getDetection());
+        Imgproc.rectangle(frame, rect, new Scalar(0, 255, 0));
+    }
 }

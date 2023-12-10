@@ -5,23 +5,15 @@ import com.arcrobotics.ftclib.geometry.Vector2d;
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfPoint;
-import org.opencv.core.Point;
-import org.opencv.core.Rect;
 import org.opencv.core.Scalar;
 import org.opencv.core.Size;
 import org.opencv.imgproc.Imgproc;
 import org.opencv.imgproc.Moments;
-import org.openftc.easyopencv.OpenCvPipeline;
 
 import java.util.ArrayList;
 
-public class ContourDetectionPipeline extends OpenCvPipeline {
-    public enum PropPositions {
-        LEFT,
-        RIGHT,
-        CENTER,
-        NULL
-    }
+public class ContourDetectionPipeline extends VisionPipeline {
+    private final DrawStrategy drawStrategy;
 
     private final Mat hsv = new Mat();
     private final Mat weakMask = new Mat();
@@ -34,25 +26,21 @@ public class ContourDetectionPipeline extends OpenCvPipeline {
     private final Scalar weakLowHSV, weakHighHSV, strictLowHSV, strictHighHSV;
 
     private final double minArea;
-    private final double leftBounds;
-    private final double rightBounds;
 
     private ArrayList<MatOfPoint> contours;
     private MatOfPoint largestContour;
     private Vector2d largestContourPos;
     private double largestContourArea;
 
-    private PropPositions previousPropPosition, currentPropPosition;
+    public ContourDetectionPipeline(DrawStrategy drawStrategy, Scalar weakLowHSV, Scalar weakHighHSV, Scalar strictLowHSV, Scalar strictHighHSV, double minArea) {
+        this.drawStrategy = drawStrategy;
 
-    public ContourDetectionPipeline(Scalar weakLowHSV, Scalar weakHighHSV, Scalar strictLowHSV, Scalar strictHighHSV, double minArea, double leftBounds, double rightBounds) {
         this.weakLowHSV = weakLowHSV;
         this.weakHighHSV = weakHighHSV;
         this.strictLowHSV = strictLowHSV;
         this.strictHighHSV = strictHighHSV;
 
         this.minArea = minArea;
-        this.leftBounds = leftBounds;
-        this.rightBounds = rightBounds;
 
         kernelErosion = Imgproc.getStructuringElement(Imgproc.MORPH_RECT, new Size(5, 5));
         kernelDilation = Imgproc.getStructuringElement(Imgproc.MORPH_RECT, new Size(4, 4));
@@ -100,46 +88,24 @@ public class ContourDetectionPipeline extends OpenCvPipeline {
         if (largestContour != null) {
             Moments moment = Imgproc.moments(largestContour);
             largestContourPos = new Vector2d(moment.m10 / moment.m00, moment.m01 / moment.m00);
-
-            Rect rect = Imgproc.boundingRect(largestContour);
-            Imgproc.rectangle(input, rect, new Scalar(0, 255, 0));
         } else {
             largestContourPos = new Vector2d(-1, -1);
         }
 
-        Imgproc.line(input, new Point(leftBounds, 0), new Point(leftBounds, input.rows()), new Scalar(0, 0, 255));
-        Imgproc.line(input, new Point(rightBounds, 0), new Point(rightBounds, input.rows()), new Scalar(0, 0, 255));
-
-        PropPositions propPosition;
-        if (largestContour == null)
-            propPosition = PropPositions.NULL;
-        else if (largestContourPos.getX() < leftBounds)
-            propPosition = PropPositions.LEFT;
-        else if (largestContourPos.getX() > rightBounds)
-            propPosition = PropPositions.RIGHT;
-        else
-            propPosition = PropPositions.CENTER;
-
-        if (propPosition != previousPropPosition && propPosition != PropPositions.NULL)
-            currentPropPosition = propPosition;
-        previousPropPosition = propPosition;
+        drawStrategy.drawOnFrame(input);
 
         return input;
     }
 
-    public PropPositions getPropPosition() {
-        return currentPropPosition;
-    }
-
-    public MatOfPoint getLargestContour() {
+    public MatOfPoint getDetection() {
         return largestContour;
     }
 
-    public Vector2d getLargestContourPos() {
+    public Vector2d getDetectionPos() {
         return largestContourPos;
     }
 
-    public double getLargestContourArea() {
+    public double getDetectionArea() {
         return largestContourArea;
     }
 }

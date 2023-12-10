@@ -1,37 +1,57 @@
 package org.firstinspires.ftc.teamcode.Systems.Vision;
 
+import com.arcrobotics.ftclib.geometry.Vector2d;
+
 import org.opencv.core.Mat;
+import org.opencv.core.MatOfPoint;
 import org.opencv.core.MatOfRect;
 import org.opencv.core.Point;
 import org.opencv.core.Rect;
-import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
 import org.opencv.objdetect.CascadeClassifier;
-import org.openftc.easyopencv.OpenCvPipeline;
 
-public class CascadeDetectionPipeline extends OpenCvPipeline {
+public class CascadeDetectionPipeline extends VisionPipeline {
+    private final DrawStrategy drawStrategy;
+
     Mat gray = new Mat();
     CascadeClassifier detector = new CascadeClassifier();
+    String cascadeFile;
 
     MatOfRect detections = new MatOfRect();
 
-    String cascadeFile;
+    private MatOfPoint detection;
+    private Vector2d detectionPos;
+    private double detectionArea;
 
-    public CascadeDetectionPipeline(String cascadeFile) {
+    public CascadeDetectionPipeline(DrawStrategy drawStrategy, String cascadeFile) {
+        this.drawStrategy = drawStrategy;
+
         this.cascadeFile = cascadeFile;
         detector.load(cascadeFile);
     }
 
-    @Override
     public Mat processFrame(Mat input) {
         Imgproc.cvtColor(input, gray, Imgproc.COLOR_RGB2GRAY);
 
         detector.detectMultiScale(gray, detections);
 
+        detection = null;
+        detectionArea = -1;
+
         for (Rect rect : detections.toArray()) {
-            Imgproc.rectangle(input, new Point(rect.x, rect.y),
-                    new Point(rect.x + rect.width, rect.y + rect.height), new Scalar(0, 255, 0), 2);
+            double area = rect.area();
+            if (area > detectionArea) {
+                detection = new MatOfPoint(
+                        new Point(rect.x, rect.y),
+                        new Point(rect.x + rect.width, rect.y),
+                        new Point(rect.x + rect.width, rect.y + rect.height),
+                        new Point(rect.x, rect.y + rect.height)
+                );
+                detectionArea = area;
+            }
         }
+
+        drawStrategy.drawOnFrame(input);
 
         return input;
     }
@@ -44,5 +64,17 @@ public class CascadeDetectionPipeline extends OpenCvPipeline {
         this.cascadeFile = cascadeFile;
         detector.load(cascadeFile);
         return this;
+    }
+
+    public MatOfPoint getDetection() {
+        return detection;
+    }
+
+    public Vector2d getDetectionPos() {
+        return detectionPos;
+    }
+
+    public double getDetectionArea() {
+        return detectionArea;
     }
 }
