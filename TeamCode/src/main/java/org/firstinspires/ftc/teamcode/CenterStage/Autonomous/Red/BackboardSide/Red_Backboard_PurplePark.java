@@ -3,12 +3,15 @@ package org.firstinspires.ftc.teamcode.CenterStage.Autonomous.Red.BackboardSide;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
 import org.firstinspires.ftc.teamcode.CenterStage.Autonomous.BaseAuto;
+import org.firstinspires.ftc.teamcode.RoadRunner.TrajectorySequence.TrajectorySequenceBuilder;
 import org.firstinspires.ftc.teamcode.Systems.Vision.ContourDetectionPipeline;
 import org.firstinspires.ftc.teamcode.Systems.Vision.VisionDetector;
 import org.opencv.core.Scalar;
 
+@Disabled
 @Autonomous(group = "Red", name = "Purple & Park - Red Side Backboard")
 public class Red_Backboard_PurplePark extends BaseAuto {
     public void initVision() {
@@ -16,15 +19,33 @@ public class Red_Backboard_PurplePark extends BaseAuto {
         contourDetector = new VisionDetector(hardwareMap, "Webcam", pipeline);
     }
 
-    public void initTrajectory() {
-        sequence = drive.trajectorySequenceBuilder(new Pose2d(12, -64, Math.toRadians(90)))
+    public Pose2d startPos() {
+        return new Pose2d(12, -64, Math.toRadians(90));
+    }
+
+    public Pose2d spikePos() {
+        switch (finalPropPosition) {
+            case LEFT:
+                return new Pose2d(2, -36, Math.toRadians(90));
+            case RIGHT:
+                return new Pose2d(12, -12, Math.toRadians(90));
+            default:
+                return new Pose2d(22, -36, Math.toRadians(90));
+        }
+    }
+
+    public Pose2d backdropPos() {
+        return new Pose2d();
+    }
+
+    public TrajectorySequenceBuilder pathBuilder(Pose2d startPos, Pose2d spikePos, Pose2d backdropPos) {
+        return drive.trajectorySequenceBuilder(startPos)
                 //Place purple pixel
-                .lineTo(new Vector2d(12, -36))
+                .lineTo(spikePos.vec())
                 .waitSeconds(1)
 
                 //Park
                 .setTangent(Math.toRadians(-90))
-                .splineToConstantHeading(new Vector2d(46, -58), Math.toRadians(0))
-                .build();
+                .splineToConstantHeading(new Vector2d(46, -58), Math.toRadians(0));
     }
 }

@@ -24,17 +24,13 @@ import org.firstinspires.ftc.teamcode.Systems.Servos.PositionServoGroup;
 public class Robot extends Drivetrain {
 //    public final Motor intake, lift;
     public final Motor intake;
-//    public final MotorGroup liftAngle;
 
 //    public final PositionServo droneLauncher, droneAngle;
-//    public final PositionServoGroup intakeGate, pixelDepositAngle, pixelDepositSlide, winch;
-
-//    public final ContinuousServoGroup winchExtension;
+//    public final PositionServoGroup intakeGate, pixelDepositAngle, pixelDepositSlide;
 
     private final BatteryVoltageSensor batteryVoltageSensor;
 
-    public int[] liftPositions = {0, 100, 500, 800};
-    public int[] liftAngles = {0, 50, 120, 200};
+//    public int[] liftPositions = {0, 100, 500, 800};
 
     public Robot(HardwareMap hardwareMap) {
         super(new Motor(hardwareMap, "frontLeft", MotorList.GOBILDA_435, Motor.Mode.POWER, false),
@@ -44,7 +40,7 @@ public class Robot extends Drivetrain {
 
                 new Odometry(
                         new OdometryPod(new Encoder(hardwareMap, "frontLeft", Encoder.Direction.FORWARD)),
-                        new OdometryPod(new Encoder(hardwareMap, "backRight", Encoder.Direction.FORWARD)),
+                        new OdometryPod(new Encoder(hardwareMap, "frontRight", Encoder.Direction.FORWARD)),
                         new OdometryPod(new Encoder(hardwareMap, "intake", Encoder.Direction.FORWARD))
                 ),
 
@@ -53,11 +49,6 @@ public class Robot extends Drivetrain {
 
         intake = new Motor(hardwareMap, "intake", MotorList.GOBILDA_435, Motor.Mode.POWER, false);
         /*lift = new Motor(hardwareMap, "lift", MotorList.REV_PLAN_25, Motor.Mode.POSITION, false);
-
-        liftAngle = new MotorGroup(
-                new Motor(hardwareMap, "liftAngleLeft", MotorList.GOBILDA_1620, Motor.Mode.POSITION, false),
-                new Motor(hardwareMap, "liftAngleLeft", MotorList.GOBILDA_1620, Motor.Mode.POSITION, false)
-        );
 
         droneLauncher = new PositionServo(hardwareMap, "droneLauncher", 0, 1, false);
         droneAngle = new PositionServo(hardwareMap, "droneAngle", 0, 1, false);
@@ -73,23 +64,13 @@ public class Robot extends Drivetrain {
         pixelDepositSlide = new PositionServoGroup(
                 new PositionServo(hardwareMap, "depositSlideLeft", 0, 1, false),
                 new PositionServo(hardwareMap, "depositSlideRight", 0, 1, true)
-        );
-        winch = new PositionServoGroup(
-                new PositionServo(hardwareMap, "winchLeft", 0, 1, false),
-                new PositionServo(hardwareMap, "winchRight", 0, 1, false)
-        );
-
-        winchExtension = new ContinuousServoGroup(
-                new ContinuousServo(hardwareMap, "winchExtensionLeft", false),
-                new ContinuousServo(hardwareMap, "winchExtensionRight", false)
         );*/
 
         batteryVoltageSensor = new BatteryVoltageSensor(hardwareMap);
     }
 
-    public Robot setSpeedScale(boolean slow, boolean fast) {
-        if (slow == fast) setSpeedScale(0.8);
-        else if (slow) setSpeedScale(0.5);
+    public Robot setSpeedScale(boolean slow) {
+        if (slow) setSpeedScale(0.4);
         else setSpeedScale(1);
         return this;
     }
@@ -105,36 +86,20 @@ public class Robot extends Drivetrain {
         lift.setTargetPosition(liftPositions[position]);
         return this;
     }
-
-    public Robot setLiftAnglePower(double power) {
-        if (liftAngle.getMode() != Motor.Mode.POWER && power > liftAngle.getPower()) liftAngle.setMode(Motor.Mode.POWER);
-        liftAngle.setTargetPower(power);
-        return this;
-    }
-
-    public Robot setLiftAnglePosition(int position) {
-        if (liftAngle.getMode() != Motor.Mode.POSITION) liftAngle.setMode(Motor.Mode.POSITION);
-        liftAngle.setTargetPosition(liftAngles[position]);
-        return this;
     }*/
 
-    public Robot update() {
-        super.update();
+    public Robot update(boolean updateDriveMotors) {
+        if (updateDriveMotors) super.update();
 
         intake.update();
         /*lift.update();
-
-        liftAngle.update();
 
         droneLauncher.update();
         droneAngle.update();
 
         intakeGate.update();
         pixelDepositAngle.update();
-        pixelDepositSlide.update();
-        winch.update();
-
-        winchExtension.update();*/
+        pixelDepositSlide.update();*/
 
         return this;
     }

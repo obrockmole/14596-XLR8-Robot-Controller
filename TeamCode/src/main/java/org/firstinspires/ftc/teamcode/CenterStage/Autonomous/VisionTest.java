@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.CenterStage.Autonomous;
 
 import com.arcrobotics.ftclib.geometry.Vector2d;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
 import org.firstinspires.ftc.teamcode.Systems.Vision.ContourDetectionPipeline;
@@ -18,11 +19,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-//@Disabled
+@Disabled
 @Autonomous(group = "Testing", name = "Vision Test")
 public class VisionTest extends OpMode implements DrawStrategy {
-    public static int LEFT_BOUNDS = 200;
-    public static int RIGHT_BOUNDS = 400;
+    public static int LEFT_BOUNDS = 160;
+    public static int RIGHT_BOUNDS = 320;
 
     public enum PropPositions {
         LEFT,
@@ -99,10 +100,13 @@ public class VisionTest extends OpMode implements DrawStrategy {
     }
 
     public void drawOnFrame(Mat frame) {
-        Rect rect = Imgproc.boundingRect(contourDetector.getDetection());
-        Imgproc.rectangle(frame, rect, new Scalar(0, 255, 0));
+        MatOfPoint detection = contourDetector.getDetection();
+        if (detection != null) {
+            Rect rect = Imgproc.boundingRect(detection);
+            Imgproc.rectangle(frame, rect, new Scalar(0, 255, 0), 4);
+        }
 
-        Imgproc.line(frame, new Point(LEFT_BOUNDS, 0), new Point(LEFT_BOUNDS, frame.rows()), new Scalar(0, 0, 255));
-        Imgproc.line(frame, new Point(RIGHT_BOUNDS, 0), new Point(RIGHT_BOUNDS, frame.rows()), new Scalar(0, 0, 255));
+        Imgproc.line(frame, new Point(LEFT_BOUNDS, 0), new Point(LEFT_BOUNDS, frame.rows()), new Scalar(0, 0, 255), 4);
+        Imgproc.line(frame, new Point(RIGHT_BOUNDS, 0), new Point(RIGHT_BOUNDS, frame.rows()), new Scalar(0, 0, 255), 4);
     }
 }

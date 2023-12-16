@@ -49,7 +49,7 @@ public class BaseTele extends OpMode {
         driver.update();
         manipulator.update();
 
-        robot.update();
+        robot.update(true);
 
 //        scoringMachine.update();
     }

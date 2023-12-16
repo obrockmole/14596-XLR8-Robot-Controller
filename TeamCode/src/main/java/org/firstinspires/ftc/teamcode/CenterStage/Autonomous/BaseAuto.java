@@ -1,11 +1,13 @@
 package org.firstinspires.ftc.teamcode.CenterStage.Autonomous;
 
+import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.arcrobotics.ftclib.geometry.Vector2d;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
 import org.firstinspires.ftc.teamcode.CenterStage.Robot;
 import org.firstinspires.ftc.teamcode.RoadRunner.Drive.MecanumDrive;
 import org.firstinspires.ftc.teamcode.RoadRunner.TrajectorySequence.TrajectorySequence;
+import org.firstinspires.ftc.teamcode.RoadRunner.TrajectorySequence.TrajectorySequenceBuilder;
 import org.firstinspires.ftc.teamcode.Systems.Vision.ContourDetectionPipeline;
 import org.firstinspires.ftc.teamcode.Systems.Vision.DrawStrategy;
 import org.firstinspires.ftc.teamcode.Systems.Vision.VisionDetector;
@@ -21,16 +23,16 @@ import java.util.HashMap;
 import java.util.Map;
 
 public abstract class BaseAuto extends OpMode implements DrawStrategy {
-    public Robot robot;
+    protected Robot robot;
 
-    public MecanumDrive drive;
-    public TrajectorySequence sequence;
+    protected MecanumDrive drive;
+    protected TrajectorySequenceBuilder trajSequence;
 
-    public VisionDetector contourDetector;
-    public ContourDetectionPipeline pipeline;
+    protected VisionDetector contourDetector;
+    protected ContourDetectionPipeline pipeline;
 
-    private final int LEFT_BOUNDS = 200;
-    private final int RIGHT_BOUNDS = 400;
+    private final int LEFT_BOUNDS = 160;
+    private final int RIGHT_BOUNDS = 320;
 
     public enum PropPositions {
         LEFT,
@@ -42,7 +44,8 @@ public abstract class BaseAuto extends OpMode implements DrawStrategy {
 
     private final ArrayList<PropPositions> propPositions = new ArrayList<>();
     private final Map<PropPositions, Integer> propPositionsCount = new HashMap<>();
-    private PropPositions previousPropPosition = PropPositions.NULL, currentPropPosition = PropPositions.NULL, finalPropPosition = PropPositions.NULL;
+    private PropPositions previousPropPosition = PropPositions.NULL, currentPropPosition = PropPositions.NULL;
+    protected PropPositions finalPropPosition = PropPositions.NULL;
 
     public void init() {
         robot = new Robot(hardwareMap);
@@ -53,7 +56,8 @@ public abstract class BaseAuto extends OpMode implements DrawStrategy {
         for (PropPositions position : PropPositions.values())
             propPositionsCount.put(position, 0);
 
-        initTrajectory();
+
+        trajSequence = pathBuilder(startPos(), spikePos(), backdropPos());
     }
 
     public void init_loop() {
@@ -95,14 +99,14 @@ public abstract class BaseAuto extends OpMode implements DrawStrategy {
     }
 
     public void start() {
-        drive.setPoseEstimate(sequence.start());
-        drive.followTrajectorySequenceAsync(sequence);
+        drive.setPoseEstimate(startPos());
+        drive.followTrajectorySequenceAsync(trajSequence.build());
     }
 
     public void loop() {
         drive.update();
-        robot.update()
-                .log(telemetry);
+        robot.update(false);
+        robot.log(telemetry);
 
         telemetry.addLine("-----Other-----");
         telemetry.addData("Runtime", getRuntime());
@@ -110,13 +114,19 @@ public abstract class BaseAuto extends OpMode implements DrawStrategy {
     }
 
     public abstract void initVision();
-    public abstract void initTrajectory();
+    public abstract Pose2d startPos();
+    public abstract Pose2d spikePos();
+    public abstract Pose2d backdropPos();
+    public abstract TrajectorySequenceBuilder pathBuilder(Pose2d startPos, Pose2d spikePos, Pose2d backdropPos);
 
     public void drawOnFrame(Mat frame) {
-        Rect rect = Imgproc.boundingRect(contourDetector.getDetection());
-        Imgproc.rectangle(frame, rect, new Scalar(0, 255, 0));
+        MatOfPoint detection = contourDetector.getDetection();
+        if (detection != null) {
+            Rect rect = Imgproc.boundingRect(detection);
+            Imgproc.rectangle(frame, rect, new Scalar(0, 255, 0), 4);
+        }
 
-        Imgproc.line(frame, new Point(LEFT_BOUNDS, 0), new Point(LEFT_BOUNDS, frame.rows()), new Scalar(0, 0, 255));
-        Imgproc.line(frame, new Point(RIGHT_BOUNDS, 0), new Point(RIGHT_BOUNDS, frame.rows()), new Scalar(0, 0, 255));
+        Imgproc.line(frame, new Point(LEFT_BOUNDS, 0), new Point(LEFT_BOUNDS, frame.rows()), new Scalar(0, 0, 255), 4);
+        Imgproc.line(frame, new Point(RIGHT_BOUNDS, 0), new Point(RIGHT_BOUNDS, frame.rows()), new Scalar(0, 0, 255), 4);
     }
 }

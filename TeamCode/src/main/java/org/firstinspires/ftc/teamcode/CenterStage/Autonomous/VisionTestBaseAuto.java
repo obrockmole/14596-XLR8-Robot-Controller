@@ -1,12 +1,15 @@
 package org.firstinspires.ftc.teamcode.CenterStage.Autonomous;
 
+import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
+import org.firstinspires.ftc.teamcode.RoadRunner.TrajectorySequence.TrajectorySequenceBuilder;
 import org.firstinspires.ftc.teamcode.Systems.Vision.ContourDetectionPipeline;
 import org.firstinspires.ftc.teamcode.Systems.Vision.VisionDetector;
 import org.opencv.core.Scalar;
 
-//@Disabled
+@Disabled
 @Autonomous(group = "Testing", name = "Vision Test with BaseAuto")
 public class VisionTestBaseAuto extends BaseAuto {
     public void initVision() {
@@ -14,5 +17,19 @@ public class VisionTestBaseAuto extends BaseAuto {
         contourDetector = new VisionDetector(hardwareMap, "Webcam", pipeline);
     }
 
-    public void initTrajectory() {}
+    public Pose2d startPos() {
+        return new Pose2d();
+    }
+
+    public Pose2d spikePos() {
+        return new Pose2d();
+    }
+
+    public Pose2d backdropPos() {
+        return new Pose2d();
+    }
+
+    public TrajectorySequenceBuilder pathBuilder(Pose2d startPos, Pose2d spikePos, Pose2d backdropPos) {
+        return drive.trajectorySequenceBuilder(startPos);
+    }
 }

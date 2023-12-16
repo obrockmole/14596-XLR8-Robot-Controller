@@ -12,10 +12,10 @@ public class CompetitionTeleOp extends BaseTele {
     public void loop() {
         /* DRIVER */
         //Driving
-        robot.standardDrive(driver.getStickY(Stick.LEFT_STICK), driver.getStickX(Stick.LEFT_STICK), driver.getStickX(Stick.RIGHT_STICK));
+        robot.standardDrive(-driver.getStickY(Stick.LEFT_STICK), -driver.getStickX(Stick.LEFT_STICK), driver.getStickX(Stick.RIGHT_STICK));
 
         //Driving speed, left bumper = slow, right bumper = fast
-        robot.setSpeedScale(driver.isDown(Button.LEFT_BUMPER), driver.isDown(Button.RIGHT_BUMPER));
+        robot.setSpeedScale(driver.isDown(Button.LEFT_BUMPER));
 
         /* MANIPULATOR */
         //Intake, left trigger = intake, right trigger = outtake

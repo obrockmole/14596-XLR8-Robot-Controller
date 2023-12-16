@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.Tuning;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.config.Config;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
@@ -19,7 +20,7 @@ import org.openftc.easyopencv.OpenCvPipeline;
 
 import java.util.ArrayList;
 
-//@Disabled
+@Disabled
 @Config
 @TeleOp(group = "Tuning")
 public class VisionTuner_ColorBounds extends OpMode {

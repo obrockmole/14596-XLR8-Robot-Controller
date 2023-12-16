@@ -6,10 +6,12 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
 import org.firstinspires.ftc.teamcode.CenterStage.Autonomous.BaseAuto;
+import org.firstinspires.ftc.teamcode.RoadRunner.TrajectorySequence.TrajectorySequenceBuilder;
 import org.firstinspires.ftc.teamcode.Systems.Vision.ContourDetectionPipeline;
 import org.firstinspires.ftc.teamcode.Systems.Vision.VisionDetector;
 import org.opencv.core.Scalar;
 
+//FIXME: Update to new version of BaseAuto
 @Disabled
 @Autonomous(group = "Red", name = "Yellow & Park - Red Side Stack")
 public class Red_Stack_YellowPark extends BaseAuto {
@@ -18,8 +20,24 @@ public class Red_Stack_YellowPark extends BaseAuto {
         contourDetector = new VisionDetector(hardwareMap, "Webcam", pipeline);
     }
 
-    public void initTrajectory() {
-        sequence = drive.trajectorySequenceBuilder(new Pose2d(-36, -64, Math.toRadians(90)))
+    @Override
+    public Pose2d startPos() {
+        return null;
+    }
+
+    @Override
+    public Pose2d spikePos() {
+        return null;
+    }
+
+    @Override
+    public Pose2d backdropPos() {
+        return null;
+    }
+
+    @Override
+    public TrajectorySequenceBuilder pathBuilder(Pose2d startPos, Pose2d spikePos, Pose2d backdropPos) {
+        return drive.trajectorySequenceBuilder(new Pose2d(-36, -64, Math.toRadians(90)))
                 //Drive to backboard and place yellow pixel
                 .setTangent(Math.toRadians(90))
                 .splineToSplineHeading(new Pose2d(-32, -12, Math.toRadians(0)), Math.toRadians(0))
@@ -28,7 +46,6 @@ public class Red_Stack_YellowPark extends BaseAuto {
                 .waitSeconds(1)
 
                 //Park
-                .lineTo(new Vector2d(44, -12))
-                .build();
+                .lineTo(new Vector2d(44, -12));
     }
 }

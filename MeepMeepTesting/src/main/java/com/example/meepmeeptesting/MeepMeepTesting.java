@@ -13,12 +13,8 @@ public class MeepMeepTesting {
         RoadRunnerBotEntity myBot = new DefaultBotBuilder(meepMeep)
                 .setConstraints(65, 50, Math.toRadians(120), Math.toRadians(120), 16)
                 .followTrajectorySequence(drive -> drive.trajectorySequenceBuilder(new Pose2d(12, -64, Math.toRadians(90)))
-                        //Drive to backboard and place yellow pixel
-                        .lineToLinearHeading(new Pose2d(40, -50, Math.toRadians(30)))
-                        .waitSeconds(1)
-
-                        //Park
-                        .lineTo(new Vector2d(46, -58))
+                        .strafeRight(10)
+                        .forward(5)
                         .build()
                 );
 

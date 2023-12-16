@@ -31,14 +31,14 @@ public class StandardTrackingWheelLocalizer extends ThreeTrackingWheelLocalizer 
     public static double WHEEL_RADIUS = 0.688975; // in
     public static double GEAR_RATIO = 1; // output (wheel) speed / input (encoder) speed
 
-    public static double LEFT_Y_DISTANCE = 6.56931975301137; // in; distance between the left wheel and the center of the robot in the y direction (+left/-right)
+    public static double LEFT_Y_DISTANCE = 6.62; // in; distance between the left wheel and the center of the robot in the y direction (+left/-right)
     public static double LEFT_X_DISTANCE = 0; // in; distance between the left wheel and the center of the robot in the x direction (+forward/-backward)
 
-    public static double RIGHT_Y_DISTANCE = -6.56931975301137; // in; distance between the right wheel and the center of the robot in the y direction (+left/-right)
+    public static double RIGHT_Y_DISTANCE = -6.62; // in; distance between the right wheel and the center of the robot in the y direction (+left/-right)
     public static double RIGHT_X_DISTANCE = 0; // in; distance between the right wheel and the center of the robot in the x direction (+forward/-backward)
 
     public static double PERP_Y_DISTANCE = 0; // in; distance between the perpendicular wheel and the center of the robot in the y direction (+left/-right)
-    public static double PERP_X_DISTANCE = -0.5; // in; distance between the perpendicular wheel and the center of the robot in the x direction (+forward/-backward)
+    public static double PERP_X_DISTANCE = 6.2; // in; distance between the perpendicular wheel and the center of the robot in the x direction (+forward/-backward)
 
     public static double X_MULTIPLIER = 0.999501385685333;
     public static double Y_MULTIPLIER = 1.00448396395896;
@@ -58,10 +58,11 @@ public class StandardTrackingWheelLocalizer extends ThreeTrackingWheelLocalizer 
         lastEncVels = lastTrackingEncVels;
 
         leftEncoder = new Encoder(hardwareMap.get(DcMotorEx.class, "frontLeft"));
-        rightEncoder = new Encoder(hardwareMap.get(DcMotorEx.class, "backRight"));
+        rightEncoder = new Encoder(hardwareMap.get(DcMotorEx.class, "frontRight"));
         frontEncoder = new Encoder(hardwareMap.get(DcMotorEx.class, "intake"));
 
-        frontEncoder.setDirection(Encoder.Direction.REVERSE);
+        leftEncoder.setDirection(Encoder.Direction.REVERSE);
+        rightEncoder.setDirection(Encoder.Direction.REVERSE);
     }
 
     public static double encoderTicksToInches(double ticks) {

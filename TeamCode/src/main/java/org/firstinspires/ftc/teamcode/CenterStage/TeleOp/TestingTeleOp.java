@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.CenterStage.TeleOp;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.Range;
 
@@ -8,7 +9,7 @@ import org.firstinspires.ftc.teamcode.Systems.Gamepad.GamepadButtons.Stick;
 import org.firstinspires.ftc.teamcode.Systems.Gamepad.GamepadButtons.TouchpadFinger;
 import org.firstinspires.ftc.teamcode.Systems.Gamepad.GamepadButtons.Trigger;
 
-//@Disabled
+@Disabled
 @TeleOp(group = "TeleOp", name = "Testing TeleOp")
 public class TestingTeleOp extends BaseTele {
     public void loop() {

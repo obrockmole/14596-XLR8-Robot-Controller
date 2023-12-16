@@ -20,7 +20,7 @@ public class Drivetrain {
     private double speedScale = 0.8;
 
     public Drivetrain(Motor frontLeft, Motor backLeft, Motor frontRight, Motor backRight, Odometry odometry, IMU imu) {
-        this.frontLeft = frontLeft.setReversed(true);
+        this.frontLeft = frontLeft;
         this.backLeft = backLeft;
         this.frontRight = frontRight;
         this.backRight = backRight;
@@ -123,7 +123,7 @@ public class Drivetrain {
         double frPower =  -forward - rightward - rotational;
         double brPower =  -forward + rightward - rotational;
 
-        frontLeft.setTargetPower(-(flPower / normalizer) * speedScale);
+        frontLeft.setTargetPower((flPower / normalizer) * speedScale);
         backLeft.setTargetPower((blPower / normalizer) * speedScale);
         frontRight.setTargetPower((frPower / normalizer) * speedScale);
         backRight.setTargetPower((brPower / normalizer) * speedScale);
@@ -143,7 +143,7 @@ public class Drivetrain {
         double frPower =  -fixedForward - fixedRightward - rotational;
         double brPower =  -fixedForward + fixedRightward - rotational;
 
-        frontLeft.setTargetPower(-(flPower / normalizer) * speedScale);
+        frontLeft.setTargetPower((flPower / normalizer) * speedScale);
         backLeft.setTargetPower((blPower / normalizer) * speedScale);
         frontRight.setTargetPower((frPower / normalizer) * speedScale);
         backRight.setTargetPower((brPower / normalizer) * speedScale);

@@ -27,10 +27,10 @@ public class ContourDetectionPipeline extends VisionPipeline {
 
     private final double minArea;
 
-    private ArrayList<MatOfPoint> contours;
-    private MatOfPoint largestContour;
-    private Vector2d largestContourPos;
-    private double largestContourArea;
+    private final ArrayList<MatOfPoint> contours = new ArrayList<>();
+    private MatOfPoint largestContour = new MatOfPoint();
+    private Vector2d largestContourPos = new Vector2d(-1, -1);
+    private double largestContourArea = -1;
 
     public ContourDetectionPipeline(DrawStrategy drawStrategy, Scalar weakLowHSV, Scalar weakHighHSV, Scalar strictLowHSV, Scalar strictHighHSV, double minArea) {
         this.drawStrategy = drawStrategy;
@@ -72,7 +72,8 @@ public class ContourDetectionPipeline extends VisionPipeline {
 
         //Find contours in 'strictMask'
         contours.clear();
-        Imgproc.findContours(strictMask, contours, new Mat(), Imgproc.RETR_LIST, Imgproc.CHAIN_APPROX_SIMPLE);
+//        Imgproc.findContours(strictMask, contours, new Mat(), Imgproc.RETR_LIST, Imgproc.CHAIN_APPROX_SIMPLE);
+        Imgproc.findContours(weakMask, contours, new Mat(), Imgproc.RETR_LIST, Imgproc.CHAIN_APPROX_SIMPLE);
 
         largestContourArea = -1;
         largestContour = null;

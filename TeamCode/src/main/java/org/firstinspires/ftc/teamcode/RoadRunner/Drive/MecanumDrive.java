@@ -57,8 +57,8 @@ import static org.firstinspires.ftc.teamcode.RoadRunner.Drive.DriveConstants.kV;
  */
 @Config
 public class MecanumDrive extends com.acmerobotics.roadrunner.drive.MecanumDrive {
-    public static PIDCoefficients TRANSLATIONAL_PID = new PIDCoefficients(6, 0, 0.1); //Two wheel: 8, 0, 0.1
-    public static PIDCoefficients HEADING_PID = new PIDCoefficients(6, 0, 0.1); //Two wheel: 8, 0, 0.1
+    public static PIDCoefficients TRANSLATIONAL_PID = new PIDCoefficients(7, 0, 0.1); //Two wheel: 8, 0, 0.1
+    public static PIDCoefficients HEADING_PID = new PIDCoefficients(7, 0, 0.1); //Two wheel: 8, 0, 0.1
 
     public static double LATERAL_MULTIPLIER = 2.08695652173913;
 
@@ -88,7 +88,7 @@ public class MecanumDrive extends com.acmerobotics.roadrunner.drive.MecanumDrive
         super(kV, kA, kStatic, TRACK_WIDTH, TRACK_WIDTH, LATERAL_MULTIPLIER);
 
         follower = new HolonomicPIDVAFollower(TRANSLATIONAL_PID, TRANSLATIONAL_PID, HEADING_PID,
-                new Pose2d(0.6, 0.6, Math.toRadians(5.0)), 0.3);
+                new Pose2d(0.5, 0.5, Math.toRadians(5.0)), 0.5);
 
         LynxModuleUtil.ensureMinimumFirmwareVersion(hardwareMap);
 
@@ -125,7 +125,7 @@ public class MecanumDrive extends com.acmerobotics.roadrunner.drive.MecanumDrive
             setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, MOTOR_VELO_PID);
         }
 
-//        leftFront.setDirection(DcMotorSimple.Direction.REVERSE);
+        leftFront.setDirection(DcMotorSimple.Direction.REVERSE);
         leftRear.setDirection(DcMotorSimple.Direction.REVERSE);
 
         List<Integer> lastTrackingEncPositions = new ArrayList<>();
