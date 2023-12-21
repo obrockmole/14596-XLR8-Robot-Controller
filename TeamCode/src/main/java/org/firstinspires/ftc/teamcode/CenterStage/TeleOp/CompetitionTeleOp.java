@@ -19,7 +19,7 @@ public class CompetitionTeleOp extends BaseTele {
 
         /* MANIPULATOR */
         //Intake, left trigger = intake, right trigger = outtake
-        robot.intake.setTargetPower(manipulator.getTrigger(Trigger.LEFT_TRIGGER) - manipulator.getTrigger(Trigger.RIGHT_TRIGGER));
+        robot.intake.setTargetPower(manipulator.getTrigger(Trigger.LEFT_TRIGGER) - manipulator.getTrigger(Trigger.RIGHT_TRIGGER) / 2.5);
 
         update();
         log();

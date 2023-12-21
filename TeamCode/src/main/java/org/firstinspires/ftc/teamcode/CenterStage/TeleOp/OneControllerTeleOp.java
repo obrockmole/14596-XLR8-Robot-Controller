@@ -18,7 +18,7 @@ public class OneControllerTeleOp extends BaseTele {
         robot.setSpeedScale(driver.isDown(Button.LEFT_BUMPER));
 
         //Intake, left trigger = intake, right trigger = outtake
-        robot.intake.setTargetPower(driver.getTrigger(Trigger.LEFT_TRIGGER) - driver.getTrigger(Trigger.RIGHT_TRIGGER));
+        robot.intake.setTargetPower(driver.getTrigger(Trigger.LEFT_TRIGGER) - driver.getTrigger(Trigger.RIGHT_TRIGGER) / 2.5);
 
         update();
         log();

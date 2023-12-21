@@ -40,6 +40,7 @@ public class VisionDetector {
     }
 
     public void stop() {
+//        camera.closeCameraDeviceAsync(camera::stopStreaming);
         camera.stopStreaming();
     }
 

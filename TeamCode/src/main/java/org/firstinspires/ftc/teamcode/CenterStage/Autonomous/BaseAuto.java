@@ -99,6 +99,7 @@ public abstract class BaseAuto extends OpMode implements DrawStrategy {
     }
 
     public void start() {
+        contourDetector.stop();
         drive.setPoseEstimate(startPos());
         drive.followTrajectorySequenceAsync(trajSequence.build());
     }

@@ -34,7 +34,7 @@ public class Backboard_Park extends BaseAuto {
                 .lineTo(new Vector2d(-44, 0))
 
                 .addTemporalMarker(() -> {
-                    robot.intake.setTargetPower(-1);
+                    robot.intake.setTargetPower(-0.4);
                 })
                 .waitSeconds(2)
                 .addTemporalMarker(() -> {
