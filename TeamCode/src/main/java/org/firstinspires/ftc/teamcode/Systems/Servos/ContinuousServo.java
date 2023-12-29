@@ -41,21 +41,20 @@ public class ContinuousServo {
         return this;
     }
 
+    public double getPower() {
+        return servo.getPower();
+    }
+
+    private void setPower(double power) {
+        servo.setPower(power);
+    }
+
     public double getTargetPower() {
         return targetPower;
     }
 
     public ContinuousServo setTargetPower(double targetPower) {
         this.targetPower = targetPower;
-        return this;
-    }
-
-    public double getPower() {
-        return servo.getPower();
-    }
-
-    public ContinuousServo setPower(double power) {
-        servo.setPower(power);
         return this;
     }
 

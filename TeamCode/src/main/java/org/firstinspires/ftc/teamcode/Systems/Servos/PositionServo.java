@@ -5,6 +5,8 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
+import java.util.Arrays;
+
 public class PositionServo {
     Servo servo;
     double targetPosition = 0;
@@ -74,35 +76,20 @@ public class PositionServo {
         return this;
     }
 
+    public double getPosition() {
+        return servo.getPosition();
+    }
+
+    private void setPosition(double position) {
+        servo.setPosition(position);
+    }
+
     public double getTargetPosition() {
         return targetPosition;
     }
 
     public PositionServo setTargetPosition(double targetPosition) {
         this.targetPosition = targetPosition;
-        return this;
-    }
-
-    public double getPosition() {
-        return servo.getPosition();
-    }
-
-    public PositionServo setPosition(double position) {
-        servo.setPosition(position);
-        return this;
-    }
-
-    public PositionServo setPosition(double position, double minScale, double maxScale) {
-        servo.scaleRange(minScale, maxScale);
-        servo.setPosition(position);
-        servo.scaleRange(scaleRange[0], scaleRange[1]);
-        return this;
-    }
-
-    public PositionServo setPosition(double position, double[] scaleRange) {
-        servo.scaleRange(scaleRange[0], scaleRange[1]);
-        servo.setPosition(position);
-        servo.scaleRange(this.scaleRange[0], this.scaleRange[1]);
         return this;
     }
 
@@ -122,7 +109,7 @@ public class PositionServo {
         telemetry.addData("Servo", hardwareMap.getNamesOf(servo).toArray()[0]);
         telemetry.addData("Current Position", getPosition());
         telemetry.addData("Target Position", getTargetPosition());
-        telemetry.addData("Scale Range", getScaleRange().toString());
+        telemetry.addData("Scale Range", Arrays.toString(getScaleRange()));
         telemetry.addData("Reversed", isReversed());
         return this;
     }

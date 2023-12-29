@@ -52,6 +52,10 @@ public class VelocityMotorGroup {
         return motors.get(0).getPower();
     }
 
+    public double getVelocity() {
+        return motors.get(0).getVelocity();
+    }
+
     public double getTargetVelocity() {
         return motors.get(0).getTargetVelocity();
     }

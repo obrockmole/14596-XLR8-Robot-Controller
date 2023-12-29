@@ -74,31 +74,17 @@ public class PositionServoGroup {
         return this;
     }
 
+    public double getPosition() {
+        return servos.get(0).getPosition();
+    }
+
     public double getTargetPosition() {
         return servos.get(0).getTargetPosition();
     }
 
     public PositionServoGroup setTargetPosition(double targetPosition) {
-        for (PositionServo servo : servos) servo.setTargetPosition(targetPosition);
-        return this;
-    }
-
-    public double getPosition() {
-        return servos.get(0).getPosition();
-    }
-
-    public PositionServoGroup setPosition(double position) {
-        for (PositionServo servo : servos) servo.setPosition(position);
-        return this;
-    }
-
-    public PositionServoGroup setPosition(double position, double minScale, double maxScale) {
-        for (PositionServo servo : servos) servo.setPosition(position, minScale, maxScale);
-        return this;
-    }
-
-    public PositionServoGroup setPosition(double position, double[] scaleRange) {
-        for (PositionServo servo : servos) servo.setPosition(position, scaleRange);
+        for (PositionServo servo : servos)
+            servo.setTargetPosition(targetPosition);
         return this;
     }
 
@@ -111,7 +97,8 @@ public class PositionServoGroup {
     }
 
     public void update() {
-        for (PositionServo servo : servos) servo.update();
+        for (PositionServo servo : servos)
+            servo.update();
     }
 
     public PositionServoGroup log(Telemetry telemetry, HardwareMap hardwareMap) {

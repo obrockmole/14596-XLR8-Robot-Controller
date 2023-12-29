@@ -84,6 +84,10 @@ public class MotorGroup {
         return motors.get(0).getPower();
     }
 
+    public double getTargetPower() {
+        return motors.get(0).getTargetPower();
+    }
+
     public MotorGroup setTargetPower(double power) {
         for (Motor motor : motors) motor.setTargetPower(power);
         return this;

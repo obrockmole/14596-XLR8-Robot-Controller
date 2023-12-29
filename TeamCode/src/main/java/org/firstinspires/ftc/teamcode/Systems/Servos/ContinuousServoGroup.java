@@ -45,6 +45,10 @@ public class ContinuousServoGroup {
         return this;
     }
 
+    public double getPower(int servo) {
+        return servos.get(servo).getPower();
+    }
+
     public double getTargetPower(int servo) {
         return servos.get(servo).getTargetPower();
     }
@@ -52,16 +56,6 @@ public class ContinuousServoGroup {
     public ContinuousServoGroup setTargetPower(double targetPower) {
         for (ContinuousServo servo : servos)
             servo.setTargetPower(targetPower);
-        return this;
-    }
-
-    public double getPower(int servo) {
-        return servos.get(servo).getPower();
-    }
-
-    public ContinuousServoGroup setPower(double power) {
-        for (ContinuousServo servo : servos)
-            servo.setPower(power);
         return this;
     }
 
