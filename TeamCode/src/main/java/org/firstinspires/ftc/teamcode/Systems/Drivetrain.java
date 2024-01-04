@@ -4,6 +4,8 @@ import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
+import org.firstinspires.ftc.robotcore.external.navigation.Quaternion;
 import org.firstinspires.ftc.teamcode.Systems.Motors.Motor;
 import org.firstinspires.ftc.teamcode.Systems.Odometry.Odometry;
 import org.firstinspires.ftc.teamcode.Systems.Odometry.OdometryPod;
@@ -175,9 +177,18 @@ public class Drivetrain {
         return this;
     }
 
-    public Drivetrain resetIMUYaw() {
-        imu.resetYaw();
+    public Drivetrain setIMUOrientation(Orientation orientation) {
+        imu.setOrientation(new RevHubOrientationOnRobot(orientation));
         return this;
+    }
+
+    public Drivetrain setIMUOrientation(Quaternion quaternion) {
+        imu.setOrientation(new RevHubOrientationOnRobot(quaternion));
+        return this;
+    }
+
+    public void resetIMUYaw() {
+        imu.resetYaw();
     }
 
     public Drivetrain update() {
@@ -189,14 +200,14 @@ public class Drivetrain {
         return this;
     }
 
-    public Drivetrain log(Telemetry telemetry) {
+    public Drivetrain log(Telemetry telemetry, boolean logOdometry, boolean logIMU) {
         telemetry.addLine("-----Drive Motor Powers-----");
         telemetry.addData("Front Left Power", frontLeft.getPower());
         telemetry.addData("Back Left Power", backLeft.getPower());
         telemetry.addData("Front Right Power", frontRight.getPower());
         telemetry.addData("Back Right Power", backRight.getPower());
 
-        if (odometry != null) {
+        if (odometry != null && logOdometry) {
             telemetry.addLine();
             telemetry.addLine("-----Odometry Pod Positions-----");
             telemetry.addData("Left Pod Position", odometry.getCurrentPosition(0));
@@ -204,11 +215,13 @@ public class Drivetrain {
             telemetry.addData("Center Pod Position", odometry.getCurrentPosition(2));
         }
 
-        telemetry.addLine();
-        telemetry.addLine("-----IMU Headings-----");
-        telemetry.addData("Yaw", imu.getYawDegrees());
-        telemetry.addData("Pitch", imu.getPitchDegrees());
-        telemetry.addData("Roll", imu.getRollDegrees());
+        if (logIMU) {
+            telemetry.addLine();
+            telemetry.addLine("-----IMU Headings-----");
+            telemetry.addData("Yaw", imu.getYawDegrees());
+            telemetry.addData("Pitch", imu.getPitchDegrees());
+            telemetry.addData("Roll", imu.getRollDegrees());
+        }
 
         telemetry.addLine();
 
