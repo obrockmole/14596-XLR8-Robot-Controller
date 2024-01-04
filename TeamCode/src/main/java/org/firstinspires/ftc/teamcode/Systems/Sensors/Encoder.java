@@ -5,6 +5,8 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
+
 public class Encoder {
     public enum Direction {
         FORWARD(1),
@@ -69,5 +71,24 @@ public class Encoder {
 
     public int getCurrentPosition() {
         return motor.getCurrentPosition() * getDirectionMultiplier();
+    }
+
+    public double getCurrentVelocity() {
+        return motor.getVelocity() * getDirectionMultiplier();
+    }
+
+    public String getCSVHeader() {
+        return "Position,Velocity";
+    }
+
+    public String getCSVData() {
+        return String.format("%s,%s", getCurrentPosition(), motor.getVelocity());
+    }
+
+    public Encoder log(Telemetry telemetry, HardwareMap hardwareMap) {
+        telemetry.addData("Motor", hardwareMap.getNamesOf(motor).toArray()[0]);
+        telemetry.addData("Position", getCurrentPosition());
+        telemetry.addData("Velocity", motor.getVelocity());
+        return this;
     }
 }

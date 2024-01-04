@@ -160,6 +160,14 @@ public class IMU {
         return getAngularVelocityZ(AngleUnit.RADIANS);
     }
 
+    public String getCSVHeader() {
+        return "Yaw,Pitch,Roll,AngularVeloX,AngularVelocY,AngularVeloZ";
+    }
+
+    public String getCSVData() {
+        return String.format("%s,%s,%s,%s,%s,%s", getYawDegrees(), getPitchDegrees(), getRollDegrees(), getAngularVelocityXDegrees(), getAngularVelocityYDegrees(), getAngularVelocityZDegrees());
+    }
+
     public IMU log(Telemetry telemetry, HardwareMap hardwareMap) {
         telemetry.addData("Sensor", hardwareMap.getNamesOf(imu).toArray()[0]);
         telemetry.addData("Yaw (degrees)", getYawDegrees());

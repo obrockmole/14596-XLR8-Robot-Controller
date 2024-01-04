@@ -39,13 +39,13 @@ public class DataLogging_Sample extends OpMode {
 
     @Override
     public void start() {
-        motorLogger.startLogging("Time,Power,TargetPower,PowerError,Position,TargetPosition,PositionError"); //Create file and write header
+        motorLogger.startLogging("Time," + motor.getCSVHeader()); //Create file and write header
         stopwatch.start(); //Start the stopwatch to get time
     }
 
     @Override
     public void loop() {
-        motorLogger.writeData(stopwatch.getTimeSeconds() + motor.getCSVData()); //Write data to file
+        motorLogger.writeData(stopwatch.getTimeSeconds() + "," + motor.getCSVData()); //Write data to file
 
         /*
           Change the state of motor based on input from gamepad1.

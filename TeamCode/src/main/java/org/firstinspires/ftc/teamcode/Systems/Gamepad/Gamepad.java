@@ -1,7 +1,5 @@
 package org.firstinspires.ftc.teamcode.Systems.Gamepad;
 
-import android.graphics.Color;
-
 import com.qualcomm.robotcore.util.Range;
 
 import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
@@ -482,10 +480,6 @@ public class Gamepad {
         public LEDEffect addStep(double r, double g, double b, int duration) {
             steps.add(new Step(r, g, b, duration));
             return this;
-        }
-
-        public LEDEffect addStep(int color, int duration) {
-            return addStep(Color.red(color), Color.green(color), Color.blue(color), duration);
         }
 
         public LEDEffect removeStep(int index) {

@@ -1,3 +1,0 @@
-# BaseTele
-
-Start typing here...

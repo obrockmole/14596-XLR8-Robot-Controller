@@ -1,3 +1,0 @@
-# Systems
-
-Start typing here...

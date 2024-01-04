@@ -10,6 +10,9 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+/**
+ * Class representing a power and position dc motor with additional functionality.
+ */
 public class Motor {
     DcMotorEx motor;
     MotorList motorType;
@@ -517,12 +520,21 @@ public class Motor {
     }
 
     /**
+     * Returns the CSV header of the motor.
+     *
+     * @return The CSV header of the motor as a string.
+     */
+    public String getCSVHeader() {
+        return "Power,TargetPower,PowerError,Position,TargetPosition,PositionError";
+    }
+
+    /**
      * Returns the CSV data of the motor.
      *
      * @return The CSV data of the motor as a string.
      */
     public String getCSVData() {
-        return String.format(",%s,%s,%s,%s,%s,%s", getPower(), getTargetPower(), getPowerError(), getCurrentPosition(), getTargetPosition(), getPositionError());
+        return String.format("%s,%s,%s,%s,%s,%s", getPower(), getTargetPower(), getPowerError(), getCurrentPosition(), getTargetPosition(), getPositionError());
     }
 
     /**
@@ -568,6 +580,7 @@ public class Motor {
         } else if (mode == Mode.POSITION) {
             telemetry.addData("Current Position", getCurrentPosition());
             telemetry.addData("Target Position", getTargetPosition());
+            telemetry.addData("PIDF", getPIDF().toString());
         }
         return this;
     }

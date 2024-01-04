@@ -61,8 +61,12 @@ public class DistanceSensor {
         return getDistanceM() == DistanceUnit.infinity;
     }
 
+    public String getCSVHeader() {
+        return "Distance";
+    }
+
     public String getCSVData() {
-        return String.format(",%s", getDistanceCM());
+        return String.format("%s", getDistanceCM());
     }
 
     public DistanceSensor log(Telemetry telemetry, HardwareMap hardwareMap) {

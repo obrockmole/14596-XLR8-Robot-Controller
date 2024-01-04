@@ -72,8 +72,12 @@ public class LimitSwitch {
         return sensor.getValue();
     }
 
+    public String getCSVHeader() {
+        return "Active";
+    }
+
     public String getCSVData() {
-        return String.format(",%s", ((isDown()) ? 1 : 0));
+        return String.format("%s", ((isDown()) ? 1 : 0));
     }
 
     public void update() {

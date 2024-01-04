@@ -1,6 +1,5 @@
 package org.firstinspires.ftc.teamcode.Systems.Sensors;
 
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
@@ -29,21 +28,21 @@ public class AdvancedDistanceSensor {
         return getDistance() == DistanceUnit.infinity;
     }
 
-    public AdvancedDistanceSensor log(Telemetry telemetry, HardwareMap hardwareMap) {
-        telemetry.addData("Sensor", hardwareMap.getNamesOf(sensor).toArray()[0]);
-        telemetry.addData("Measured Distance (cm)", getDistance());
-        telemetry.addData("MAF Distance (cm)", movingAverageFilter.getStateEstimate());
-        telemetry.addData("KF Distance (cm)", kalmanFilter.getStateEstimate());
-        return this;
-    }
-
     public AdvancedDistanceSensor update() {
         movingAverageFilter.update(getDistance());
 
         kalmanFilter.setMeasurement(getDistance())
                 .update();
-                //.updateSimplified();
+        //.updateSimplified();
 
+        return this;
+    }
+
+    public AdvancedDistanceSensor log(Telemetry telemetry, HardwareMap hardwareMap) {
+        telemetry.addData("Sensor", hardwareMap.getNamesOf(sensor).toArray()[0]);
+        telemetry.addData("Measured Distance (cm)", getDistance());
+        telemetry.addData("MAF Distance (cm)", movingAverageFilter.getStateEstimate());
+        telemetry.addData("KF Distance (cm)", kalmanFilter.getStateEstimate());
         return this;
     }
 }

@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.Systems.Odometry;
 
+import androidx.annotation.NonNull;
+
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
@@ -10,23 +12,20 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Odometry extends ArrayList<OdometryPod> {
-    public Odometry(OdometryPod... pods) {
-        super();
-        this.addAll(Arrays.asList(pods));
+    public Odometry(@NonNull OdometryPod... pods) {
+        super(Arrays.asList(pods));
     }
 
-    public Odometry(HardwareMap hardwareMap, String... names) {
+    public Odometry(HardwareMap hardwareMap, @NonNull String... names) {
         super();
-        for (String name : names) {
+        for (String name : names)
             this.add(new OdometryPod(hardwareMap, name));
-        }
     }
 
-    public Odometry(HardwareMap hardwareMap, Encoder.Direction direction, String... names) {
+    public Odometry(HardwareMap hardwareMap, Encoder.Direction direction, @NonNull String... names) {
         super();
-        for (String name : names) {
+        for (String name : names)
             this.add(new OdometryPod(hardwareMap, name, direction));
-        }
     }
 
     public OdometryPod getPod(int index) {
@@ -42,7 +41,7 @@ public class Odometry extends ArrayList<OdometryPod> {
         return this;
     }
 
-    public Odometry setPods(OdometryPod... pods) {
+    public Odometry setPods(@NonNull OdometryPod... pods) {
         clear();
         this.addAll(Arrays.asList(pods));
         return this;
@@ -77,6 +76,18 @@ public class Odometry extends ArrayList<OdometryPod> {
 
     public int getCurrentPosition(int index) {
         return get(index).getCurrentPosition();
+    }
+
+    public double getCurrentVelocity(int index) {
+        return get(index).getCurrentVelocity();
+    }
+
+    public String getCSVHeader() {
+        return get(0).getCSVHeader();
+    }
+
+    public String getCSVData(int index) {
+        return get(index).getCSVData();
     }
 
     public Odometry log(Telemetry telemetry, HardwareMap hardwareMap) {

@@ -72,8 +72,12 @@ public class TouchSensor {
         return sensor.getValue();
     }
 
+    public String getCSVHeader() {
+        return "Pressed";
+    }
+
     public String getCSVData() {
-        return String.format(",%s", ((isDown()) ? 1 : 0));
+        return String.format("%s", ((isDown()) ? 1 : 0));
     }
 
     public void update() {

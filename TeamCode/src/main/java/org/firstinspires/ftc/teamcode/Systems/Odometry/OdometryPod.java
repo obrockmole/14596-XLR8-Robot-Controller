@@ -60,9 +60,22 @@ public class OdometryPod {
         return encoder.getCurrentPosition();
     }
 
+    public double getCurrentVelocity() {
+        return encoder.getCurrentVelocity();
+    }
+
+    public String getCSVHeader() {
+        return encoder.getCSVHeader();
+    }
+
+    public String getCSVData() {
+        return encoder.getCSVData();
+    }
+
     public OdometryPod log(Telemetry telemetry, HardwareMap hardwareMap) {
         telemetry.addData("Encoder", hardwareMap.getNamesOf(getEncoderMotor()).toArray()[0]);
         telemetry.addData("Encoder Position", getCurrentPosition());
+        telemetry.addData("Encoder Velocity", getCurrentVelocity());
         return this;
     }
 }

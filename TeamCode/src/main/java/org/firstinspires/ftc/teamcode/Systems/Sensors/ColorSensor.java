@@ -1,16 +1,15 @@
 package org.firstinspires.ftc.teamcode.Systems.Sensors;
 
-import android.graphics.Color;
-
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.NormalizedRGBA;
+import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 public class ColorSensor {
     private com.qualcomm.robotcore.hardware.NormalizedColorSensor sensor;
-    private final int[] rgbaValues = new int[4];
-    private final float[] hsvValues = new float[3];
+    private int[] rgbaValues = new int[4];
+    private double[] hsvValues = new double[3];
 
     public ColorSensor(com.qualcomm.robotcore.hardware.NormalizedColorSensor sensor, float gain) {
         sensor.setGain(gain);
@@ -74,19 +73,50 @@ public class ColorSensor {
         return sensor.getNormalizedColors().toColor();
     }
 
+    public double[] rgbToHSV(double red, double green, double blue) {
+        double maxColor = Math.max(red, Math.max(green, blue));
+        double minColor = Math.min(red, Math.min(green, blue));
+        double delta = maxColor - minColor;
+        double hue = -1, saturation = -1;
+
+        if (maxColor == minColor)
+            hue = 0;
+        else if (maxColor == red)
+            hue = (60 * ((green - blue) / delta) + 360) % 360;
+        else if (maxColor == green)
+            hue = (60 * ((blue - red) / delta) + 120) % 360;
+        else if (maxColor == blue)
+            hue = (60 * ((red - green) / delta) + 240) % 360;
+
+        if (maxColor == 0)
+            saturation = 0;
+        else
+            saturation = (delta / maxColor) * 100;
+
+        double value = maxColor * 100;
+
+        return new double[] {hue, saturation, value};
+    }
+
+    public String getCSVHeader() {
+        return "Red,Green,Blue,Alpha";
+    }
+
     public String getCSVData() {
-        return String.format(",%s,%s,%s,%s", getRed(), getGreen(), getBlue(), getAlpha());
+        return String.format("%s,%s,%s,%s", getRed(), getGreen(), getBlue(), getAlpha());
     }
 
     public ColorSensor update() {
         NormalizedRGBA colors = sensor.getNormalizedColors();
 
-        rgbaValues[0] = Color.red(colors.toColor());
-        rgbaValues[1] = Color.green(colors.toColor());
-        rgbaValues[2] = Color.blue(colors.toColor());
-        rgbaValues[3] = Color.alpha(colors.toColor());
+        rgbaValues = new int[] {
+                Range.clip((int)(colors.red * 256), 0, 1),
+                Range.clip((int)(colors.green * 256), 0, 1),
+                Range.clip((int)(colors.blue * 256), 0, 1),
+                Range.clip((int)(colors.alpha * 256), 0, 1)
+        };
 
-        Color.colorToHSV(colors.toColor(), hsvValues);
+        hsvValues = rgbToHSV(colors.red, colors.green, colors.blue);
         return this;
     }
 

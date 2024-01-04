@@ -1,3 +1,0 @@
-# BaseAuto
-
-Start typing here...

@@ -44,8 +44,12 @@ public class Potentiometer {
         return Range.scale(angle, 270, 0, 0, 270);
     }
 
+    public String getCSVHeader() {
+        return "Voltage,Angle";
+    }
+
     public String getCSVData() {
-        return String.format(",%s,%s", getVoltage(), getAngle());
+        return String.format("%s,%s", getVoltage(), getAngle());
     }
 
     public Potentiometer log(Telemetry telemetry, HardwareMap hardwareMap) {

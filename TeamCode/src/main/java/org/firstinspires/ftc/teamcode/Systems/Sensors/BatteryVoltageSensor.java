@@ -24,6 +24,14 @@ public class BatteryVoltageSensor {
         return voltageSensor.getVoltage();
     }
 
+    public String getCSVHeader() {
+        return "Voltage";
+    }
+
+    public String getCSVData() {
+        return String.format("%s", getVoltage());
+    }
+
     public BatteryVoltageSensor log(Telemetry telemetry, HardwareMap hardwareMap) {
         telemetry.addData("Sensor", hardwareMap.getNamesOf(voltageSensor).toArray()[0]);
         telemetry.addData("Voltage", getVoltage());
