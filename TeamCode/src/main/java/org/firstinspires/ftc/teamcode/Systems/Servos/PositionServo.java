@@ -93,6 +93,16 @@ public class PositionServo {
         return this;
     }
 
+    public PositionServo toggleTargetPosition() {
+        targetPosition = (targetPosition == 1 ? 0 : 1);
+        return this;
+    }
+
+    public PositionServo toggleTargetPosition(double positionOne, double positionTwo) {
+        targetPosition = (targetPosition == positionOne ? positionTwo : (targetPosition == positionTwo ? positionOne : targetPosition));
+        return this;
+    }
+
     public double getPositionError() {
         return Math.abs(targetPosition - getPosition());
     }

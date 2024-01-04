@@ -88,6 +88,18 @@ public class PositionServoGroup {
         return this;
     }
 
+    public PositionServoGroup toggleTargetPosition() {
+        for (PositionServo servo : servos)
+            servo.toggleTargetPosition();
+        return this;
+    }
+
+    public PositionServoGroup toggleTargetPosition(double positionOne, double positionTwo) {
+        for (PositionServo servo : servos)
+            servo.toggleTargetPosition(positionOne, positionTwo);
+        return this;
+    }
+
     public double getPositionError(int servo) {
         return servos.get(servo).getPositionError();
     }
