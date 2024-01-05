@@ -6,22 +6,21 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 
 /**
  * Class representing a group of position servos that are controlled together.
  */
-public class PositionServoGroup {
-    ArrayList<PositionServo> servos;
-
+public class PositionServoGroup extends ArrayList<PositionServo> {
     /**
      * Constructs a new PositionServoGroup object with a list of the given servos.
      *
      * @param servos The servos to be included in the PositionServoGroup.
      */
     public PositionServoGroup(@NonNull PositionServo... servos) {
-        this.servos = new ArrayList<>(Arrays.asList(servos));
+        super(Arrays.asList(servos));
     }
 
     /**
@@ -30,7 +29,7 @@ public class PositionServoGroup {
      * @return The list of servos in the PositionServoGroup.
      */
     public ArrayList<PositionServo> getServos() {
-        return servos;
+        return this;
     }
 
     /**
@@ -40,8 +39,8 @@ public class PositionServoGroup {
      * @return The current PositionServoGroup instance.
      */
     public PositionServoGroup setServos(@NonNull PositionServo... servos) {
-        this.servos.clear();
-        this.servos = new ArrayList<>(Arrays.asList(servos));
+        this.clear();
+        this.addAll(Arrays.asList(servos));
         return this;
     }
 
@@ -52,18 +51,18 @@ public class PositionServoGroup {
      * @return The servo at the specified index in the PositionServoGroup.
      */
     public PositionServo getServo(int servo) {
-        return servos.get(servo);
+        return get(servo);
     }
 
     /**
      * Sets the servo at the specified index in the PositionServoGroup.
      *
-     * @param servo The index of the servo to set.
+     * @param servo    The index of the servo to set.
      * @param newServo The servo to set at the specified index in the PositionServoGroup.
      * @return The current PositionServoGroup instance.
      */
     public PositionServoGroup setServo(int servo, @NonNull PositionServo newServo) {
-        servos.set(servo, newServo);
+        set(servo, newServo);
         return this;
     }
 
@@ -74,7 +73,7 @@ public class PositionServoGroup {
      * @return The current PositionServoGroup instance.
      */
     public PositionServoGroup addServo(@NonNull PositionServo newServo) {
-        servos.add(newServo);
+        add(newServo);
         return this;
     }
 
@@ -85,18 +84,18 @@ public class PositionServoGroup {
      * @return True if the servo's direction is reversed, false otherwise.
      */
     public boolean isReversed(int servo) {
-        return servos.get(servo).isReversed();
+        return get(servo).isReversed();
     }
 
     /**
      * Sets the direction of the servo at the specified index in the PositionServoGroup.
      *
-     * @param servo The index of the servo to set.
+     * @param servo    The index of the servo to set.
      * @param reversed Whether the servo's direction is reversed.
      * @return The current PositionServoGroup instance.
      */
     public PositionServoGroup setReversed(int servo, boolean reversed) {
-        servos.get(servo).setReversed(reversed);
+        get(servo).setReversed(reversed);
         return this;
     }
 
@@ -106,7 +105,7 @@ public class PositionServoGroup {
      * @return The scale range of all servos in the PositionServoGroup.
      */
     public double[] getScaleRange() {
-        return servos.get(0).getScaleRange();
+        return get(0).getScaleRange();
     }
 
     /**
@@ -117,50 +116,8 @@ public class PositionServoGroup {
      * @return The current PositionServoGroup instance.
      */
     public PositionServoGroup setScaleRange(double minScale, double maxScale) {
-        for (PositionServo servo : servos)
+        for (PositionServo servo : this)
             servo.setScaleRange(minScale, maxScale);
-        return this;
-    }
-
-    /**
-     * Returns the minimum scale of all servos in the PositionServoGroup.
-     *
-     * @return The minimum scale of all servos in the PositionServoGroup.
-     */
-    public double getScaleMin() {
-        return servos.get(0).getScaleMin();
-    }
-
-    /**
-     * Sets the minimum scale of all servos in the PositionServoGroup.
-     *
-     * @param minScale The minimum scale for all servos in the PositionServoGroup.
-     * @return The current PositionServoGroup instance.
-     */
-    public PositionServoGroup setScaleMin(double minScale) {
-        for (PositionServo servo : servos)
-            servo.setScaleMin(minScale);
-        return this;
-    }
-
-    /**
-     * Returns the maximum scale of all servos in the PositionServoGroup.
-     *
-     * @return The maximum scale of all servos in the PositionServoGroup.
-     */
-    public double getScaleMax() {
-        return servos.get(0).getScaleMax();
-    }
-
-    /**
-     * Sets the maximum scale of all servos in the PositionServoGroup.
-     *
-     * @param maxScale The maximum scale for all servos in the PositionServoGroup.
-     * @return The current PositionServoGroup instance.
-     */
-    public PositionServoGroup setScaleMax(double maxScale) {
-        for (PositionServo servo : servos)
-            servo.setScaleMax(maxScale);
         return this;
     }
 
@@ -170,7 +127,7 @@ public class PositionServoGroup {
      * @return The current position of all servos in the PositionServoGroup.
      */
     public double getPosition() {
-        return servos.get(0).getPosition();
+        return get(0).getPosition();
     }
 
     /**
@@ -179,7 +136,7 @@ public class PositionServoGroup {
      * @return The target position of all servos in the PositionServoGroup.
      */
     public double getTargetPosition() {
-        return servos.get(0).getTargetPosition();
+        return get(0).getTargetPosition();
     }
 
     /**
@@ -189,7 +146,7 @@ public class PositionServoGroup {
      * @return The current PositionServoGroup instance.
      */
     public PositionServoGroup setTargetPosition(double targetPosition) {
-        for (PositionServo servo : servos)
+        for (PositionServo servo : this)
             servo.setTargetPosition(targetPosition);
         return this;
     }
@@ -200,7 +157,7 @@ public class PositionServoGroup {
      * @return The current PositionServoGroup instance.
      */
     public PositionServoGroup toggleTargetPosition() {
-        for (PositionServo servo : servos)
+        for (PositionServo servo : this)
             servo.toggleTargetPosition();
         return this;
     }
@@ -213,7 +170,7 @@ public class PositionServoGroup {
      * @return The current PositionServoGroup instance.
      */
     public PositionServoGroup toggleTargetPosition(double positionOne, double positionTwo) {
-        for (PositionServo servo : servos)
+        for (PositionServo servo : this)
             servo.toggleTargetPosition(positionOne, positionTwo);
         return this;
     }
@@ -225,7 +182,7 @@ public class PositionServoGroup {
      * @return The position error of the servo at the specified index in the PositionServoGroup.
      */
     public double getPositionError(int servo) {
-        return servos.get(servo).getPositionError();
+        return get(servo).getPositionError();
     }
 
     /**
@@ -234,7 +191,7 @@ public class PositionServoGroup {
      * @return The CSV header of all servos in the PositionServoGroup.
      */
     public String getCSVHeader() {
-        return servos.get(0).getCSVHeader();
+        return get(0).getCSVHeader();
     }
 
     /**
@@ -244,14 +201,14 @@ public class PositionServoGroup {
      * @return The CSV data of the servo at the specified index in the PositionServoGroup.
      */
     public String getCSVData(int servo) {
-        return servos.get(servo).getCSVData();
+        return get(servo).getCSVData();
     }
 
     /**
      * Updates the position of all servos in the PositionServoGroup to their target positions.
      */
     public void update() {
-        for (PositionServo servo : servos)
+        for (PositionServo servo : this)
             servo.update();
     }
 
@@ -263,7 +220,7 @@ public class PositionServoGroup {
      * @return The current PositionServoGroup instance.
      */
     public PositionServoGroup log(Telemetry telemetry, HardwareMap hardwareMap) {
-        for (PositionServo servo : servos) {
+        for (PositionServo servo : this) {
             servo.log(telemetry, hardwareMap);
             telemetry.addLine();
         }

@@ -12,16 +12,14 @@ import java.util.Arrays;
 /**
  * Class representing a group of continuous rotation servos that are controlled together.
  */
-public class ContinuousServoGroup {
-    ArrayList<ContinuousServo> servos;
-
+public class ContinuousServoGroup extends ArrayList<ContinuousServo>{
     /**
      * Constructs a new ContinuousServoGroup object with a list of the given servos.
      *
      * @param servos The servos to be included in the ContinuousServoGroup.
      */
     public ContinuousServoGroup(@NonNull ContinuousServo... servos) {
-        this.servos = new ArrayList<>(Arrays.asList(servos));
+        super(Arrays.asList(servos));
     }
 
     /**
@@ -30,7 +28,7 @@ public class ContinuousServoGroup {
      * @return The list of servos in the ContinuousServoGroup.
      */
     public ArrayList<ContinuousServo> getServos() {
-        return servos;
+        return this;
     }
 
     /**
@@ -40,8 +38,8 @@ public class ContinuousServoGroup {
      * @return The current ContinuousServoGroup instance.
      */
     public ContinuousServoGroup setServos(@NonNull ContinuousServo... servos) {
-        this.servos.clear();
-        this.servos = new ArrayList<>(Arrays.asList(servos));
+        this.clear();
+        this.addAll(Arrays.asList(servos));
         return this;
     }
 
@@ -52,7 +50,7 @@ public class ContinuousServoGroup {
      * @return The servo at the specified index in the ContinuousServoGroup.
      */
     public ContinuousServo getServo(int servo) {
-        return servos.get(servo);
+        return get(servo);
     }
 
     /**
@@ -63,7 +61,7 @@ public class ContinuousServoGroup {
      * @return The current ContinuousServoGroup instance.
      */
     public ContinuousServoGroup setServo(int servo, @NonNull ContinuousServo newServo) {
-        servos.set(servo, newServo);
+        set(servo, newServo);
         return this;
     }
 
@@ -74,7 +72,7 @@ public class ContinuousServoGroup {
      * @return The current ContinuousServoGroup instance.
      */
     public ContinuousServoGroup addServo(@NonNull ContinuousServo newServo) {
-        servos.add(newServo);
+        add(newServo);
         return this;
     }
 
@@ -85,7 +83,7 @@ public class ContinuousServoGroup {
      * @return True if the servo's direction is reversed, false otherwise.
      */
     public boolean isReversed(int servo) {
-        return servos.get(servo).isReversed();
+        return get(servo).isReversed();
     }
 
     /**
@@ -95,7 +93,7 @@ public class ContinuousServoGroup {
      * @return The current ContinuousServoGroup instance.
      */
     public ContinuousServoGroup setReversed(boolean reversed) {
-        for (ContinuousServo servo : servos)
+        for (ContinuousServo servo : this)
             servo.setReversed(reversed);
         return this;
     }
@@ -107,7 +105,7 @@ public class ContinuousServoGroup {
      * @return The current power of the servo at the specified index in the ContinuousServoGroup.
      */
     public double getPower(int servo) {
-        return servos.get(servo).getPower();
+        return get(servo).getPower();
     }
 
     /**
@@ -117,7 +115,7 @@ public class ContinuousServoGroup {
      * @return The target power of the servo at the specified index in the ContinuousServoGroup.
      */
     public double getTargetPower(int servo) {
-        return servos.get(servo).getTargetPower();
+        return get(servo).getTargetPower();
     }
 
     /**
@@ -127,7 +125,7 @@ public class ContinuousServoGroup {
      * @return The current ContinuousServoGroup instance.
      */
     public ContinuousServoGroup setTargetPower(double targetPower) {
-        for (ContinuousServo servo : servos)
+        for (ContinuousServo servo : this)
             servo.setTargetPower(targetPower);
         return this;
     }
@@ -139,7 +137,7 @@ public class ContinuousServoGroup {
      * @return The power error of the servo at the specified index in the ContinuousServoGroup.
      */
     public double getPowerError(int servo) {
-        return servos.get(servo).getPowerError();
+        return get(servo).getPowerError();
     }
 
     /**
@@ -148,7 +146,7 @@ public class ContinuousServoGroup {
      * @return The CSV header of all servos in the ContinuousServoGroup.
      */
     public String getCSVHeader() {
-        return servos.get(0).getCSVHeader();
+        return get(0).getCSVHeader();
     }
 
     /**
@@ -158,14 +156,14 @@ public class ContinuousServoGroup {
      * @return The CSV data of the servo at the specified index in the ContinuousServoGroup.
      */
     public String getCSVData(int servo) {
-        return servos.get(servo).getCSVData();
+        return get(servo).getCSVData();
     }
 
     /**
      * Updates the power of all servos in the ContinuousServoGroup to their target power.
      */
     public void update() {
-        for (ContinuousServo servo : servos)
+        for (ContinuousServo servo : this)
             servo.update();
     }
 
@@ -177,7 +175,7 @@ public class ContinuousServoGroup {
      * @return The current ContinuousServoGroup instance.
      */
     public ContinuousServoGroup log(Telemetry telemetry, HardwareMap hardwareMap) {
-        for (ContinuousServo servo : servos) {
+        for (ContinuousServo servo : this) {
             servo.log(telemetry, hardwareMap);
             telemetry.addLine();
         }

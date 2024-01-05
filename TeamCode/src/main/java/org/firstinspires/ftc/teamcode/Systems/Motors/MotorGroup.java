@@ -12,16 +12,14 @@ import java.util.Arrays;
 /**
  * Class representing a group of power and position motors that are controlled together.
  */
-public class MotorGroup {
-    ArrayList<Motor> motors;
-
+public class MotorGroup extends ArrayList<Motor> {
     /**
      * Constructs a new MotorGroup object with a list of the given motors.
      *
      * @param motors The motors to be included in the MotorGroup.
      */
     public MotorGroup(@NonNull Motor... motors) {
-        this.motors = new ArrayList<>(Arrays.asList(motors));
+        super(Arrays.asList(motors));
     }
 
     /**
@@ -30,7 +28,7 @@ public class MotorGroup {
      * @return The number of motors in the MotorGroup.
      */
     public int getNumMotors() {
-        return motors.size();
+        return size();
     }
 
     /**
@@ -39,7 +37,7 @@ public class MotorGroup {
      * @return The list of motors in the MotorGroup.
      */
     public ArrayList<Motor> getMotors() {
-        return motors;
+        return this;
     }
 
     /**
@@ -49,8 +47,8 @@ public class MotorGroup {
      * @return The current MotorGroup instance.
      */
     public MotorGroup setMotors(@NonNull Motor... motors) {
-        this.motors.clear();
-        this.motors = new ArrayList<>(Arrays.asList(motors));
+        this.clear();
+        this.addAll(Arrays.asList(motors));
         return this;
     }
 
@@ -61,7 +59,7 @@ public class MotorGroup {
      * @return The motor at the specified index in the MotorGroup.
      */
     public Motor getMotor(int motor) {
-        return motors.get(motor);
+        return get(motor);
     }
 
     /**
@@ -72,7 +70,7 @@ public class MotorGroup {
      * @return The current MotorGroup instance.
      */
     public MotorGroup setMotor(int motor, @NonNull Motor newMotor) {
-        motors.set(motor, newMotor);
+        set(motor, newMotor);
         return this;
     }
 
@@ -83,7 +81,7 @@ public class MotorGroup {
      * @return The current MotorGroup instance.
      */
     public MotorGroup addMotor(@NonNull Motor newMotor) {
-        motors.add(newMotor);
+        add(newMotor);
         return this;
     }
 
@@ -93,7 +91,7 @@ public class MotorGroup {
      * @return The type of all motors in the MotorGroup.
      */
     public MotorList getMotorType() {
-        return motors.get(0).getMotorType();
+        return get(0).getMotorType();
     }
 
     /**
@@ -103,7 +101,7 @@ public class MotorGroup {
      * @return The current MotorGroup instance.
      */
     public MotorGroup setMotorType(MotorList motorType) {
-        for (Motor motor : motors)
+        for (Motor motor : this)
             motor.setMotorType(motorType);
         return this;
     }
@@ -114,7 +112,7 @@ public class MotorGroup {
      * @return The mode of all motors in the MotorGroup.
      */
     public Motor.Mode getMode() {
-        return motors.get(0).getMode();
+        return get(0).getMode();
     }
 
     /**
@@ -124,7 +122,7 @@ public class MotorGroup {
      * @return The current MotorGroup instance.
      */
     public MotorGroup setMode(Motor.Mode mode) {
-        for (Motor motor : motors)
+        for (Motor motor : this)
             motor.setMode(mode);
         return this;
     }
@@ -136,7 +134,7 @@ public class MotorGroup {
      * @return True if the motor's direction is reversed, false otherwise.
      */
     public boolean isReversed(int motor) {
-        return motors.get(motor).isReversed();
+        return get(motor).isReversed();
     }
 
     /**
@@ -147,7 +145,7 @@ public class MotorGroup {
      * @return The current MotorGroup instance.
      */
     public MotorGroup setReversed(int motor, boolean reversed) {
-        motors.get(motor).setReversed(reversed);
+        get(motor).setReversed(reversed);
         return this;
     }
 
@@ -157,7 +155,7 @@ public class MotorGroup {
      * @return The speed scale of all motors in the MotorGroup.
      */
     public double getSpeedScale() {
-        return motors.get(0).getSpeedScale();
+        return get(0).getSpeedScale();
     }
 
     /**
@@ -167,7 +165,7 @@ public class MotorGroup {
      * @return The current MotorGroup instance.
      */
     public MotorGroup setSpeedScale(double speedScale) {
-        for (Motor motor : motors)
+        for (Motor motor : this)
             motor.setSpeedScale(speedScale);
         return this;
     }
@@ -178,7 +176,7 @@ public class MotorGroup {
      * @return The tolerance for the position of all motors in the MotorGroup.
      */
     public int getTolerance() {
-        return motors.get(0).getTolerance();
+        return get(0).getTolerance();
     }
 
     /**
@@ -188,7 +186,7 @@ public class MotorGroup {
      * @return The current MotorGroup instance.
      */
     public MotorGroup setTolerance(int tolerance) {
-        for (Motor motor : motors)
+        for (Motor motor : this)
             motor.setTolerance(tolerance);
         return this;
     }
@@ -199,7 +197,7 @@ public class MotorGroup {
      * @return The current power of all motors in the MotorGroup.
      */
     public double getPower() {
-        return motors.get(0).getPower();
+        return get(0).getPower();
     }
 
     /**
@@ -208,7 +206,7 @@ public class MotorGroup {
      * @return The target power of all motors in the MotorGroup.
      */
     public double getTargetPower() {
-        return motors.get(0).getTargetPower();
+        return get(0).getTargetPower();
     }
 
     /**
@@ -218,7 +216,7 @@ public class MotorGroup {
      * @return The current MotorGroup instance.
      */
     public MotorGroup setTargetPower(double power) {
-        for (Motor motor : motors)
+        for (Motor motor : this)
             motor.setTargetPower(power);
         return this;
     }
@@ -230,7 +228,7 @@ public class MotorGroup {
      * @return The power error of the motor at the specified index in the MotorGroup.
      */
     public double getPowerError(int motor) {
-        return motors.get(motor).getPowerError();
+        return get(motor).getPowerError();
     }
 
     /**
@@ -240,7 +238,7 @@ public class MotorGroup {
      * @return The current position of the motor at the specified index in the MotorGroup.
      */
     public int getCurrentPosition(int motor) {
-        return motors.get(motor).getCurrentPosition();
+        return get(motor).getCurrentPosition();
     }
 
     /**
@@ -249,7 +247,7 @@ public class MotorGroup {
      * @return The target position of all motors in the MotorGroup.
      */
     public int getTargetPosition() {
-        return motors.get(0).getTargetPosition();
+        return get(0).getTargetPosition();
     }
 
     /**
@@ -259,7 +257,7 @@ public class MotorGroup {
      * @return The current MotorGroup instance.
      */
     public MotorGroup setTargetPosition(int position) {
-        for (Motor motor : motors)
+        for (Motor motor : this)
             motor.setTargetPosition(position);
         return this;
     }
@@ -271,7 +269,7 @@ public class MotorGroup {
      * @return The position error of the motor at the specified index in the MotorGroup.
      */
     public int getPositionError(int motor) {
-        return motors.get(motor).getPositionError();
+        return get(motor).getPositionError();
     }
 
     /**
@@ -280,7 +278,7 @@ public class MotorGroup {
      * @return The PIDF values of all motors in the MotorGroup.
      */
     public ArrayList<Double> getPIDF() {
-        return motors.get(0).getPIDF();
+        return get(0).getPIDF();
     }
 
     /**
@@ -293,7 +291,7 @@ public class MotorGroup {
      * @return The current MotorGroup instance.
      */
     public MotorGroup setPIDF(double p, double i, double d, double f) {
-        for (Motor motor : motors)
+        for (Motor motor : this)
             motor.setPIDF(p, i, d, f);
         return this;
     }
@@ -304,7 +302,7 @@ public class MotorGroup {
      * @return The P value of all motors in the MotorGroup.
      */
     public double getP() {
-        return motors.get(0).getP();
+        return get(0).getP();
     }
 
     /**
@@ -314,7 +312,7 @@ public class MotorGroup {
      * @return The current MotorGroup instance.
      */
     public MotorGroup setP(double p) {
-        for (Motor motor : motors)
+        for (Motor motor : this)
             motor.setP(p);
         return this;
     }
@@ -325,7 +323,7 @@ public class MotorGroup {
      * @return The I value of all motors in the MotorGroup.
      */
     public double getI() {
-        return motors.get(0).getI();
+        return get(0).getI();
     }
 
     /**
@@ -335,7 +333,7 @@ public class MotorGroup {
      * @return The current MotorGroup instance.
      */
     public MotorGroup setI(double i) {
-        for (Motor motor : motors)
+        for (Motor motor : this)
             motor.setI(i);
         return this;
     }
@@ -346,7 +344,7 @@ public class MotorGroup {
      * @return The D value of all motors in the MotorGroup.
      */
     public double getD() {
-        return motors.get(0).getD();
+        return get(0).getD();
     }
 
     /**
@@ -356,7 +354,7 @@ public class MotorGroup {
      * @return The current MotorGroup instance.
      */
     public MotorGroup setD(double d) {
-        for (Motor motor : motors)
+        for (Motor motor : this)
             motor.setD(d);
         return this;
     }
@@ -367,7 +365,7 @@ public class MotorGroup {
      * @return The F value of all motors in the MotorGroup.
      */
     public double getF() {
-        return motors.get(0).getF();
+        return get(0).getF();
     }
 
     /**
@@ -377,7 +375,7 @@ public class MotorGroup {
      * @return The current MotorGroup instance.
      */
     public MotorGroup setF(double f) {
-        for (Motor motor : motors)
+        for (Motor motor : this)
             motor.setF(f);
         return this;
     }
@@ -389,7 +387,7 @@ public class MotorGroup {
      * @return The free RPM of all motors in the MotorGroup.
      */
     public int getFreeRPM() {
-        return motors.get(0).getFreeRPM();
+        return get(0).getFreeRPM();
     }
 
     /**
@@ -398,7 +396,7 @@ public class MotorGroup {
      * @return The RPM of all motors in the MotorGroup.
      */
     public double getRPM() {
-        return motors.get(0).getRPM();
+        return get(0).getRPM();
     }
 
     /**
@@ -407,7 +405,7 @@ public class MotorGroup {
      * @return The ticks per rotation of all motors in the MotorGroup.
      */
     public double getTicksPerRotation() {
-        return motors.get(0).getTicksPerRotation();
+        return get(0).getTicksPerRotation();
     }
 
     /**
@@ -416,7 +414,7 @@ public class MotorGroup {
      * @return The ticks per degree of all motors in the MotorGroup.
      */
     public double getTicksPerDegree() {
-        return motors.get(0).getTicksPerDegree();
+        return get(0).getTicksPerDegree();
     }
 
     /**
@@ -425,7 +423,7 @@ public class MotorGroup {
      * @return The ticks per second of all motors in the MotorGroup.
      */
     public double getTicksPerSecond() {
-        return motors.get(0).getTicksPerSecond();
+        return get(0).getTicksPerSecond();
     }
 
     /**
@@ -434,7 +432,7 @@ public class MotorGroup {
      * @return The gear ratio of all motors in the MotorGroup.
      */
     public double getGearRatio() {
-        return motors.get(0).getGearRatio();
+        return get(0).getGearRatio();
     }
 
     /**
@@ -443,14 +441,14 @@ public class MotorGroup {
      * @return The encoder resolution of all motors in the MotorGroup.
      */
     public int getEncoderResolution() {
-        return motors.get(0).getEncoderResolution();
+        return get(0).getEncoderResolution();
     }
 
     /**
      * Resets the encoder of all motors in the MotorGroup.
      */
     public void resetEncoder() {
-        for (Motor motor : motors)
+        for (Motor motor : this)
             motor.resetEncoder();
     }
 
@@ -460,7 +458,7 @@ public class MotorGroup {
      * @return The CSV header of all motors in the MotorGroup.
      */
     public String getCSVHeader() {
-        return motors.get(0).getCSVHeader();
+        return get(0).getCSVHeader();
     }
 
     /**
@@ -470,14 +468,14 @@ public class MotorGroup {
      * @return The CSV data of the motor at the specified index in the MotorGroup.
      */
     public String getCSVData(int motor) {
-        return motors.get(motor).getCSVData();
+        return get(motor).getCSVData();
     }
 
     /**
      * Updates all motors in the MotorGroup based on their mode.
      */
     public void update() {
-        for (Motor motor : motors)
+        for (Motor motor : this)
             motor.update();
     }
 
@@ -489,7 +487,7 @@ public class MotorGroup {
      * @return The current MotorGroup instance.
      */
     public MotorGroup log(Telemetry telemetry, HardwareMap hardwareMap) {
-        for (Motor motor : motors) {
+        for (Motor motor : this) {
             motor.log(telemetry, hardwareMap);
             telemetry.addLine();
         }

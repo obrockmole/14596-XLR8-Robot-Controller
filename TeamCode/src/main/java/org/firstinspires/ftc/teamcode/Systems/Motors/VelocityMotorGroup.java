@@ -13,16 +13,14 @@ import java.util.Arrays;
 /**
  * Class representing a group of velocity motors that are controlled together.
  */
-public class VelocityMotorGroup {
-    ArrayList<VelocityMotor> motors;
-
+public class VelocityMotorGroup extends ArrayList<VelocityMotor> {
     /**
      * Constructs a new VelocityMotorGroup object with a list of the given motors.
      *
      * @param motors The motors to be included in the VelocityMotorGroup.
      */
     public VelocityMotorGroup(@NonNull VelocityMotor... motors) {
-        this.motors = new ArrayList<>(Arrays.asList(motors));
+        super(Arrays.asList(motors));
     }
 
     /**
@@ -31,7 +29,7 @@ public class VelocityMotorGroup {
      * @return The list of motors in the VelocityMotorGroup.
      */
     ArrayList<VelocityMotor> getMotors() {
-        return motors;
+        return this;
     }
 
     /**
@@ -41,7 +39,8 @@ public class VelocityMotorGroup {
      * @return The current VelocityMotorGroup instance.
      */
     public VelocityMotorGroup setMotors(@NonNull VelocityMotor... motors) {
-        this.motors = new ArrayList<>(Arrays.asList(motors));
+        this.clear();
+        this.addAll(Arrays.asList(motors));
         return this;
     }
 
@@ -52,7 +51,7 @@ public class VelocityMotorGroup {
      * @return The motor at the specified index in the VelocityMotorGroup.
      */
     public VelocityMotor getMotor(int motor) {
-        return motors.get(motor);
+        return get(motor);
     }
 
     /**
@@ -63,7 +62,7 @@ public class VelocityMotorGroup {
      * @return The current VelocityMotorGroup instance.
      */
     public VelocityMotorGroup setMotor(int motor, @NonNull VelocityMotor newMotor) {
-        motors.set(motor, newMotor);
+        set(motor, newMotor);
         return this;
     }
 
@@ -74,7 +73,7 @@ public class VelocityMotorGroup {
      * @return The current VelocityMotorGroup instance.
      */
     public VelocityMotorGroup addMotor(@NonNull VelocityMotor newMotor) {
-        motors.add(newMotor);
+        add(newMotor);
         return this;
     }
 
@@ -85,7 +84,7 @@ public class VelocityMotorGroup {
      * @return True if the motor's direction is reversed, false otherwise.
      */
     public boolean isReversed(int motor) {
-        return motors.get(motor).isReversed();
+        return get(motor).isReversed();
     }
 
     /**
@@ -96,7 +95,7 @@ public class VelocityMotorGroup {
      * @return The current VelocityMotorGroup instance.
      */
     public VelocityMotorGroup setReversed(int motor, boolean reversed) {
-        motors.get(motor).setReversed(reversed);
+        get(motor).setReversed(reversed);
         return this;
     }
 
@@ -106,7 +105,7 @@ public class VelocityMotorGroup {
      * @return The current position of all motors in the VelocityMotorGroup.
      */
     public double getCurrentPosition() {
-        return motors.get(0).getCurrentPosition();
+        return get(0).getCurrentPosition();
     }
 
     /**
@@ -115,7 +114,7 @@ public class VelocityMotorGroup {
      * @return The current power of all motors in the VelocityMotorGroup.
      */
     public double getPower() {
-        return motors.get(0).getPower();
+        return get(0).getPower();
     }
 
     /**
@@ -124,7 +123,7 @@ public class VelocityMotorGroup {
      * @return The current velocity of all motors in the VelocityMotorGroup.
      */
     public double getVelocity() {
-        return motors.get(0).getVelocity();
+        return get(0).getVelocity();
     }
 
     /**
@@ -133,7 +132,7 @@ public class VelocityMotorGroup {
      * @return The target velocity of all motors in the VelocityMotorGroup.
      */
     public double getTargetVelocity() {
-        return motors.get(0).getTargetVelocity();
+        return get(0).getTargetVelocity();
     }
 
     /**
@@ -143,7 +142,7 @@ public class VelocityMotorGroup {
      * @return The current VelocityMotorGroup instance.
      */
     public VelocityMotorGroup setTargetVelocity(double targetVelocity) {
-        for (VelocityMotor motor : motors)
+        for (VelocityMotor motor : this)
             motor.setTargetVelocity(targetVelocity);
         return this;
     }
@@ -155,7 +154,7 @@ public class VelocityMotorGroup {
      * @return The velocity of the motor at the specified index in the VelocityMotorGroup.
      */
     public double getVelocity(int motor) {
-        return motors.get(motor).getVelocity();
+        return get(motor).getVelocity();
     }
 
     /**
@@ -165,7 +164,7 @@ public class VelocityMotorGroup {
      * @return The velocity error of the motor at the specified index in the VelocityMotorGroup.
      */
     public double getVelocityError(int motor) {
-        return motors.get(motor).getVelocityError();
+        return get(motor).getVelocityError();
     }
 
     /**
@@ -174,7 +173,7 @@ public class VelocityMotorGroup {
      * @return The PIDF coefficients of all motors in the VelocityMotorGroup.
      */
     public PIDFCoefficients getPIDF() {
-        return motors.get(0).getPIDF();
+        return get(0).getPIDF();
     }
 
     /**
@@ -184,7 +183,7 @@ public class VelocityMotorGroup {
      * @return The current VelocityMotorGroup instance.
      */
     public VelocityMotorGroup setPIDF(PIDFCoefficients pidf) {
-        for (VelocityMotor motor : motors)
+        for (VelocityMotor motor : this)
             motor.setPIDF(pidf);
         return this;
     }
@@ -208,7 +207,7 @@ public class VelocityMotorGroup {
      * @return The P coefficient of all motors in the VelocityMotorGroup.
      */
     public double getP() {
-        return motors.get(0).getP();
+        return get(0).getP();
     }
 
     /**
@@ -227,7 +226,7 @@ public class VelocityMotorGroup {
      * @return The I coefficient of all motors in the VelocityMotorGroup.
      */
     public double getI() {
-        return motors.get(0).getI();
+        return get(0).getI();
     }
 
     /**
@@ -246,7 +245,7 @@ public class VelocityMotorGroup {
      * @return The D coefficient of all motors in the VelocityMotorGroup.
      */
     public double getD() {
-        return motors.get(0).getD();
+        return get(0).getD();
     }
 
     /**
@@ -265,7 +264,7 @@ public class VelocityMotorGroup {
      * @return The F coefficient of all motors in the VelocityMotorGroup.
      */
     public double getF() {
-        return motors.get(0).getF();
+        return get(0).getF();
     }
 
     /**
@@ -282,7 +281,7 @@ public class VelocityMotorGroup {
      * Resets the encoder of all motors in the VelocityMotorGroup.
      */
     public void resetEncoder() {
-        for (VelocityMotor motor : motors)
+        for (VelocityMotor motor : this)
             motor.resetEncoder();
     }
 
@@ -292,7 +291,7 @@ public class VelocityMotorGroup {
      * @return The CSV header of all motors in the VelocityMotorGroup.
      */
     public String getCSVHeader() {
-        return motors.get(0).getCSVHeader();
+        return get(0).getCSVHeader();
     }
 
     /**
@@ -302,14 +301,14 @@ public class VelocityMotorGroup {
      * @return The CSV data of the motor at the specified index in the VelocityMotorGroup.
      */
     public String getCSVData(int motor) {
-        return motors.get(motor).getCSVData();
+        return get(motor).getCSVData();
     }
 
     /**
      * Updates the velocity of all motors in the VelocityMotorGroup to their target velocities.
      */
     public void update() {
-        for (VelocityMotor motor : motors)
+        for (VelocityMotor motor : this)
             motor.update();
     }
 
@@ -321,7 +320,7 @@ public class VelocityMotorGroup {
      * @return The current VelocityMotorGroup instance.
      */
     public VelocityMotorGroup log(Telemetry telemetry, HardwareMap hardwareMap) {
-        for (VelocityMotor motor : motors) {
+        for (VelocityMotor motor : this) {
             motor.log(telemetry, hardwareMap);
             telemetry.addLine();
         }
