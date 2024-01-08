@@ -14,7 +14,7 @@ import java.util.Arrays;
  */
 public class MotorGroup extends ArrayList<Motor> {
     /**
-     * Constructs a new MotorGroup object with a list of the given motors.
+     * Constructs a new MotorGroup object with a list of Motors.
      *
      * @param motors The motors to be included in the MotorGroup.
      */

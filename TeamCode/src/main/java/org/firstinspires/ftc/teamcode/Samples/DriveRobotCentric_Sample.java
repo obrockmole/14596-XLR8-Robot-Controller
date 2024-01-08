@@ -13,7 +13,6 @@ import org.firstinspires.ftc.teamcode.Systems.Gamepad.Gamepad;
 import org.firstinspires.ftc.teamcode.Systems.Gamepad.GamepadButtons.Stick;
 import org.firstinspires.ftc.teamcode.Systems.Motors.Motor;
 import org.firstinspires.ftc.teamcode.Systems.Motors.MotorList;
-import org.firstinspires.ftc.teamcode.Systems.Odometry.Odometry;
 import org.firstinspires.ftc.teamcode.Systems.Sensors.IMU;
 
 @Disabled
@@ -35,7 +34,7 @@ public class DriveRobotCentric_Sample extends OpMode {
         Motor backRight = new Motor(hardwareMap, "backRight", MotorList.GOBILDA_435, Motor.Mode.POWER, 10, false);
         IMU imu = new IMU(hardwareMap, "imu", new Parameters(new RevHubOrientationOnRobot(LogoFacingDirection.UP, UsbFacingDirection.FORWARD)));
 
-        drivetrain = new Drivetrain(frontLeft, backLeft, frontRight, backRight, new Odometry(), imu); //Assign the motors and IMU to the drivetrain. Odometry is not used in this example so it is left blank.
+        drivetrain = new Drivetrain(frontLeft, backLeft, frontRight, backRight, imu); //Assign the motors and IMU to the drivetrain. Odometry is not used in this example so it is omitted.
     }
 
     @Override

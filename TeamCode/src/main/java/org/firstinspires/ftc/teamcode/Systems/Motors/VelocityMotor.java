@@ -18,7 +18,7 @@ public class VelocityMotor {
     boolean reversed = false;
 
     /**
-     * Constructs a new VelocityMotor object with the given parameters.
+     * Constructs a new VelocityMotor object with a DcMotorEx.
      *
      * @param motor The DcMotorEx object that this VelocityMotor will control.
      * @param reversed Whether the motor's direction is reversed.
@@ -31,7 +31,7 @@ public class VelocityMotor {
     }
 
     /**
-     * Constructs a new VelocityMotor object with the given parameters.
+     * Constructs a new VelocityMotor object with the HardwareMap and device name.
      *
      * @param hardwareMap The HardwareMap object used to get the DcMotorEx object.
      * @param name The name of the DcMotorEx object in the HardwareMap.
@@ -62,7 +62,7 @@ public class VelocityMotor {
     }
 
     /**
-     * Sets the DcMotorEx object that this VelocityMotor will control using a HardwareMap and a name.
+     * Sets the DcMotorEx object that this VelocityMotor will control using the HardwareMap and a device name.
      *
      * @param hardwareMap The HardwareMap object used to get the DcMotorEx object.
      * @param name The name of the DcMotorEx object in the HardwareMap.

@@ -14,7 +14,7 @@ import java.util.Arrays;
  */
 public class ContinuousServoGroup extends ArrayList<ContinuousServo>{
     /**
-     * Constructs a new ContinuousServoGroup object with a list of the given servos.
+     * Constructs a new ContinuousServoGroup object with a list of ContinuousServos.
      *
      * @param servos The servos to be included in the ContinuousServoGroup.
      */

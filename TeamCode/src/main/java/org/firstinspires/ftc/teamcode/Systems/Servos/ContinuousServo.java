@@ -13,7 +13,7 @@ public class ContinuousServo {
     double targetPower = 0;
 
     /**
-     * Constructs a new ContinuousServo object with the given parameters.
+     * Constructs a new ContinuousServo object with a CRServo.
      *
      * @param servo The CRServo object that this ContinuousServo will control.
      * @param reversed Whether the servo's direction is reversed.
@@ -24,7 +24,7 @@ public class ContinuousServo {
     }
 
     /**
-     * Constructs a new ContinuousServo object with the given parameters.
+     * Constructs a new ContinuousServo object with the HardwareMap and device name.
      *
      * @param hardwareMap The HardwareMap object used to get the CRServo object.
      * @param name The name of the CRServo object in the HardwareMap.
@@ -55,7 +55,7 @@ public class ContinuousServo {
     }
 
     /**
-     * Sets the CRServo object that this ContinuousServo will control using a HardwareMap and a name.
+     * Sets the CRServo object that this ContinuousServo will control using the HardwareMap and a device name.
      *
      * @param hardwareMap The HardwareMap object used to get the CRServo object.
      * @param name The name of the CRServo object in the HardwareMap.

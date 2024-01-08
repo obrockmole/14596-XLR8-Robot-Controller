@@ -6,7 +6,6 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -15,7 +14,7 @@ import java.util.Arrays;
  */
 public class PositionServoGroup extends ArrayList<PositionServo> {
     /**
-     * Constructs a new PositionServoGroup object with a list of the given servos.
+     * Constructs a new PositionServoGroup object with a list of PositionServos.
      *
      * @param servos The servos to be included in the PositionServoGroup.
      */

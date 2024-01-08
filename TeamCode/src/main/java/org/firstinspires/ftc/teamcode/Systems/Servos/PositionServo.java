@@ -16,7 +16,7 @@ public class PositionServo {
     double[] scaleRange = new double[]{0, 1};
 
     /**
-     * Constructs a new PositionServo object with the given parameters.
+     * Constructs a new PositionServo object with a Servo.
      *
      * @param servo    The Servo object that this PositionServo will control.
      * @param minScale The minimum scale for the servo's range.
@@ -31,7 +31,7 @@ public class PositionServo {
     }
 
     /**
-     * Constructs a new PositionServo object with the given parameters.
+     * Constructs a new PositionServo object with the HardwareMap and device name.
      *
      * @param hardwareMap The HardwareMap object used to get the Servo object.
      * @param name        The name of the Servo object in the HardwareMap.
@@ -64,7 +64,7 @@ public class PositionServo {
     }
 
     /**
-     * Sets the Servo object that this PositionServo will control using a HardwareMap and a name.
+     * Sets the Servo object that this PositionServo will control using the HardwareMap and a device name.
      *
      * @param hardwareMap The HardwareMap object used to get the Servo object.
      * @param name        The name of the Servo object in the HardwareMap.

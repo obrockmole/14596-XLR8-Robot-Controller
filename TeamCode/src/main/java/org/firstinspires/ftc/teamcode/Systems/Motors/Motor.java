@@ -33,7 +33,7 @@ public class Motor {
     Mode mode;
 
     /**
-     * Constructs a new Motor object with the given parameters.
+     * Constructs a new Motor object with with a DcMotorEx.
      *
      * @param motor The DcMotorEx object that this Motor will control.
      * @param motorType The type of the motor.
@@ -53,7 +53,7 @@ public class Motor {
     }
 
     /**
-     * Constructs a new Motor object with the given parameters.
+     * Constructs a new Motor object with the HardwareMap and device name.
      *
      * @param hardwareMap The HardwareMap object used to get the DcMotorEx object.
      * @param name The name of the DcMotorEx object in the HardwareMap.
@@ -67,7 +67,7 @@ public class Motor {
     }
 
     /**
-     * Constructs a new Motor object with the given parameters and a default tolerance of 10.
+     * Constructs a new Motor object with a DcMotorEx and a default tolerance of 10.
      *
      * @param motor The DcMotorEx object that this Motor will control.
      * @param motorType The type of the motor.
@@ -79,7 +79,7 @@ public class Motor {
     }
 
     /**
-     * Constructs a new Motor object with the given parameters and a default tolerance of 10.
+     * Constructs a new Motor object with the HardwareMap, device name, and a default tolerance of 10.
      *
      * @param hardwareMap The HardwareMap object used to get the DcMotorEx object.
      * @param name The name of the DcMotorEx object in the HardwareMap.
@@ -112,7 +112,7 @@ public class Motor {
     }
 
     /**
-     * Sets the DcMotorEx object that this Motor will control using a HardwareMap and a name.
+     * Sets the DcMotorEx object that this Motor will control using the HardwareMap and a device name.
      *
      * @param hardwareMap The HardwareMap object used to get the DcMotorEx object.
      * @param name The name of the DcMotorEx object in the HardwareMap.
