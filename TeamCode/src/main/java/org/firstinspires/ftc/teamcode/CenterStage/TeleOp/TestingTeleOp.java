@@ -4,87 +4,52 @@ import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.Range;
 
+import org.checkerframework.checker.units.qual.A;
 import org.firstinspires.ftc.teamcode.Systems.Gamepad.GamepadButtons.Button;
 import org.firstinspires.ftc.teamcode.Systems.Gamepad.GamepadButtons.Stick;
 import org.firstinspires.ftc.teamcode.Systems.Gamepad.GamepadButtons.TouchpadFinger;
 import org.firstinspires.ftc.teamcode.Systems.Gamepad.GamepadButtons.Trigger;
 
-@Disabled
+//@Disabled
 @TeleOp(group = "TeleOp", name = "Testing TeleOp")
 public class TestingTeleOp extends BaseTele {
     public void loop() {
-        /*
-
-        // DRIVER \\
+        /* DRIVER */
         //Driving
-        robot.standardDrive(driver.getStickY(Stick.LEFT_STICK), driver.getStickX(Stick.LEFT_STICK), driver.getStickX(Stick.RIGHT_STICK));
+        robot.standardDrive(-driver.getStickY(Stick.LEFT_STICK), -driver.getStickX(Stick.LEFT_STICK), driver.getStickX(Stick.RIGHT_STICK));
 
-        //Driving speed, left bumper = slow, right bumper = fast
-        robot.setSpeedScale(driver.isDown(Button.LEFT_BUMPER), driver.isDown(Button.RIGHT_BUMPER));
-
-        //Winch Extension, right trigger = extend, left trigger = retract
-        robot.winchExtension.setTargetPower(driver.getTrigger(Trigger.RIGHT_TRIGGER) - driver.getTrigger(Trigger.LEFT_TRIGGER));
-        //Actuate winch, button down = open, button up = close
-        if (driver.isDown(Button.A)) robot.winch.setPosition(1);
-        else robot.winch.setPosition(0);
-
-        //Drone launcher angle, toggle between down and up with X
-        driver.onPress(Button.X, () -> robot.droneAngle.setTargetPosition(robot.droneAngle.getTargetPosition() == 1 ? 0 : 1));
+        //Driving speed, left bumper = slow
+        if (driver.isDown(Button.LEFT_BUMPER)) robot.setSpeedScale(0.4);
+        else robot.setSpeedScale(1);
 
 
-        // MANIPULATOR \\
-        //Intake, right trigger = intake, left trigger = outtake
-        robot.intake.setTargetPower(manipulator.getTrigger(Trigger.LEFT_TRIGGER) - manipulator.getTrigger(Trigger.RIGHT_TRIGGER));
-
-        //Manual lift control, stick up = extend, stick down = retract
+        /* MANIPULATOR */
+        //Lift power, left stick y = lift power
         robot.setLiftPower(manipulator.getStickY(Stick.LEFT_STICK));
-        //Manual lift angle control, stick up = angle up, stick down = angle down
-        robot.setLiftAnglePower(manipulator.getStickY(Stick.RIGHT_STICK));
 
-        //Intake gate, button down = up, button up = down
-        if (manipulator.isDown(Button.RIGHT_BUMPER)) robot.intakeGate.setTargetPosition(1);
-        else robot.intakeGate.setTargetPosition(0);
+        //Lift positions, Dpad down = lift retracted, Dpad left = lift deployed, Dpad right = lift half height, Dpad down = lift max height
+        manipulator.onPress(Button.DPAD_DOWN, () -> robot.setLiftPosition(robot.liftPositions[0]))
+                .onPress(Button.DPAD_LEFT, () -> robot.setLiftPosition(robot.liftPositions[1]))
+                .onPress(Button.DPAD_RIGHT, () -> robot.setLiftPosition(robot.liftPositions[2]))
+                .onPress(Button.DPAD_UP, () -> robot.setLiftPosition(robot.liftPositions[3]));
 
-        //Pixel depositor, button down = open, button up = closed
-        if (manipulator.isDown(Button.LEFT_BUMPER)) robot.pixelDepositSlide.setTargetPosition(1);
-        else robot.pixelDepositSlide.setTargetPosition(0);
+        //Intake, left trigger = intake, right trigger = outtake
+        robot.intake.setTargetPower(manipulator.getTrigger(Trigger.LEFT_TRIGGER) - manipulator.getTrigger(Trigger.RIGHT_TRIGGER) / 2.5);
+        //Intake flippers, A button down = flip out, A button up = flip in
+        manipulator.onChange(Button.X, () -> robot.intakeFlippers.toggleTargetPosition());
 
-        //Pre-programmed lift positions, dpad-down = down, dpad-left = short, dpad-up = medium, dpad-right = max
-        manipulator.onPress(Button.DPAD_UP, () -> robot.setLiftPosition(0))
-                .onPress(Button.DPAD_DOWN, () -> robot.setLiftPosition(1))
-                .onPress(Button.DPAD_LEFT, () -> robot.setLiftPosition(2))
-                .onPress(Button.DPAD_RIGHT, () -> robot.setLiftPosition(3))
-                .onPress(Button.LEFT_STICK, () -> robot.setLiftPosition(0))
-
-                //Pre-programmed lift angles, A = ___, X = ___, Y = ___, B = ___
-                .onDown(Button.A, () -> robot.setLiftAnglePosition(0))
-                .onPress(Button.X, () -> robot.setLiftAnglePosition(1))
-                .onDown(Button.Y, () -> robot.setLiftAnglePosition(2))
-                .onDown(Button.B, () -> robot.setLiftAnglePosition(3))
-                .onDown(Button.RIGHT_STICK, () -> robot.setLiftAnglePosition(0))
-
-                //Auto score
-                .onPress(Button.START, () -> scoringMachine.start());
+        //Pixel release, X button = toggle release
+//        manipulator.onPress(Button.A, () -> robot.pixelClamp.toggleTargetPosition());
 
 
-        //Zak's big red button
-        if (robot.droneAngle.getTargetPosition() == 1) {
-            driver.setLEDColor(255, 0, 0, -1)
-                    .onPress(TouchpadFinger.FINGER_1, () -> robot.droneLauncher.setPosition(1));
-
-            manipulator.setLEDColor(255, 0, 0, -1)
-                    .onPress(TouchpadFinger.FINGER_1, () -> robot.droneLauncher.setPosition(1));
-        } else {
-            driver.setLEDColor(0, 0, 0, -1);
-            manipulator.setLEDColor(0, 0, 0, -1);
+        /* SHARED */
+        //Drone launch and hang release, Guide = launch and release
+        if (driver.isDown(Button.TOUCHPAD) && manipulator.isDown(Button.TOUCHPAD)) {
+            robot.droneLauncher.setTargetPosition(1);
+            robot.hangRelease.setTargetPosition(1);
         }
-
-        //Automatically adjust pixel deposit angle based on lift angle
-        robot.pixelDepositAngle.setTargetPosition(Range.scale(robot.liftAngle.getCurrentPosition(0), robot.liftAngles[0], robot.liftAngles[robot.liftAngles.length - 1], 0, 1));
 
         update();
         log();
-
-        */
     }
 }

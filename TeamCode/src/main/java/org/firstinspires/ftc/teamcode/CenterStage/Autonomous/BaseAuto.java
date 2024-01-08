@@ -107,7 +107,7 @@ public abstract class BaseAuto extends OpMode implements DrawStrategy {
     public void loop() {
         drive.update();
         robot.update(false);
-        robot.log(telemetry);
+        robot.log(telemetry, true, false);
 
         telemetry.addLine("-----Other-----");
         telemetry.addData("Runtime", getRuntime());

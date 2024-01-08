@@ -11,7 +11,7 @@ import org.firstinspires.ftc.teamcode.Systems.Sensors.Encoder;
 
 import java.util.Locale;
 
-@Disabled
+//@Disabled
 @TeleOp(group = "TeleOp", name = "Odometry Logging")
 public class OdometryLog extends OpMode {
     Odometry odometry;

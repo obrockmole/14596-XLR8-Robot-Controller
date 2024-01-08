@@ -300,6 +300,15 @@ public class Motor {
     }
 
     /**
+     * Checks if the motor is at its target position.
+     *
+     * @return True if the motor is at its target position, false otherwise.
+     */
+    public boolean atTargetPosition() {
+        return Math.abs(getCurrentPosition() - getTargetPosition()) < tolerance;
+    }
+
+    /**
      * Returns the position error of the motor.
      *
      * @return The position error of the motor.

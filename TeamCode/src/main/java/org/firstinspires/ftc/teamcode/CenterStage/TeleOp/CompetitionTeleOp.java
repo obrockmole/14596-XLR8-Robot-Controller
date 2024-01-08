@@ -15,7 +15,8 @@ public class CompetitionTeleOp extends BaseTele {
         robot.standardDrive(-driver.getStickY(Stick.LEFT_STICK), -driver.getStickX(Stick.LEFT_STICK), driver.getStickX(Stick.RIGHT_STICK));
 
         //Driving speed, left bumper = slow, right bumper = fast
-        robot.setSpeedScale(driver.isDown(Button.LEFT_BUMPER));
+        if (driver.isDown(Button.LEFT_BUMPER)) robot.setSpeedScale(0.4);
+        else robot.setSpeedScale(1);
 
         /* MANIPULATOR */
         //Intake, left trigger = intake, right trigger = outtake

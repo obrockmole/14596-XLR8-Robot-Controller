@@ -8,7 +8,7 @@ import org.firstinspires.ftc.teamcode.Systems.Odometry.Odometry;
 import org.firstinspires.ftc.teamcode.Systems.Odometry.OdometryPod;
 import org.firstinspires.ftc.teamcode.Systems.Sensors.Encoder;
 
-@Disabled
+//@Disabled
 @TeleOp(group = "TeleOp", name = "Odometry Testing")
 public class OdometryTest extends OpMode {
     Odometry odometry;
