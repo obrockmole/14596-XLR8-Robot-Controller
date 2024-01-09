@@ -80,6 +80,66 @@ public class LimitSwitch {
     }
 
     /**
+     * Executes a Runnable function if the LimitSwitch is pressed.
+     *
+     * @param func The Runnable function to execute.
+     * @return The current LimitSwitch instance.
+     */
+    public LimitSwitch onDown(Runnable func) {
+        if (isDown())
+            func.run();
+        return this;
+    }
+
+    /**
+     * Executes a Runnable function if the LimitSwitch is not pressed.
+     *
+     * @param func The Runnable function to execute.
+     * @return The current LimitSwitch instance.
+     */
+    public LimitSwitch onUp(Runnable func) {
+        if (isUp())
+            func.run();
+        return this;
+    }
+
+    /**
+     * Executes a Runnable function when the LimitSwitch is pressed.
+     *
+     * @param func The Runnable function to execute.
+     * @return The current LimitSwitch instance.
+     */
+    public LimitSwitch onPress(Runnable func) {
+        if (!previousState && currentState)
+            func.run();
+        return this;
+    }
+
+    /**
+     * Executes a Runnable function when the LimitSwitch is released.
+     *
+     * @param func The Runnable function to execute.
+     * @return The current LimitSwitch instance.
+     */
+    public LimitSwitch onRelease(Runnable func) {
+        if (previousState && !currentState)
+            func.run();
+        return this;
+    }
+
+    /**
+     * Executes a Runnable function when the LimitSwitch is pressed or released.
+     *
+     * @param func The Runnable function to execute.
+     * @return The current LimitSwitch instance.
+     */
+    public LimitSwitch onChange(Runnable func) {
+        if (previousState != currentState)
+            func.run();
+        return this;
+    }
+
+    /**
      * Returns the value of the LimitSwitch.
      *
      * @return The value of the LimitSwitch.
@@ -104,6 +164,14 @@ public class LimitSwitch {
      */
     public String getCSVData() {
         return String.format("%s", ((isDown()) ? 1 : 0));
+    }
+
+    /**
+     * Updates the LimitSwitch's state.
+     */
+    public void update() {
+        previousState = currentState;
+        currentState = isDown();
     }
 
     /**

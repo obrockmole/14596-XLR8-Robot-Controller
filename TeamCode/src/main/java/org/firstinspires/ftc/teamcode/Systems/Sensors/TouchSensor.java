@@ -9,6 +9,7 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
  */
 public class TouchSensor {
     private com.qualcomm.robotcore.hardware.TouchSensor sensor;
+    private boolean currentState, previousState;
 
     /**
      * Constructs a new TouchSensor object with a TouchSensor.
@@ -65,8 +66,77 @@ public class TouchSensor {
      *
      * @return True if the TouchSensor is pressed, false otherwise.
      */
-    public boolean isPressed() {
+    public boolean isDown() {
         return sensor.isPressed();
+    }
+
+    /**
+     * Checks if the TouchSensor is not pressed.
+     *
+     * @return True if the TouchSensor is not pressed, false otherwise.
+     */
+    public boolean isUp() {
+        return !isDown();
+    }
+
+    /**
+     * Executes a Runnable function if the TouchSensor is pressed.
+     *
+     * @param func The Runnable function to execute.
+     * @return The current TouchSensor instance.
+     */
+    public TouchSensor onDown(Runnable func) {
+        if (isDown())
+            func.run();
+        return this;
+    }
+
+    /**
+     * Executes a Runnable function if the TouchSensor is not pressed.
+     *
+     * @param func The Runnable function to execute.
+     * @return The current TouchSensor instance.
+     */
+    public TouchSensor onUp(Runnable func) {
+        if (isUp())
+            func.run();
+        return this;
+    }
+
+    /**
+     * Executes a Runnable function if the TouchSensor was not pressed and is now pressed.
+     *
+     * @param func The Runnable function to execute.
+     * @return The current TouchSensor instance.
+     */
+    public TouchSensor onPress(Runnable func) {
+        if (!previousState && currentState)
+            func.run();
+        return this;
+    }
+
+    /**
+     * Executes a Runnable function if the TouchSensor was pressed and is now not pressed.
+     *
+     * @param func The Runnable function to execute.
+     * @return The current TouchSensor instance.
+     */
+    public TouchSensor onRelease(Runnable func) {
+        if (previousState && !currentState)
+            func.run();
+        return this;
+    }
+
+    /**
+     * Executes a Runnable function if the state of the TouchSensor has changed.
+     *
+     * @param func The Runnable function to execute.
+     * @return The current TouchSensor instance.
+     */
+    public TouchSensor onChange(Runnable func) {
+        if (previousState != currentState)
+            func.run();
+        return this;
     }
 
     /**
@@ -93,7 +163,15 @@ public class TouchSensor {
      * @return The CSV data as a string.
      */
     public String getCSVData() {
-        return String.format("%s", ((isPressed()) ? 1 : 0));
+        return String.format("%s", ((isDown()) ? 1 : 0));
+    }
+
+    /**
+     * Updates the TouchSensor's state.
+     */
+    public void update() {
+        previousState = currentState;
+        currentState = isDown();
     }
 
     /**
@@ -105,7 +183,7 @@ public class TouchSensor {
      */
     public TouchSensor log(Telemetry telemetry, HardwareMap hardwareMap) {
         telemetry.addData("Sensor", hardwareMap.getNamesOf(sensor).toArray()[0]);
-        telemetry.addData("Pressed", isPressed());
+        telemetry.addData("Pressed", isDown());
         telemetry.addData("Value", getValue());
         return this;
     }
