@@ -1,7 +1,6 @@
 package org.firstinspires.ftc.teamcode.CenterStage.TeleOp;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
-import com.sfdev.assembly.state.StateMachine;
 
 import org.firstinspires.ftc.teamcode.CenterStage.Robot;
 import org.firstinspires.ftc.teamcode.Systems.Gamepad.Gamepad;

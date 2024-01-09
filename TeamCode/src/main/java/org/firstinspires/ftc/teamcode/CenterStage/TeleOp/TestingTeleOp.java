@@ -1,13 +1,9 @@
 package org.firstinspires.ftc.teamcode.CenterStage.TeleOp;
 
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.util.Range;
 
-import org.checkerframework.checker.units.qual.A;
 import org.firstinspires.ftc.teamcode.Systems.Gamepad.GamepadButtons.Button;
 import org.firstinspires.ftc.teamcode.Systems.Gamepad.GamepadButtons.Stick;
-import org.firstinspires.ftc.teamcode.Systems.Gamepad.GamepadButtons.TouchpadFinger;
 import org.firstinspires.ftc.teamcode.Systems.Gamepad.GamepadButtons.Trigger;
 
 //@Disabled
@@ -24,9 +20,6 @@ public class TestingTeleOp extends BaseTele {
 
 
         /* MANIPULATOR */
-        //Lift power, left stick y = lift power
-        robot.setLiftPower(manipulator.getStickY(Stick.LEFT_STICK));
-
         //Lift positions, Dpad down = lift retracted, Dpad left = lift deployed, Dpad right = lift half height, Dpad down = lift max height
         manipulator.onPress(Button.DPAD_DOWN, () -> robot.setLiftPosition(robot.liftPositions[0]))
                 .onPress(Button.DPAD_LEFT, () -> robot.setLiftPosition(robot.liftPositions[1]))

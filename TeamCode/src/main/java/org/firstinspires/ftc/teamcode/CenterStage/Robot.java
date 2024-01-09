@@ -10,7 +10,6 @@ import com.sfdev.assembly.state.StateMachineBuilder;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.Systems.Drivetrain;
-import org.firstinspires.ftc.teamcode.Systems.Gamepad.GamepadButtons;
 import org.firstinspires.ftc.teamcode.Systems.Motors.Motor;
 import org.firstinspires.ftc.teamcode.Systems.Motors.MotorList;
 import org.firstinspires.ftc.teamcode.Systems.Odometry.Odometry;
@@ -49,6 +48,9 @@ public class Robot extends Drivetrain {
 
     public final StateMachine liftDeployment;
     public final StateMachine liftRetraction;
+    private boolean liftMoving = false;
+    private LiftDeploymentStages previousLiftDeploymentState = null;
+    private LiftRetractionStages previousLiftRetractionState = null;
 
     private final BatteryVoltageSensor batteryVoltageSensor;
 
@@ -72,6 +74,7 @@ public class Robot extends Drivetrain {
         liftDeployment = new StateMachineBuilder()
                 .state(LiftDeploymentStages.FOLD_GRAB_BOX)
                     .onEnter(() -> {
+                        liftMoving = true;
                         //grabbox.setTargetPosition(0);
                         //arm.setTargetPosition(0);
                     })
@@ -89,11 +92,15 @@ public class Robot extends Drivetrain {
                         //arm.setTargetPosition(1);
                     })
                     .transition(() -> true/* grab box is deployed */, LiftDeploymentStages.IDLE)
+
+                .state(LiftDeploymentStages.IDLE)
+                    .onEnter(() -> liftMoving = false)
                 .build();
 
         liftRetraction = new StateMachineBuilder()
                 .state(LiftRetractionStages.FOLD_GRAB_BOX)
                     .onEnter(() -> {
+                        liftMoving = true;
                         //if (lift.getCurrentPosition() < liftPositions[1] && lift.getTargetPosition() != liftPositions[0]) lift.setTargetPosition(liftPositions[1]);
                         //grabbox.setTargetPosition(0);
                         //arm.setTargetPosition(0);
@@ -112,9 +119,13 @@ public class Robot extends Drivetrain {
                         //arm.setTargetPosition(0.2);
                     })
                     .transition(() -> true/* grab box is released */, LiftRetractionStages.IDLE)
+
+                .state(LiftRetractionStages.IDLE)
+                    .onEnter(() -> liftMoving = false)
                 .build();
 
 //        lift = new Motor(hardwareMap, "lift", MotorList.REV_PLAN_25, Motor.Mode.POSITION, true);
+//        lift.setPIDF(0, 0, 0, 0);
 
         intake = new Motor(hardwareMap, "intake", MotorList.GOBILDA_435, Motor.Mode.POWER, true);
 
@@ -148,30 +159,18 @@ public class Robot extends Drivetrain {
         batteryVoltageSensor = new BatteryVoltageSensor(hardwareMap);
     }
 
-    public Robot setLiftPower(double power) {
-//        if (lift.getCurrentPosition() < liftPositions[0] / 2 || liftDeployment.getState() != LiftDeploymentStages.IDLE) return this;
-
-//        if ((power > 0 && lift.getPower() < power) || (power < 0 && lift.getPower() > power)) {
-//            if (lift.getMode() != Motor.Mode.POWER) lift.setMode(Motor.Mode.POWER);
-//            lift.setTargetPower(power);
-//        }
-        return this;
-    }
-
-    public Robot setLiftPosition(int position) {
-//        if (lift.getMode() != Motor.Mode.POSITION) lift.setMode(Motor.Mode.POSITION);
-
-        if (position == liftPositions[0]) {
+    public void setLiftPosition(int position) {
+        if (position == liftPositions[0] && !liftMoving) {
             liftRetraction.start();
-            return this;
+            return;
         }
 
-//        if (lift.getCurrentPosition() > liftPositions[0] / 2 && liftDeployment.getState() == LiftDeploymentStages.IDLE && liftRetraction.getState() == LiftRetractionStages.IDLE) {
-//            lift.setTargetPosition(position);
-//        } else if (liftDeployment.getState() == LiftDeploymentStages.IDLE && liftRetraction.getState() == LiftRetractionStages.IDLE) {
-//            liftDeployment.start();
+//        if (liftMoving) {
+//            if (lift.getCurrentPosition() > liftPositions[1] / 2)
+//                lift.setTargetPosition(position);
+//            else
+//                liftDeployment.start();
 //        }
-        return this;
     }
 
     public Robot initialize() {
@@ -207,15 +206,18 @@ public class Robot extends Drivetrain {
         liftDeployment.update();
         liftRetraction.update();
 
-        if (liftDeployment.getState() == LiftDeploymentStages.IDLE) {
+        if (!liftMoving && previousLiftDeploymentState != LiftDeploymentStages.IDLE) {
             liftDeployment.reset();
             liftDeployment.stop();
         }
 
-        if (liftRetraction.getState() == LiftRetractionStages.IDLE) {
+        if (!liftMoving && previousLiftRetractionState != LiftRetractionStages.IDLE) {
             liftRetraction.reset();
             liftRetraction.stop();
         }
+
+        previousLiftDeploymentState = (LiftDeploymentStages) liftDeployment.getState();
+        previousLiftRetractionState = (LiftRetractionStages) liftRetraction.getState();
 
         return this;
     }
@@ -225,6 +227,7 @@ public class Robot extends Drivetrain {
 
 //        telemetry.addLine("-----Lift-----");
 //        telemetry.addData("Power", lift.getPower());
+//        telemetry.addData("Target Position", lift.getTargetPosition());
 //        telemetry.addData("Position", lift.getCurrentPosition());
 //        telemetry.addLine();
 
