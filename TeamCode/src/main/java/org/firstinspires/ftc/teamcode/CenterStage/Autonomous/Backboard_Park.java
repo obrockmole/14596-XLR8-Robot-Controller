@@ -4,6 +4,7 @@ import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
+import org.firstinspires.ftc.teamcode.RoadRunner.TrajectorySequence.TrajectorySequence;
 import org.firstinspires.ftc.teamcode.RoadRunner.TrajectorySequence.TrajectorySequenceBuilder;
 import org.firstinspires.ftc.teamcode.Systems.Vision.ContourDetectionPipeline;
 import org.firstinspires.ftc.teamcode.Systems.Vision.VisionDetector;
@@ -20,25 +21,27 @@ public class Backboard_Park extends BaseAuto {
         return new Pose2d(0, 0, 0);
     }
 
-    public Pose2d spikePos() {
-        return new Pose2d();
+    public TrajectorySequence leftSequence(Pose2d startPos) {
+        return centerSequence(startPos);
     }
 
-    public Pose2d backdropPos() {
-        return new Pose2d();
-    }
-
-    public TrajectorySequenceBuilder pathBuilder(Pose2d startPos, Pose2d spikePos, Pose2d backdropPos) {
+    public TrajectorySequence centerSequence(Pose2d startPos) {
         return drive.trajectorySequenceBuilder(startPos)
                 //Park
                 .lineTo(new Vector2d(-44, 0))
 
+                //Spit both pixels
                 .addTemporalMarker(() -> {
                     robot.intake.setTargetPower(-0.4);
                 })
                 .waitSeconds(2)
                 .addTemporalMarker(() -> {
                     robot.intake.setTargetPower(0);
-                });
+                })
+                .build();
+    }
+
+    public TrajectorySequence rightSequence(Pose2d startPos) {
+        return centerSequence(startPos);
     }
 }

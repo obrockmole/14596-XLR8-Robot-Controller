@@ -26,7 +26,7 @@ public abstract class BaseAuto extends OpMode implements DrawStrategy {
     protected Robot robot;
 
     protected MecanumDrive drive;
-    protected TrajectorySequenceBuilder trajSequence;
+    protected TrajectorySequence leftSequence, centerSequence, rightSequence;
 
     protected VisionDetector contourDetector;
     protected ContourDetectionPipeline pipeline;
@@ -56,8 +56,9 @@ public abstract class BaseAuto extends OpMode implements DrawStrategy {
         for (PropPositions position : PropPositions.values())
             propPositionsCount.put(position, 0);
 
-
-        trajSequence = pathBuilder(startPos(), spikePos(), backdropPos());
+        leftSequence = leftSequence(startPos());
+        centerSequence = centerSequence(startPos());
+        rightSequence = rightSequence(startPos());
     }
 
     public void init_loop() {
@@ -101,7 +102,18 @@ public abstract class BaseAuto extends OpMode implements DrawStrategy {
     public void start() {
         contourDetector.stop();
         drive.setPoseEstimate(startPos());
-        drive.followTrajectorySequenceAsync(trajSequence.build());
+
+        switch (finalPropPosition) {
+            case LEFT:
+                drive.followTrajectorySequenceAsync(leftSequence);
+                break;
+            case CENTER:
+                drive.followTrajectorySequenceAsync(centerSequence);
+                break;
+            case RIGHT:
+                drive.followTrajectorySequenceAsync(rightSequence);
+                break;
+        }
     }
 
     public void loop() {
@@ -116,9 +128,9 @@ public abstract class BaseAuto extends OpMode implements DrawStrategy {
 
     public abstract void initVision();
     public abstract Pose2d startPos();
-    public abstract Pose2d spikePos();
-    public abstract Pose2d backdropPos();
-    public abstract TrajectorySequenceBuilder pathBuilder(Pose2d startPos, Pose2d spikePos, Pose2d backdropPos);
+    public abstract TrajectorySequence leftSequence(Pose2d startPos);
+    public abstract TrajectorySequence centerSequence(Pose2d startPos);
+    public abstract TrajectorySequence rightSequence(Pose2d startPos);
 
     public void drawOnFrame(Mat frame) {
         MatOfPoint detection = contourDetector.getDetection();

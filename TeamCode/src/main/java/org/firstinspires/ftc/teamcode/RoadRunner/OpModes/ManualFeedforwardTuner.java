@@ -43,7 +43,7 @@ import java.util.Objects;
  * Pressing B/O (Xbox/PS4) will cede control back to the tuning process.
  */
 
-@Disabled
+//@Disabled
 @Config
 @Autonomous(group = "roadrunner")
 public class ManualFeedforwardTuner extends LinearOpMode {

@@ -16,7 +16,7 @@ import org.firstinspires.ftc.teamcode.RoadRunner.Drive.MecanumDrive;
  * This is a simple routine to test translational drive capabilities.
  */
 
-@Disabled
+//@Disabled
 @Config
 @Autonomous(group = "roadrunner")
 public class StrafeTest extends LinearOpMode {

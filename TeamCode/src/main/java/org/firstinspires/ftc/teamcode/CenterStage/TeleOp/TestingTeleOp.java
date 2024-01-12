@@ -26,6 +26,8 @@ public class TestingTeleOp extends BaseTele {
                 .onPress(Button.DPAD_RIGHT, () -> robot.setLiftPosition(robot.liftPositions[2]))
                 .onPress(Button.DPAD_UP, () -> robot.setLiftPosition(robot.liftPositions[3]));
 
+        manipulator.onPress(Button.Y, () -> robot.arm.toggleTargetPosition(0, 1));
+
         //Intake, left trigger = intake, right trigger = outtake
         robot.intake.setTargetPower(manipulator.getTrigger(Trigger.LEFT_TRIGGER) - manipulator.getTrigger(Trigger.RIGHT_TRIGGER) / 2.5);
         //Intake flippers, A button down = flip out, A button up = flip in

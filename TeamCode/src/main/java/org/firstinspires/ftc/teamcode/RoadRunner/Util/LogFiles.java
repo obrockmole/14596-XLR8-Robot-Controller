@@ -18,7 +18,7 @@ import org.firstinspires.ftc.ftccommon.external.WebHandlerRegistrar;
 import org.firstinspires.ftc.robotcore.internal.system.AppUtil;
 import org.firstinspires.ftc.teamcode.RoadRunner.Drive.DriveConstants;
 import org.firstinspires.ftc.teamcode.RoadRunner.Drive.MecanumDrive;
-import org.firstinspires.ftc.teamcode.RoadRunner.Drive.StandardTrackingWheelLocalizer;
+import org.firstinspires.ftc.teamcode.RoadRunner.Drive.ThreeWheelTrackingLocalizer;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -73,11 +73,11 @@ public final class LogFiles {
         public double mecHeadingD = MecanumDrive.HEADING_PID.kD;
         public double mecLateralMultiplier = MecanumDrive.LATERAL_MULTIPLIER;
 
-        public double trackingTicksPerRev = StandardTrackingWheelLocalizer.TICKS_PER_REV;
-        public double trackingWheelRadius = StandardTrackingWheelLocalizer.WHEEL_RADIUS;
-        public double trackingGearRatio = StandardTrackingWheelLocalizer.GEAR_RATIO;
-        public double trackingLateralDistance = Math.abs(StandardTrackingWheelLocalizer.LEFT_Y_DISTANCE) + Math.abs(StandardTrackingWheelLocalizer.RIGHT_Y_DISTANCE);
-        public double trackingForwardOffset = StandardTrackingWheelLocalizer.PERP_X_DISTANCE;
+        public double trackingTicksPerRev = ThreeWheelTrackingLocalizer.TICKS_PER_REV;
+        public double trackingWheelRadius = ThreeWheelTrackingLocalizer.WHEEL_RADIUS;
+        public double trackingGearRatio = ThreeWheelTrackingLocalizer.GEAR_RATIO;
+        public double trackingLateralDistance = Math.abs(ThreeWheelTrackingLocalizer.LEFT_Y_DISTANCE) + Math.abs(ThreeWheelTrackingLocalizer.RIGHT_Y_DISTANCE);
+        public double trackingForwardOffset = ThreeWheelTrackingLocalizer.PERP_X_DISTANCE;
 
         public RevHubOrientationOnRobot.LogoFacingDirection LOGO_FACING_DIR = DriveConstants.LOGO_FACING_DIR;
         public RevHubOrientationOnRobot.UsbFacingDirection USB_FACING_DIR = DriveConstants.USB_FACING_DIR;

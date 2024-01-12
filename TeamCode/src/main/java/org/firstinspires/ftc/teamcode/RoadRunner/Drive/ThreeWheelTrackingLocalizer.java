@@ -26,28 +26,28 @@ import java.util.List;
  *
  */
 @Config
-public class StandardTrackingWheelLocalizer extends ThreeTrackingWheelLocalizer {
+public class ThreeWheelTrackingLocalizer extends ThreeTrackingWheelLocalizer {
     public static double TICKS_PER_REV = 8192;
     public static double WHEEL_RADIUS = 0.688975; // in
     public static double GEAR_RATIO = 1; // output (wheel) speed / input (encoder) speed
 
-    public static double LEFT_Y_DISTANCE = 6.62; // in; distance between the left wheel and the center of the robot in the y direction (+left/-right)
+    public static double LEFT_Y_DISTANCE = 1; //6.62 // in; distance between the left wheel and the center of the robot in the y direction (+left/-right)
     public static double LEFT_X_DISTANCE = 0; // in; distance between the left wheel and the center of the robot in the x direction (+forward/-backward)
 
-    public static double RIGHT_Y_DISTANCE = -6.62; // in; distance between the right wheel and the center of the robot in the y direction (+left/-right)
+    public static double RIGHT_Y_DISTANCE = 0; //-6.62 // in; distance between the right wheel and the center of the robot in the y direction (+left/-right)
     public static double RIGHT_X_DISTANCE = 0; // in; distance between the right wheel and the center of the robot in the x direction (+forward/-backward)
 
     public static double PERP_Y_DISTANCE = 0; // in; distance between the perpendicular wheel and the center of the robot in the y direction (+left/-right)
-    public static double PERP_X_DISTANCE = 6.2; // in; distance between the perpendicular wheel and the center of the robot in the x direction (+forward/-backward)
+    public static double PERP_X_DISTANCE = 0; //6.2 // in; distance between the perpendicular wheel and the center of the robot in the x direction (+forward/-backward)
 
-    public static double X_MULTIPLIER = 0.999501385685333;
-    public static double Y_MULTIPLIER = 1.00448396395896;
+    public static double X_MULTIPLIER = 1; //0.999501385685333
+    public static double Y_MULTIPLIER = 1; //1.00448396395896
 
     private Encoder leftEncoder, rightEncoder, frontEncoder;
 
     private List<Integer> lastEncPositions, lastEncVels;
 
-    public StandardTrackingWheelLocalizer(HardwareMap hardwareMap, List<Integer> lastTrackingEncPositions, List<Integer> lastTrackingEncVels) {
+    public ThreeWheelTrackingLocalizer(HardwareMap hardwareMap, List<Integer> lastTrackingEncPositions, List<Integer> lastTrackingEncVels) {
         super(Arrays.asList(
                 new Pose2d(LEFT_X_DISTANCE, LEFT_Y_DISTANCE, 0), // left
                 new Pose2d(RIGHT_X_DISTANCE, RIGHT_Y_DISTANCE, 0), // right
@@ -58,11 +58,8 @@ public class StandardTrackingWheelLocalizer extends ThreeTrackingWheelLocalizer 
         lastEncVels = lastTrackingEncVels;
 
         leftEncoder = new Encoder(hardwareMap.get(DcMotorEx.class, "frontLeft"));
-        rightEncoder = new Encoder(hardwareMap.get(DcMotorEx.class, "frontRight"));
+        rightEncoder = new Encoder(hardwareMap.get(DcMotorEx.class, "backRight"));
         frontEncoder = new Encoder(hardwareMap.get(DcMotorEx.class, "intake"));
-
-        leftEncoder.setDirection(Encoder.Direction.REVERSE);
-        rightEncoder.setDirection(Encoder.Direction.REVERSE);
     }
 
     public static double encoderTicksToInches(double ticks) {
