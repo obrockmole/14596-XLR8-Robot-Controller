@@ -19,15 +19,16 @@ public class Blue_Backboard_Yellow extends BaseAuto {
     }
 
     public Pose2d startPos() {
-        return new Pose2d(12, 64, Math.toRadians(-90));
+        return new Pose2d(12, 64, Math.toRadians(90));
     }
 
     public TrajectorySequence leftSequence(Pose2d startPos) {
         return drive.trajectorySequenceBuilder(startPos)
+                .setReversed(true)
                 .addTemporalMarker(0, () -> {
                     //activate lift
                 })
-                .splineToSplineHeading(new Pose2d(36, 29, Math.toRadians(0)), Math.toRadians(0))
+                .splineToSplineHeading(new Pose2d(36, 29, Math.toRadians(180)), Math.toRadians(0))
                 .addDisplacementMarker(() -> {
                     //release yellow pixel
                 })
@@ -42,10 +43,11 @@ public class Blue_Backboard_Yellow extends BaseAuto {
 
     public TrajectorySequence centerSequence(Pose2d startPos) {
         return drive.trajectorySequenceBuilder(startPos)
+                .setReversed(true)
                 .addTemporalMarker(0, () -> {
                     //activate lift
                 })
-                .splineToSplineHeading(new Pose2d(36, 36, Math.toRadians(0)), Math.toRadians(0))
+                .splineToSplineHeading(new Pose2d(36, 36, Math.toRadians(180)), Math.toRadians(0))
                 .addDisplacementMarker(() -> {
                     //release yellow pixel
                 })
@@ -60,10 +62,11 @@ public class Blue_Backboard_Yellow extends BaseAuto {
 
     public TrajectorySequence rightSequence(Pose2d startPos) {
         return drive.trajectorySequenceBuilder(startPos)
+                .setReversed(true)
                 .addTemporalMarker(0, () -> {
                     //activate lift
                 })
-                .splineToSplineHeading(new Pose2d(36, 29, Math.toRadians(0)), Math.toRadians(0))
+                .splineToSplineHeading(new Pose2d(36, 29, Math.toRadians(180)), Math.toRadians(0))
                 .addDisplacementMarker(() -> {
                     //release yellow pixel
                 })

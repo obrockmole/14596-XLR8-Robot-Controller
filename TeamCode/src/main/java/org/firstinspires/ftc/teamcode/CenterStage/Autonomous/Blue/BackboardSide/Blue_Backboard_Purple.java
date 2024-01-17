@@ -19,12 +19,13 @@ public class Blue_Backboard_Purple extends BaseAuto {
     }
 
     public Pose2d startPos() {
-        return new Pose2d(12, 64, Math.toRadians(-90));
+        return new Pose2d(12, 64, Math.toRadians(90));
     }
 
     public TrajectorySequence leftSequence(Pose2d startPos) {
         return drive.trajectorySequenceBuilder(startPos)
-                .splineToSplineHeading(new Pose2d(10, 30, Math.toRadians(0)), Math.toRadians(180))
+                .setReversed(true)
+                .splineToSplineHeading(new Pose2d(10, 30, Math.toRadians(180)), Math.toRadians(180))
                 .addTemporalMarker(1.9, () -> {
                     robot.intake.setTargetPower(-0.4);
                 })
@@ -38,7 +39,8 @@ public class Blue_Backboard_Purple extends BaseAuto {
 
     public TrajectorySequence centerSequence(Pose2d startPos) {
         return drive.trajectorySequenceBuilder(startPos)
-                .splineToSplineHeading(new Pose2d(20, 26, Math.toRadians(0)), Math.toRadians(0))
+                .setReversed(true)
+                .splineToSplineHeading(new Pose2d(20, 26, Math.toRadians(180)), Math.toRadians(0))
                 .addTemporalMarker(1.8, () -> {
                     robot.intake.setTargetPower(-0.4);
                 })
@@ -51,7 +53,8 @@ public class Blue_Backboard_Purple extends BaseAuto {
 
     public TrajectorySequence rightSequence(Pose2d startPos) {
         return drive.trajectorySequenceBuilder(startPos)
-                .splineToSplineHeading(new Pose2d(24, 30, Math.toRadians(0)), Math.toRadians(0))
+                .setReversed(true)
+                .splineToSplineHeading(new Pose2d(24, 30, Math.toRadians(180)), Math.toRadians(0))
                 .addTemporalMarker(2, () -> {
                     robot.intake.setTargetPower(-0.4);
                 })
