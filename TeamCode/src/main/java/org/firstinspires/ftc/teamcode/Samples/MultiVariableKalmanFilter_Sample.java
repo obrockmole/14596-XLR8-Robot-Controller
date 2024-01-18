@@ -27,10 +27,10 @@ public class MultiVariableKalmanFilter_Sample extends OpMode {
     @Override
     public void loop() {
         multiVariableKalmanFilter.setMeasurements(new double[][]{{sensor1.getDistanceCM()}, {sensor2.getDistanceCM()}}) //Setting the measurements of the kalman filter.
-                .update();
+                .update(); //Updating the kalman filter.
 
         /*
-            Log sensor data to telemetry and update the object.
+            Log sensor data to telemetry.
          */
         telemetry.addData("S1 - Measured Distance (cm)", sensor1.getDistanceCM());
         telemetry.addData("S1 - Estimated Distance (cm)", multiVariableKalmanFilter.getStateEstimates()[0][0]);
