@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.RoadRunner.TrajectorySequence.sequencesegment;
+package org.firstinspires.ftc.teamcode.RoadRunner.TrajectorySequence.SequenceSegment;
 
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.trajectory.TrajectoryMarker;

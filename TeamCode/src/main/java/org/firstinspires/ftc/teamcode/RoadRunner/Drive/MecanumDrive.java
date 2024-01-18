@@ -26,7 +26,6 @@ import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 import com.qualcomm.robotcore.hardware.VoltageSensor;
 import com.qualcomm.robotcore.hardware.configuration.typecontainers.MotorConfigurationType;
 
-import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.RoadRunner.TrajectorySequence.TrajectorySequence;
 import org.firstinspires.ftc.teamcode.RoadRunner.TrajectorySequence.TrajectorySequenceBuilder;
 import org.firstinspires.ftc.teamcode.RoadRunner.TrajectorySequence.TrajectorySequenceRunner;
@@ -53,10 +52,10 @@ import static org.firstinspires.ftc.teamcode.RoadRunner.Drive.DriveConstants.kV;
  */
 @Config
 public class MecanumDrive extends com.acmerobotics.roadrunner.drive.MecanumDrive {
-    public static PIDCoefficients TRANSLATIONAL_PID = new PIDCoefficients(0, 0, 0); //7, 0, 0.1
-    public static PIDCoefficients HEADING_PID = new PIDCoefficients(0, 0, 0); //7, 0, 0.1
+    public static PIDCoefficients TRANSLATIONAL_PID = new PIDCoefficients(7, 0, 0.1);
+    public static PIDCoefficients HEADING_PID = new PIDCoefficients(7, 0, 0.1);
 
-    public static double LATERAL_MULTIPLIER = 1; //2.08695652173913
+    public static double LATERAL_MULTIPLIER = 2.08695652173913;
 
     public static double VX_WEIGHT = 1;
     public static double VY_WEIGHT = 1;
@@ -78,8 +77,6 @@ public class MecanumDrive extends com.acmerobotics.roadrunner.drive.MecanumDrive
     private List<Integer> lastEncPositions = new ArrayList<>();
     private List<Integer> lastEncVels = new ArrayList<>();
 
-    private double lastRawHeadingVel, headingVelOffset;
-
     public MecanumDrive(HardwareMap hardwareMap) {
         super(kV, kA, kStatic, TRACK_WIDTH, TRACK_WIDTH, LATERAL_MULTIPLIER);
 
@@ -96,8 +93,8 @@ public class MecanumDrive extends com.acmerobotics.roadrunner.drive.MecanumDrive
 
         leftFront = hardwareMap.get(DcMotorEx.class, "frontLeft");
         leftRear = hardwareMap.get(DcMotorEx.class, "backLeft");
-        rightFront = hardwareMap.get(DcMotorEx.class, "frontRight");
         rightRear = hardwareMap.get(DcMotorEx.class, "backRight");
+        rightFront = hardwareMap.get(DcMotorEx.class, "frontRight");
 
         motors = Arrays.asList(leftFront, leftRear, rightRear, rightFront);
 
@@ -117,8 +114,8 @@ public class MecanumDrive extends com.acmerobotics.roadrunner.drive.MecanumDrive
             setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, MOTOR_VELO_PID);
         }
 
-        rightFront.setDirection(DcMotorSimple.Direction.REVERSE);
-        rightRear.setDirection(DcMotorSimple.Direction.REVERSE);
+        leftFront.setDirection(DcMotorSimple.Direction.REVERSE);
+        leftRear.setDirection(DcMotorSimple.Direction.REVERSE);
 
         List<Integer> lastTrackingEncPositions = new ArrayList<>();
         List<Integer> lastTrackingEncVels = new ArrayList<>();
@@ -285,17 +282,12 @@ public class MecanumDrive extends com.acmerobotics.roadrunner.drive.MecanumDrive
 
     @Override
     public double getRawExternalHeading() {
-        return 0;//imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);
+        return 0.0;
     }
 
     @Override
     public Double getExternalHeadingVelocity() {
-        double rawHeadingVel = imu.getRobotAngularVelocity(AngleUnit.RADIANS).zRotationRate;
-        if (Math.abs(rawHeadingVel - lastRawHeadingVel) > Math.PI) {
-            headingVelOffset -= Math.signum(rawHeadingVel) * 2 * Math.PI;
-        }
-        lastRawHeadingVel = rawHeadingVel;
-        return 0.0;//headingVelOffset + rawHeadingVel;
+        return 0.0;
     }
 
     public static TrajectoryVelocityConstraint getVelocityConstraint(double maxVel, double maxAngularVel, double trackWidth) {

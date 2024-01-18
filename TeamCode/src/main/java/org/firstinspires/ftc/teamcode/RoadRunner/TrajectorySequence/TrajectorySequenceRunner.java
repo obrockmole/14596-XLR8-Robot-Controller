@@ -18,10 +18,10 @@ import com.acmerobotics.roadrunner.util.NanoClock;
 import com.qualcomm.robotcore.hardware.VoltageSensor;
 
 import org.firstinspires.ftc.teamcode.RoadRunner.Drive.DriveConstants;
-import org.firstinspires.ftc.teamcode.RoadRunner.TrajectorySequence.sequencesegment.SequenceSegment;
-import org.firstinspires.ftc.teamcode.RoadRunner.TrajectorySequence.sequencesegment.TrajectorySegment;
-import org.firstinspires.ftc.teamcode.RoadRunner.TrajectorySequence.sequencesegment.TurnSegment;
-import org.firstinspires.ftc.teamcode.RoadRunner.TrajectorySequence.sequencesegment.WaitSegment;
+import org.firstinspires.ftc.teamcode.RoadRunner.TrajectorySequence.SequenceSegment.SequenceSegment;
+import org.firstinspires.ftc.teamcode.RoadRunner.TrajectorySequence.SequenceSegment.TrajectorySegment;
+import org.firstinspires.ftc.teamcode.RoadRunner.TrajectorySequence.SequenceSegment.TurnSegment;
+import org.firstinspires.ftc.teamcode.RoadRunner.TrajectorySequence.SequenceSegment.WaitSegment;
 import org.firstinspires.ftc.teamcode.RoadRunner.Util.DashboardUtil;
 import org.firstinspires.ftc.teamcode.RoadRunner.Util.LogFiles;
 

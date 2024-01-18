@@ -118,7 +118,8 @@ class VisionTunerPipeline extends OpenCvPipeline {
         Core.bitwise_not(hsv, coloredStrictMask, strictMask);
 
         contours.clear();
-        Imgproc.findContours(strictMask, contours, new Mat(), Imgproc.RETR_LIST, Imgproc.CHAIN_APPROX_SIMPLE);
+//        Imgproc.findContours(strictMask, contours, new Mat(), Imgproc.RETR_LIST, Imgproc.CHAIN_APPROX_SIMPLE);
+        Imgproc.findContours(weakMask, contours, new Mat(), Imgproc.RETR_LIST, Imgproc.CHAIN_APPROX_SIMPLE);
 
         double largestContourArea = -1;
         largestContour = null;

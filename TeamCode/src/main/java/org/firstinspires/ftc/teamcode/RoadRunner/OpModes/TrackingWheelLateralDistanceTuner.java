@@ -3,7 +3,6 @@ package org.firstinspires.ftc.teamcode.RoadRunner.OpModes;
 import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.util.Angle;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.RobotLog;
@@ -62,10 +61,8 @@ import org.firstinspires.ftc.teamcode.RoadRunner.Drive.ThreeWheelTrackingLocaliz
  * slightly but your heading will still be fine. This does not affect your overall tracking
  * precision. The heading should still line up.
  */
-
-@Disabled
 @Config
-@TeleOp(group = "roadrunner")
+@TeleOp(group = "drive")
 public class TrackingWheelLateralDistanceTuner extends LinearOpMode {
     public static int NUM_TURNS = 10;
 
@@ -124,7 +121,7 @@ public class TrackingWheelLateralDistanceTuner extends LinearOpMode {
         telemetry.clearAll();
         telemetry.addLine("Localizer's total heading: " + Math.toDegrees(headingAccumulator) + "°");
         telemetry.addLine("Effective LATERAL_DISTANCE: " +
-                (headingAccumulator / (NUM_TURNS * Math.PI * 2)) * (Math.abs(ThreeWheelTrackingLocalizer.LEFT_Y_DISTANCE) + Math.abs(ThreeWheelTrackingLocalizer.RIGHT_Y_DISTANCE)));
+                (headingAccumulator / (NUM_TURNS * Math.PI * 2)) * ThreeWheelTrackingLocalizer.LATERAL_DISTANCE);
 
         telemetry.update();
 

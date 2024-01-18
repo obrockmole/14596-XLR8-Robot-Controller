@@ -76,8 +76,8 @@ public final class LogFiles {
         public double trackingTicksPerRev = ThreeWheelTrackingLocalizer.TICKS_PER_REV;
         public double trackingWheelRadius = ThreeWheelTrackingLocalizer.WHEEL_RADIUS;
         public double trackingGearRatio = ThreeWheelTrackingLocalizer.GEAR_RATIO;
-        public double trackingLateralDistance = Math.abs(ThreeWheelTrackingLocalizer.LEFT_Y_DISTANCE) + Math.abs(ThreeWheelTrackingLocalizer.RIGHT_Y_DISTANCE);
-        public double trackingForwardOffset = ThreeWheelTrackingLocalizer.PERP_X_DISTANCE;
+        public double trackingLateralDistance = ThreeWheelTrackingLocalizer.LATERAL_DISTANCE;
+        public double trackingForwardOffset = ThreeWheelTrackingLocalizer.FORWARD_OFFSET;
 
         public RevHubOrientationOnRobot.LogoFacingDirection LOGO_FACING_DIR = DriveConstants.LOGO_FACING_DIR;
         public RevHubOrientationOnRobot.UsbFacingDirection USB_FACING_DIR = DriveConstants.USB_FACING_DIR;

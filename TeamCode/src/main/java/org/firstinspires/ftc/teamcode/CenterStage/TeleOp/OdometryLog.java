@@ -11,7 +11,7 @@ import org.firstinspires.ftc.teamcode.Systems.Sensors.Encoder;
 
 import java.util.Locale;
 
-//@Disabled
+@Disabled
 @TeleOp(group = "TeleOp", name = "Odometry Logging")
 public class OdometryLog extends OpMode {
     Odometry odometry;
@@ -20,7 +20,7 @@ public class OdometryLog extends OpMode {
     public void init() {
         odometry = new Odometry(
                 new OdometryPod(new Encoder(hardwareMap, "frontLeft", Encoder.Direction.REVERSE)),
-                new OdometryPod(new Encoder(hardwareMap, "frontRight", Encoder.Direction.REVERSE)),
+                new OdometryPod(new Encoder(hardwareMap, "backRight", Encoder.Direction.REVERSE)),
                 new OdometryPod(new Encoder(hardwareMap, "intake", Encoder.Direction.FORWARD))
         );
 

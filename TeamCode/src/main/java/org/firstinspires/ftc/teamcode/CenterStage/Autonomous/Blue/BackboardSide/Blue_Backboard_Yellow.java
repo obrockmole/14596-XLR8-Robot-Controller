@@ -6,15 +6,12 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
 import org.firstinspires.ftc.teamcode.CenterStage.Autonomous.BaseAuto;
 import org.firstinspires.ftc.teamcode.RoadRunner.TrajectorySequence.TrajectorySequence;
-import org.firstinspires.ftc.teamcode.Systems.Vision.ContourDetectionPipeline;
 import org.firstinspires.ftc.teamcode.Systems.Vision.VisionDetector;
-import org.opencv.core.Scalar;
 
 @Autonomous(group = "Blue", name = "Yellow - Blue Backboard")
 public class Blue_Backboard_Yellow extends BaseAuto {
     public void initVision() {
-        //TODO: get color bounds for blue element
-        pipeline = new ContourDetectionPipeline(this, new Scalar(170, 0, 0), new Scalar(179, 255, 255), new Scalar(20, 100, 110), new Scalar(100, 200, 200), 100);
+        pipeline = getBluePipeline();
         contourDetector = new VisionDetector(hardwareMap, "Webcam", pipeline);
     }
 

@@ -6,10 +6,10 @@ import org.firstinspires.ftc.teamcode.CenterStage.Robot;
 import org.firstinspires.ftc.teamcode.Systems.Gamepad.Gamepad;
 
 public class BaseTele extends OpMode {
-    Gamepad driver;
-    Gamepad manipulator;
+    protected Gamepad driver;
+    protected Gamepad manipulator;
 
-    Robot robot;
+    protected Robot robot;
 
     public void init() {
         driver = new Gamepad(gamepad1);

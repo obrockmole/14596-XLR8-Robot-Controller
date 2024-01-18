@@ -34,7 +34,7 @@ public abstract class BaseAuto extends OpMode implements DrawStrategy {
     private final int LEFT_BOUNDS = 160;
     private final int RIGHT_BOUNDS = 320;
 
-    public enum PropPositions {
+    protected enum PropPositions {
         LEFT,
         RIGHT,
         CENTER,
@@ -45,11 +45,13 @@ public abstract class BaseAuto extends OpMode implements DrawStrategy {
     private final ArrayList<PropPositions> propPositions = new ArrayList<>();
     private final Map<PropPositions, Integer> propPositionsCount = new HashMap<>();
     private PropPositions previousPropPosition = PropPositions.NULL, currentPropPosition = PropPositions.NULL;
-    protected PropPositions finalPropPosition = PropPositions.NULL;
+    private PropPositions finalPropPosition = PropPositions.NULL;
 
     public void init() {
         robot = new Robot(hardwareMap);
         drive = new MecanumDrive(hardwareMap);
+
+        robot.initialize();
 
         initVision();
         contourDetector.start();
@@ -62,17 +64,7 @@ public abstract class BaseAuto extends OpMode implements DrawStrategy {
     }
 
     public void init_loop() {
-        MatOfPoint detection = contourDetector.getDetection();
-        Vector2d detectionPos = contourDetector.getDetectionPos();
-        double detectionArea = contourDetector.getDetectionArea();
-
-        PropPositions propPosition = DEFAULT_PROP_POSITION;
-        if (detection != null) {
-            if (detectionPos.getX() < LEFT_BOUNDS)
-                propPosition = PropPositions.LEFT;
-            else if (detectionPos.getX() > RIGHT_BOUNDS)
-                propPosition = PropPositions.RIGHT;
-        }
+        PropPositions propPosition = getPropPosition();
 
         if (propPosition != previousPropPosition)
             currentPropPosition = propPosition;
@@ -82,7 +74,7 @@ public abstract class BaseAuto extends OpMode implements DrawStrategy {
 
         propPositionsCount.put(currentPropPosition, propPositionsCount.getOrDefault(currentPropPosition, 0) + 1);
 
-        if (propPositions.size() > 10000) {
+        if (propPositions.size() > 5000) {
             PropPositions removedPos = propPositions.remove(0);
             propPositionsCount.put(removedPos, propPositionsCount.getOrDefault(removedPos, 1) - 1);
         }
@@ -124,6 +116,29 @@ public abstract class BaseAuto extends OpMode implements DrawStrategy {
         telemetry.addLine("-----Other-----");
         telemetry.addData("Runtime", getRuntime());
         telemetry.update();
+    }
+
+    private PropPositions getPropPosition() {
+        MatOfPoint detection = contourDetector.getDetection();
+        Vector2d detectionPos = contourDetector.getDetectionPos();
+        double detectionArea = contourDetector.getDetectionArea();
+
+        PropPositions propPosition = DEFAULT_PROP_POSITION;
+        if (detection != null) {
+            if (detectionPos.getX() < LEFT_BOUNDS)
+                propPosition = PropPositions.LEFT;
+            else if (detectionPos.getX() > RIGHT_BOUNDS)
+                propPosition = PropPositions.RIGHT;
+        }
+        return propPosition;
+    }
+
+    public ContourDetectionPipeline getRedPipeline() {
+        return new ContourDetectionPipeline(this, new Scalar(170, 0, 0), new Scalar(179, 255, 255), new Scalar(0, 0, 0), new Scalar(179, 255, 255), 150);
+    }
+
+    public ContourDetectionPipeline getBluePipeline() {
+        return new ContourDetectionPipeline(this, new Scalar(100, 105, 0), new Scalar(179, 255, 255), new Scalar(0, 0, 0), new Scalar(179, 255, 255), 150);
     }
 
     public abstract void initVision();

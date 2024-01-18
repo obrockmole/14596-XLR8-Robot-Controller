@@ -21,15 +21,15 @@ public class LiftTest extends OpMode {
 
     public void loop() {
         manipulator.onPress(Button.DPAD_LEFT, () -> {
-                    robot.arm.setTargetPosition(0);
-                    robot.grabbox.setTargetPosition(0.5);
+                    robot.currentArmStage = Robot.ArmStages.FOLDED;
                 })
-//                .onPress(Button.DPAD_UP, () -> robot.lift.setTargetPosition(100))
+                .onPress(Button.DPAD_UP, () -> robot.lift.setTargetPosition(robot.liftPositions[1]))
                 .onPress(Button.DPAD_RIGHT, () -> {
-                    robot.arm.setTargetPosition(1);
-                    robot.grabbox.setTargetPosition(0.62);
-                });
-//                .onPress(Button.DPAD_DOWN, () -> robot.lift.setTargetPosition(0));
+                    robot.currentArmStage = Robot.ArmStages.DEPLOYED;
+                })
+                .onPress(Button.DPAD_DOWN, () -> robot.lift.setTargetPosition(robot.liftPositions[0]))
+                .onPress(Button.LEFT_BUMPER, () -> robot.liftDeployment.start())
+                .onPress(Button.RIGHT_BUMPER, () -> robot.liftRetraction.start());
 
         manipulator.update();
 
