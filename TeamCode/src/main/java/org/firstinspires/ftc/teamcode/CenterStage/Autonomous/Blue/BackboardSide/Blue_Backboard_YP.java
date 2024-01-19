@@ -3,11 +3,13 @@ package org.firstinspires.ftc.teamcode.CenterStage.Autonomous.Blue.BackboardSide
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
 import org.firstinspires.ftc.teamcode.CenterStage.Autonomous.BaseAuto;
 import org.firstinspires.ftc.teamcode.RoadRunner.TrajectorySequence.TrajectorySequence;
 import org.firstinspires.ftc.teamcode.Systems.Vision.VisionDetector;
 
+@Disabled
 @Autonomous(group = "Blue", name = "Yellow & Purple - Blue Backboard")
 public class Blue_Backboard_YP extends BaseAuto {
     public void initVision() {

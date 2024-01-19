@@ -21,44 +21,44 @@ public class Red_Backboard_Purple extends BaseAuto {
 
     public TrajectorySequence leftSequence(Pose2d startPos) {
         return drive.trajectorySequenceBuilder(startPos)
-                .setReversed(true)
-                .splineToSplineHeading(new Pose2d(10, -30, Math.toRadians(180)), Math.toRadians(180))
-                .addTemporalMarker(1.9, () -> {
-                    robot.intake.setTargetPower(-0.4);
+                .setTangent(70)
+                .splineToLinearHeading(new Pose2d(10, -32, Math.toRadians(180)), Math.toRadians(180))
+                .addTemporalMarker(() -> {
+                    robot.intake.setTargetPower(-0.35);
                 })
-                .addTemporalMarker(2.9, () -> {
+                .waitSeconds(1.5)
+                .lineToConstantHeading(new Vector2d(50, -60))
+                .addTemporalMarker(() -> {
                     robot.intake.setTargetPower(0);
                 })
-                .setTangent(Math.toRadians(0))
-                .splineTo(new Vector2d(52, -60), Math.toRadians(0))
                 .build();
     }
 
     public TrajectorySequence centerSequence(Pose2d startPos) {
         return drive.trajectorySequenceBuilder(startPos)
-                .setReversed(true)
-                .splineToSplineHeading(new Pose2d(20, -26, Math.toRadians(180)), Math.toRadians(0))
-                .addTemporalMarker(1.8, () -> {
-                    robot.intake.setTargetPower(-0.4);
+                .lineToLinearHeading(new Pose2d(24, -25, Math.toRadians(180)))
+                .addTemporalMarker(() -> {
+                    robot.intake.setTargetPower(-0.35);
                 })
-                .addTemporalMarker(2.8, () -> {
+                .waitSeconds(1)
+                .lineToConstantHeading(new Vector2d(50, -60))
+                .addTemporalMarker(() -> {
                     robot.intake.setTargetPower(0);
                 })
-                .splineTo(new Vector2d(52, -60), Math.toRadians(0))
                 .build();
     }
 
     public TrajectorySequence rightSequence(Pose2d startPos) {
         return drive.trajectorySequenceBuilder(startPos)
-                .setReversed(true)
-                .splineToSplineHeading(new Pose2d(24, -30, Math.toRadians(180)), Math.toRadians(0))
-                .addTemporalMarker(2, () -> {
-                    robot.intake.setTargetPower(-0.4);
+                .lineToLinearHeading(new Pose2d(33, -30, Math.toRadians(180)))
+                .addTemporalMarker(() -> {
+                    robot.intake.setTargetPower(-0.35);
                 })
-                .addTemporalMarker(3, () -> {
+                .waitSeconds(1)
+                .lineToConstantHeading(new Vector2d(50, -60))
+                .addTemporalMarker(() -> {
                     robot.intake.setTargetPower(0);
                 })
-                .splineTo(new Vector2d(52, -60), Math.toRadians(0))
                 .build();
     }
 }
