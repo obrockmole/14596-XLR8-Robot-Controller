@@ -21,12 +21,17 @@ public class Red_Backboard_Purple extends BaseAuto {
 
     public TrajectorySequence leftSequence(Pose2d startPos) {
         return drive.trajectorySequenceBuilder(startPos)
-                .setTangent(70)
-                .splineToLinearHeading(new Pose2d(10, -32, Math.toRadians(180)), Math.toRadians(180))
+                //Drive to spike mark
+                .setTangent(Math.toRadians(70))
+                .splineToLinearHeading(new Pose2d(10, -31, Math.toRadians(180)), Math.toRadians(180))
+
+                //Place purple pixel
                 .addTemporalMarker(() -> {
                     robot.intake.setTargetPower(-0.35);
                 })
                 .waitSeconds(1.5)
+
+                //Park
                 .lineToConstantHeading(new Vector2d(50, -60))
                 .addTemporalMarker(() -> {
                     robot.intake.setTargetPower(0);
@@ -36,11 +41,16 @@ public class Red_Backboard_Purple extends BaseAuto {
 
     public TrajectorySequence centerSequence(Pose2d startPos) {
         return drive.trajectorySequenceBuilder(startPos)
+                //Drive to spike mark
                 .lineToLinearHeading(new Pose2d(24, -25, Math.toRadians(180)))
+
+                //Place purple pixel
                 .addTemporalMarker(() -> {
                     robot.intake.setTargetPower(-0.35);
                 })
-                .waitSeconds(1)
+                .waitSeconds(1.5)
+
+                //Park
                 .lineToConstantHeading(new Vector2d(50, -60))
                 .addTemporalMarker(() -> {
                     robot.intake.setTargetPower(0);
@@ -50,11 +60,16 @@ public class Red_Backboard_Purple extends BaseAuto {
 
     public TrajectorySequence rightSequence(Pose2d startPos) {
         return drive.trajectorySequenceBuilder(startPos)
+                //Drive to spike mark
                 .lineToLinearHeading(new Pose2d(33, -30, Math.toRadians(180)))
+
+                //Place purple pixel
                 .addTemporalMarker(() -> {
                     robot.intake.setTargetPower(-0.35);
                 })
-                .waitSeconds(1)
+                .waitSeconds(1.5)
+
+                //Park
                 .lineToConstantHeading(new Vector2d(50, -60))
                 .addTemporalMarker(() -> {
                     robot.intake.setTargetPower(0);

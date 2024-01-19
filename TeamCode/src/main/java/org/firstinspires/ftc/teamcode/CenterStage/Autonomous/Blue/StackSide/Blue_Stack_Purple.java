@@ -21,19 +21,62 @@ public class Blue_Stack_Purple extends BaseAuto {
 
     public TrajectorySequence leftSequence(Pose2d startPos) {
         return drive.trajectorySequenceBuilder(startPos)
+                //Drive to spike mark
+                .setTangent(Math.toRadians(-110))
+                .splineToLinearHeading(new Pose2d(-34, 31, Math.toRadians(0)), Math.toRadians(0))
 
+                //Place purple pixel
+                .addTemporalMarker(() -> {
+                    robot.intake.setTargetPower(-0.35);
+                })
+                .waitSeconds(1.5)
+
+                //Park
+                .setTangent(Math.toRadians(-120))
+                .splineToConstantHeading(new Vector2d(50, 12), Math.toRadians(0))
+                .addTemporalMarker(() -> {
+                    robot.intake.setTargetPower(0);
+                })
                 .build();
     }
 
     public TrajectorySequence centerSequence(Pose2d startPos) {
         return drive.trajectorySequenceBuilder(startPos)
+                //Drive to spike mark
+                .lineToConstantHeading(new Vector2d(-36, 14))
 
+                //Place purple pixel
+                .addTemporalMarker(() -> {
+                    robot.intake.setTargetPower(-0.35);
+                })
+                .waitSeconds(1.5)
+
+                //Park
+                .setTangent(Math.toRadians(-10))
+                .splineToConstantHeading(new Vector2d(50, 12), Math.toRadians(0))
+                .addTemporalMarker(() -> {
+                    robot.intake.setTargetPower(0);
+                })
                 .build();
     }
 
     public TrajectorySequence rightSequence(Pose2d startPos) {
         return drive.trajectorySequenceBuilder(startPos)
+                //Drive to spike mark
+                .lineToConstantHeading(new Vector2d(-44, 16))
 
+                //Place purple pixel
+                .addTemporalMarker(() -> {
+                    robot.intake.setTargetPower(-0.35);
+                })
+                .waitSeconds(1.5)
+
+                //Park
+                .setTangent(Math.toRadians(-10))
+                .splineToConstantHeading(new Vector2d(50, 12), Math.toRadians(0))
+                .addTemporalMarker(() -> {
+                    robot.intake.setTargetPower(0);
+                })
                 .build();
     }
 }
