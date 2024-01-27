@@ -22,7 +22,7 @@ public class Red_Stack_Purple extends BaseAuto {
     public TrajectorySequence leftSequence(Pose2d startPos) {
         return drive.trajectorySequenceBuilder(startPos)
                 //Drive to spike mark
-                .lineToConstantHeading(new Vector2d(-44, -16))
+                .lineToLinearHeading(new Pose2d(-44, -16, Math.toRadians(-90)))
 
                 //Place purple pixel
                 .addTemporalMarker(() -> {
@@ -31,8 +31,8 @@ public class Red_Stack_Purple extends BaseAuto {
                 .waitSeconds(1.5)
 
                 //Park
-                .setTangent(Math.toRadians(10))
-                .splineToConstantHeading(new Vector2d(50, -12), Math.toRadians(0))
+                .lineToConstantHeading(new Vector2d(-36, -12))
+                .lineToLinearHeading(new Pose2d(50, -12, Math.toRadians(-90)))
                 .addTemporalMarker(() -> {
                     robot.intake.setTargetPower(0);
                 })

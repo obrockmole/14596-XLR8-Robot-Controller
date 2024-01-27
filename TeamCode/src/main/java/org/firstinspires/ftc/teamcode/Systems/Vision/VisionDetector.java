@@ -6,6 +6,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.opencv.core.MatOfPoint;
 import org.openftc.easyopencv.OpenCvCamera;
+import org.openftc.easyopencv.OpenCvCameraException;
 import org.openftc.easyopencv.OpenCvCameraFactory;
 
 public class VisionDetector {
@@ -28,20 +29,25 @@ public class VisionDetector {
     }
 
     public void start() {
-        camera.setPipeline(pipeline);
-        camera.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
-            public void onOpened() {
-                //TODO: Get proper resolution values for the camera
-                camera.startStreaming(640, 480);
-            }
+        try {
+            camera.setPipeline(pipeline);
+            camera.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
+                public void onOpened() {
+                    //TODO: Get proper resolution values for the camera
+                    camera.startStreaming(640, 480);
+                }
 
-            public void onError(int errorCode) {}
-        });
+                public void onError(int errorCode) {
+                }
+            });
+        } catch (OpenCvCameraException ignored) {}
     }
 
     public void stop() {
 //        camera.closeCameraDeviceAsync(camera::stopStreaming);
-        camera.stopStreaming();
+        try {
+            camera.stopStreaming();
+        } catch (OpenCvCameraException ignored) {}
     }
 
     public WebcamName getWebcamName() {

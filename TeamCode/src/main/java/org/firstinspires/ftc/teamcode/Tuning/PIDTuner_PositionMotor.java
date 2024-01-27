@@ -11,7 +11,7 @@ import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 import org.firstinspires.ftc.teamcode.Systems.Motors.Motor;
 import org.firstinspires.ftc.teamcode.Systems.Motors.MotorList;
 
-//@Disabled
+@Disabled
 @Config
 @TeleOp(group = "Tuning")
 public class PIDTuner_PositionMotor extends OpMode {

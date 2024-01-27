@@ -20,7 +20,7 @@ public class BaseTele extends OpMode {
     }
 
     public void start() {
-        robot.liftDeployment.start();
+//        robot.liftDeployment.start();
     }
 
     public void loop() {}

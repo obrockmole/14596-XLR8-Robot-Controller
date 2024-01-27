@@ -52,6 +52,7 @@ public abstract class BaseAuto extends OpMode implements DrawStrategy {
         drive = new MecanumDrive(hardwareMap);
 
         robot.initialize();
+        robot.pixelClamp.setTargetPosition(1);
 
         initVision();
         contourDetector.start();

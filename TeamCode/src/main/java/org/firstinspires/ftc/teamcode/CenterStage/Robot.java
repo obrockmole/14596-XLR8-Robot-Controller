@@ -27,7 +27,7 @@ public class Robot extends Drivetrain {
 
     public final PositionServoGroup grabbox;
     public final PositionServoGroup arm;
-//    public final PositionServoGroup pixelClamp;
+    public final PositionServoGroup pixelClamp;
     public final PositionServoGroup intakeFlippers;
     public final PositionServoGroup hangRelease; //Added in By Cole
 
@@ -48,9 +48,9 @@ public class Robot extends Drivetrain {
     }
 
     public enum ArmStages {
-        IDLE(0.13, 0.06),
+        IDLE(0.14, 0.06),
         FOLDED(0, 0.5),
-        DEPLOYED(1, 0.62);
+        DEPLOYED(1, 0.64);
 
         private final double armPos, grabboxPos;
 
@@ -86,8 +86,8 @@ public class Robot extends Drivetrain {
                 new IMU(hardwareMap, "imu", new Parameters(new RevHubOrientationOnRobot(LogoFacingDirection.UP, UsbFacingDirection.FORWARD)))
        );
 
-        lift = new Motor(hardwareMap, "lift", MotorList.REV_PLAN_25, Motor.Mode.POSITION, true);
-        lift.setPIDF(0.01, 0, 0, 0);
+        lift = new Motor(hardwareMap, "lift", MotorList.REV_PLAN_75, Motor.Mode.POWER, true);
+//        lift.setPIDF(0.01, 0, 0, 0);
 
         intake = new Motor(hardwareMap, "intake", MotorList.GOBILDA_435, Motor.Mode.POWER, true);
 
@@ -101,10 +101,10 @@ public class Robot extends Drivetrain {
                 new PositionServo(hardwareMap, "rightGrabbox", 0.6, 1, false)
         );
 
-        /*pixelClamp = new PositionServoGroup(
-                new PositionServo(hardwareMap, "leftPixelClamp", 0.14, 0.18, false),
-                new PositionServo(hardwareMap, "rightPixelClamp", 0.06, 0.1, false)
-        );*/
+        pixelClamp = new PositionServoGroup(
+                new PositionServo(hardwareMap, "leftPixelClamp", 0.14, 0.28, false),
+                new PositionServo(hardwareMap, "rightPixelClamp", 0.06, 0.22, false)
+        );
 
         intakeFlippers = new PositionServoGroup(
                 new PositionServo(hardwareMap, "leftIntakeFlipper", 0.14, 0.35, false),
@@ -112,8 +112,8 @@ public class Robot extends Drivetrain {
         );
 
         hangRelease = new PositionServoGroup(
-                new PositionServo(hardwareMap, "leftHangRelease", 0.3, 0.45, false),
-                new PositionServo(hardwareMap, "rightHangRelease", 0.3, 0.45, true)
+                new PositionServo(hardwareMap, "leftHangRelease", 0.29, 0.45, false),
+                new PositionServo(hardwareMap, "rightHangRelease", 0.29, 0.45, true)
         ); //Added hang release servo group. By Cole
 
         droneLauncher = new PositionServo(hardwareMap, "droneLauncher", 0.15, 0.3, false);
@@ -179,9 +179,9 @@ public class Robot extends Drivetrain {
     }
 
     public Robot initialize() {
-        lift.setTargetPosition(0);
+//        lift.setTargetPosition(0);
         currentArmStage = ArmStages.IDLE;
-//        pixelClamp.setTargetPosition(0);
+        pixelClamp.setTargetPosition(0);
         intakeFlippers.setTargetPosition(0);
         droneLauncher.setTargetPosition(0);
         hangRelease.setTargetPosition(0); //Added in by Cole
@@ -195,8 +195,8 @@ public class Robot extends Drivetrain {
         if (updateDriveMotors) super.update();
 
         lift.update();
-        if (lift.getPower() < 0) lift.setSpeedScale(0.2);
-        else lift.setSpeedScale(1);
+//        if (lift.getPower() < 0) lift.setSpeedScale(0.2);
+//        else lift.setSpeedScale(1);
 
         intake.update();
         intakeFlippers.update();
@@ -205,13 +205,13 @@ public class Robot extends Drivetrain {
         if (grabbox.getTargetPosition() != currentArmStage.grabboxPos) grabbox.setTargetPosition(currentArmStage.grabboxPos);
         arm.update();
         grabbox.update();
-//        pixelClamp.update();
+        pixelClamp.update();
 
         droneLauncher.update();
 
         hangRelease.update(); //Added hangRelease update. By Cole
 
-        liftDeployment.update();
+        /*liftDeployment.update();
         liftRetraction.update();
 
         if (!liftDeployment.isRunning() && previousLiftDeploymentState != LiftDeploymentStages.IDLE) {
@@ -225,7 +225,7 @@ public class Robot extends Drivetrain {
         }
 
         previousLiftDeploymentState = (LiftDeploymentStages) liftDeployment.getState();
-        previousLiftRetractionState = (LiftRetractionStages) liftRetraction.getState();
+        previousLiftRetractionState = (LiftRetractionStages) liftRetraction.getState();*/
 
         return this;
     }
@@ -235,8 +235,8 @@ public class Robot extends Drivetrain {
 
         telemetry.addLine("-----Lift-----");
         telemetry.addData("Power", lift.getPower());
-        telemetry.addData("Target Position", lift.getTargetPosition());
-        telemetry.addData("Current Position", lift.getCurrentPosition());
+//        telemetry.addData("Target Position", lift.getTargetPosition());
+//        telemetry.addData("Current Position", lift.getCurrentPosition());
         telemetry.addLine();
 
         telemetry.addLine("-----Intake-----");
@@ -255,9 +255,9 @@ public class Robot extends Drivetrain {
         telemetry.addData("Released", hangRelease.getTargetPosition() == 1);
         telemetry.addLine();
 
-//        telemetry.addLine("-----Pixel Clamp-----");
-//        telemetry.addData("Clamped", pixelClamp.getTargetPosition() == 1);
-//        telemetry.addLine();
+        telemetry.addLine("-----Pixel Clamp-----");
+        telemetry.addData("Clamped", pixelClamp.getTargetPosition() == 1);
+        telemetry.addLine();
 
         telemetry.addLine("-----Battery Voltage-----");
         telemetry.addData("Voltage", batteryVoltageSensor.getBatteryVoltage());
