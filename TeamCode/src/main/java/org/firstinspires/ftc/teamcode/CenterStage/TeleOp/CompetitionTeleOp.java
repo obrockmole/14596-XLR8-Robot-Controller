@@ -30,7 +30,7 @@ public class CompetitionTeleOp extends BaseTele {
         robot.lift.setTargetPower(-manipulator.getStickY(Stick.RIGHT_STICK));
 
         //Intake, left trigger = intake, right trigger = outtake
-        robot.intake.setTargetPower(manipulator.getTrigger(Trigger.LEFT_TRIGGER) - manipulator.getTrigger(Trigger.RIGHT_TRIGGER) / 2.5);
+        robot.intake.setTargetPower(manipulator.getTrigger(Trigger.LEFT_TRIGGER) * 0.8 - manipulator.getTrigger(Trigger.RIGHT_TRIGGER) / 2.5);
         //Intake flippers, A button down = flip out, A button up = flip in
         manipulator.onChange(Button.X, () -> robot.intakeFlippers.toggleTargetPosition());
 

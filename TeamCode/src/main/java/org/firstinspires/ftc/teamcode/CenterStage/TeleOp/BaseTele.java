@@ -13,6 +13,7 @@ public class BaseTele extends OpMode {
 
     public void init() {
         driver = new Gamepad(gamepad1);
+        driver.setLEDColor(130, 0, 130, -1);
         manipulator = new Gamepad(gamepad2);
 
         robot = new Robot(hardwareMap);
@@ -30,6 +31,9 @@ public class BaseTele extends OpMode {
         manipulator.update();
 
         robot.update(true);
+
+        if (robot.pixelClamp.getTargetPosition() == 1) manipulator.rumble(0.5, 0.5, -1);
+        else if (manipulator.isRumbling()) manipulator.stopRumble();
     }
 
     public void log() {
