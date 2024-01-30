@@ -8,8 +8,8 @@ import org.firstinspires.ftc.teamcode.CenterStage.Autonomous.BaseAuto;
 import org.firstinspires.ftc.teamcode.RoadRunner.TrajectorySequence.TrajectorySequence;
 import org.firstinspires.ftc.teamcode.Systems.Vision.VisionDetector;
 
-@Autonomous(group = "Red", name = "Purple - Red Stack")
-public class Red_Stack_Purple extends BaseAuto {
+@Autonomous(group = "Red", name = "Purple & Yellow - Red Stack")
+public class Red_Stack_PY extends BaseAuto {
     public void initVision() {
         pipeline = getRedPipeline();
         contourDetector = new VisionDetector(hardwareMap, "Webcam", pipeline);
@@ -30,12 +30,30 @@ public class Red_Stack_Purple extends BaseAuto {
                 })
                 .waitSeconds(1.5)
 
-                //Park
+                //Driver under truss
                 .lineToLinearHeading(new Pose2d(-26, -12, Math.toRadians(180)))
-                .lineToConstantHeading(new Vector2d(50, -12))
+                .lineToConstantHeading(new Vector2d(34, -12))
+                //Extend lift
                 .addTemporalMarker(() -> {
                     robot.intake.setTargetPower(0);
+                    //Extend lift
                 })
+
+                //Drive to backdrop
+                .lineToConstantHeading(new Vector2d(36, -32))
+
+                //Drop yellow pixel
+                .addTemporalMarker(() -> {
+                    robot.pixelClamp.setTargetPosition(0);
+                })
+                .waitSeconds(1)
+                //Retract lift
+                .addTemporalMarker(() -> {
+                    //Retract lift
+                })
+
+                //Park
+                .lineToConstantHeading(new Vector2d(50, -12))
                 .build();
     }
 
@@ -50,12 +68,30 @@ public class Red_Stack_Purple extends BaseAuto {
                 })
                 .waitSeconds(1.5)
 
-                //Park
-                .lineToLinearHeading(new Pose2d(-18, -12, Math.toRadians(180)))
-                .lineToConstantHeading(new Vector2d(50, -12))
+                //Driver under truss
+                .lineToLinearHeading(new Pose2d(-26, -12, Math.toRadians(180)))
+                .lineToConstantHeading(new Vector2d(34, -12))
+                //Extend lift
                 .addTemporalMarker(() -> {
                     robot.intake.setTargetPower(0);
+                    //Extend lift
                 })
+
+                //Drive to backdrop
+                .lineToConstantHeading(new Vector2d(36, -36))
+
+                //Drop yellow pixel
+                .addTemporalMarker(() -> {
+                    robot.pixelClamp.setTargetPosition(0);
+                })
+                .waitSeconds(1)
+                //Retract lift
+                .addTemporalMarker(() -> {
+                    //Retract lift
+                })
+
+                //Park
+                .lineToConstantHeading(new Vector2d(50, -12))
                 .build();
     }
 
@@ -71,12 +107,30 @@ public class Red_Stack_Purple extends BaseAuto {
                 })
                 .waitSeconds(1.5)
 
-                //Park
-                .lineToLinearHeading(new Pose2d(-36, -12, Math.toRadians(180 + 1e-6)))
-                .lineToConstantHeading(new Vector2d(50, -12))
+                //Driver under truss
+                .lineToLinearHeading(new Pose2d(-26, -12, Math.toRadians(180)))
+                .lineToConstantHeading(new Vector2d(34, -12))
+                //Extend lift
                 .addTemporalMarker(() -> {
                     robot.intake.setTargetPower(0);
+                    //Extend lift
                 })
+
+                //Drive to backdrop
+                .lineToConstantHeading(new Vector2d(36, -40))
+
+                //Drop yellow pixel
+                .addTemporalMarker(() -> {
+                    robot.pixelClamp.setTargetPosition(0);
+                })
+                .waitSeconds(1)
+                //Retract lift
+                .addTemporalMarker(() -> {
+                    //Retract lift
+                })
+
+                //Park
+                .lineToConstantHeading(new Vector2d(50, -12))
                 .build();
     }
 }

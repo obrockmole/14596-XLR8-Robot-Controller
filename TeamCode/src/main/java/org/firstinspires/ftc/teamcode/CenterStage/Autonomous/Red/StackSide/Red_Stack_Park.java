@@ -26,17 +26,8 @@ public class Red_Stack_Park extends BaseAuto {
     public TrajectorySequence centerSequence(Pose2d startPos) {
         return drive.trajectorySequenceBuilder(startPos)
                 //Park
-                .lineToLinearHeading(new Pose2d(-36, -12, Math.toRadians(0)))
-                .lineToConstantHeading(new Vector2d(54, -12))
-
-                //Spit pixels
-                .addTemporalMarker(() -> {
-                    robot.intake.setTargetPower(-0.4);
-                })
-                .waitSeconds(2)
-                .addTemporalMarker(() -> {
-                    robot.intake.setTargetPower(0);
-                })
+                .lineToLinearHeading(new Pose2d(-36, -12, Math.toRadians(180)))
+                .lineToConstantHeading(new Vector2d(50, -12))
                 .build();
     }
 

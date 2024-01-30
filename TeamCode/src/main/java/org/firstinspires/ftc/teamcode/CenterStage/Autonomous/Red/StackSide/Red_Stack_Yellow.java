@@ -1,34 +1,36 @@
-package org.firstinspires.ftc.teamcode.CenterStage.Autonomous.Red.BackboardSide;
+package org.firstinspires.ftc.teamcode.CenterStage.Autonomous.Red.StackSide;
 
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
 import org.firstinspires.ftc.teamcode.CenterStage.Autonomous.BaseAuto;
 import org.firstinspires.ftc.teamcode.RoadRunner.TrajectorySequence.TrajectorySequence;
 import org.firstinspires.ftc.teamcode.Systems.Vision.VisionDetector;
 
-@Autonomous(group = "Red", name = "Yellow - Red Backboard")
-public class Red_Backboard_Yellow extends BaseAuto {
+@Autonomous(group = "Red", name = "Yellow - Red Stack")
+public class Red_Stack_Yellow extends BaseAuto {
     public void initVision() {
         pipeline = getRedPipeline();
         contourDetector = new VisionDetector(hardwareMap, "Webcam", pipeline);
     }
 
     public Pose2d startPos() {
-        return new Pose2d(12, -64, Math.toRadians(-90));
+        return new Pose2d(-36, -64, Math.toRadians(-90));
     }
 
     public TrajectorySequence leftSequence(Pose2d startPos) {
         return drive.trajectorySequenceBuilder(startPos)
+                //Drive under truss
+                .lineToLinearHeading(new Pose2d(-36, -12, Math.toRadians(180)))
+                .lineToConstantHeading(new Vector2d(34, -12))
                 //Extend lift
                 .addTemporalMarker(() -> {
                     //Extend lift
                 })
+
                 //Drive to backdrop
-                .setTangent(Math.toRadians(70))
-                .splineToLinearHeading(new Pose2d(36, -32, Math.toRadians(180)), Math.toRadians(90))
+                .lineToConstantHeading(new Vector2d(36, -32))
 
                 //Drop yellow pixel
                 .addTemporalMarker(() -> {
@@ -41,22 +43,22 @@ public class Red_Backboard_Yellow extends BaseAuto {
                 })
 
                 //Park
-                .lineToConstantHeading(new Vector2d(50, -60))
-                .addTemporalMarker(() -> {
-                    robot.intake.setTargetPower(0);
-                })
+                .lineToConstantHeading(new Vector2d(50, -12))
                 .build();
     }
 
     public TrajectorySequence centerSequence(Pose2d startPos) {
         return drive.trajectorySequenceBuilder(startPos)
+                //Drive under truss
+                .lineToLinearHeading(new Pose2d(-36, -12, Math.toRadians(180)))
+                .lineToConstantHeading(new Vector2d(34, -12))
                 //Extend lift
                 .addTemporalMarker(() -> {
                     //Extend lift
                 })
+
                 //Drive to backdrop
-                .setTangent(Math.toRadians(70))
-                .splineToLinearHeading(new Pose2d(36, -36, Math.toRadians(180)), Math.toRadians(90))
+                .lineToConstantHeading(new Vector2d(36, -36))
 
                 //Drop yellow pixel
                 .addTemporalMarker(() -> {
@@ -69,22 +71,22 @@ public class Red_Backboard_Yellow extends BaseAuto {
                 })
 
                 //Park
-                .lineToConstantHeading(new Vector2d(50, -60))
-                .addTemporalMarker(() -> {
-                    robot.intake.setTargetPower(0);
-                })
+                .lineToConstantHeading(new Vector2d(50, -12))
                 .build();
     }
 
     public TrajectorySequence rightSequence(Pose2d startPos) {
         return drive.trajectorySequenceBuilder(startPos)
+                //Drive under truss
+                .lineToLinearHeading(new Pose2d(-36, -12, Math.toRadians(180)))
+                .lineToConstantHeading(new Vector2d(34, -12))
                 //Extend lift
                 .addTemporalMarker(() -> {
                     //Extend lift
                 })
+
                 //Drive to backdrop
-                .setTangent(Math.toRadians(70))
-                .splineToLinearHeading(new Pose2d(36, -40, Math.toRadians(180)), Math.toRadians(90))
+                .lineToConstantHeading(new Vector2d(36, -40))
 
                 //Drop yellow pixel
                 .addTemporalMarker(() -> {
@@ -97,10 +99,7 @@ public class Red_Backboard_Yellow extends BaseAuto {
                 })
 
                 //Park
-                .lineToConstantHeading(new Vector2d(50, -60))
-                .addTemporalMarker(() -> {
-                    robot.intake.setTargetPower(0);
-                })
+                .lineToConstantHeading(new Vector2d(50, -12))
                 .build();
     }
 }

@@ -50,6 +50,7 @@ public class Robot extends Drivetrain {
     public enum ArmStages {
         IDLE(0.14, 0.06),
         FOLDED(0, 0.5),
+        HALF_DEPLOYED(0.5, 0.57),
         DEPLOYED(1, 0.64);
 
         private final double armPos, grabboxPos;

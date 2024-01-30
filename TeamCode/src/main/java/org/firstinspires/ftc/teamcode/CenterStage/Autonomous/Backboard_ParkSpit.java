@@ -5,12 +5,10 @@ import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
 import org.firstinspires.ftc.teamcode.RoadRunner.TrajectorySequence.TrajectorySequence;
-import org.firstinspires.ftc.teamcode.Systems.Vision.ContourDetectionPipeline;
 import org.firstinspires.ftc.teamcode.Systems.Vision.VisionDetector;
-import org.opencv.core.Scalar;
 
-@Autonomous(group = "RedBlue", name = "Park - Backboard")
-public class Backboard_Park extends BaseAuto {
+@Autonomous(group = "RedBlue", name = "Park & Spit - Backboard")
+public class Backboard_ParkSpit extends BaseAuto {
     public void initVision() {
         pipeline = getRedPipeline();
         contourDetector = new VisionDetector(hardwareMap, "Webcam", pipeline);
@@ -27,7 +25,16 @@ public class Backboard_Park extends BaseAuto {
     public TrajectorySequence centerSequence(Pose2d startPos) {
         return drive.trajectorySequenceBuilder(startPos)
                 //Park
-                .lineTo(new Vector2d(-44, 0))
+                .lineTo(new Vector2d(44, 0))
+
+                //Spit pixels
+                .addTemporalMarker(() -> {
+                    robot.intake.setTargetPower(-0.4);
+                })
+                .waitSeconds(2)
+                .addTemporalMarker(() -> {
+                    robot.intake.setTargetPower(0);
+                })
                 .build();
     }
 
