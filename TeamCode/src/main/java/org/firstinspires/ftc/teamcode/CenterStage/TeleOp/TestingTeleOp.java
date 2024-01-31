@@ -1,6 +1,5 @@
 package org.firstinspires.ftc.teamcode.CenterStage.TeleOp;
 
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.CenterStage.Robot;
@@ -8,7 +7,7 @@ import org.firstinspires.ftc.teamcode.Systems.Gamepad.GamepadButtons.Button;
 import org.firstinspires.ftc.teamcode.Systems.Gamepad.GamepadButtons.Stick;
 import org.firstinspires.ftc.teamcode.Systems.Gamepad.GamepadButtons.Trigger;
 
-@Disabled
+//@Disabled
 @TeleOp(group = "TeleOp", name = "Testing TeleOp")
 public class TestingTeleOp extends BaseTele {
     public void loop() {
@@ -22,13 +21,21 @@ public class TestingTeleOp extends BaseTele {
 
 
         /* MANIPULATOR */
-        //Arm positions, Dpad left = folded, Dpad right = deployed, Dpad down = idle
-        manipulator.onPress(Button.DPAD_LEFT, () -> robot.currentArmStage = Robot.ArmStages.FOLDED)
-                .onPress(Button.DPAD_RIGHT, () -> robot.currentArmStage = Robot.ArmStages.DEPLOYED)
+        //Arm positions, left bumper = half deployed, right bumper = fully deployed, Y button = toggle folded and idle (TODO)
+        manipulator.onPress(Button.LEFT_BUMPER, () -> robot.currentArmStage = Robot.ArmStages.HALF_DEPLOYED)
+                .onPress(Button.RIGHT_BUMPER, () -> robot.currentArmStage = Robot.ArmStages.DEPLOYED)
                 .onPress(Button.DPAD_DOWN, () -> robot.currentArmStage = Robot.ArmStages.IDLE);
 
+
+        //Lift positions, Dpad left = half deployed, Dpad right = fully deployed, Dpad up = up, Dpad down = down (TODO)
+        manipulator.onPress(Button.DPAD_LEFT, () -> robot.currentArmStage = Robot.ArmStages.FOLDED)
+                .onPress(Button.DPAD_RIGHT, () -> robot.currentArmStage = Robot.ArmStages.DEPLOYED)
+                .onPress(Button.DPAD_UP, () -> robot.currentArmStage = Robot.ArmStages.DEPLOYED)
+                .onPress(Button.DPAD_DOWN, () -> robot.currentArmStage = Robot.ArmStages.IDLE);
+
+
         //Lift power, right stick y = lift power
-        robot.lift.setTargetPower(-manipulator.getStickY(Stick.RIGHT_STICK));
+        if (Math.abs(manipulator.getStickY(Stick.RIGHT_STICK)) > 0.1) setLiftPower(-manipulator.getStickY(Stick.RIGHT_STICK));
 
         //Intake, left trigger = intake, right trigger = outtake
         robot.intake.setTargetPower(manipulator.getTrigger(Trigger.LEFT_TRIGGER) - manipulator.getTrigger(Trigger.RIGHT_TRIGGER) / 2.5);

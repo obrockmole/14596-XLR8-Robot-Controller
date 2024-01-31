@@ -5,9 +5,6 @@ import com.qualcomm.hardware.rev.RevHubOrientationOnRobot.LogoFacingDirection;
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot.UsbFacingDirection;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.IMU.Parameters;
-import com.sfdev.assembly.state.StateMachine;
-import com.sfdev.assembly.state.StateMachineBuilder;
-import com.sfdev.assembly.transition.TransitionCondition;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.Systems.Drivetrain;
@@ -33,20 +30,6 @@ public class Robot extends Drivetrain {
 
     public final PositionServo droneLauncher;
 
-    private enum LiftDeploymentStages {
-        IDLE,
-        FOLD_GRAB_BOX,
-        EXTEND_LIFT,
-        DEPLOY_GRAB_BOX
-    }
-
-    private enum LiftRetractionStages {
-        IDLE,
-        FOLD_GRAB_BOX,
-        RETRACT_LIFT,
-        RELEASE_GRAB_BOX
-    }
-
     public enum ArmStages {
         IDLE(0.14, 0.06),
         FOLDED(0, 0.5),
@@ -59,14 +42,17 @@ public class Robot extends Drivetrain {
             this.armPos = armPos;
             this.grabboxPos = grabboxPos;
         }
+
+        public double getArmPos() {
+            return armPos;
+        }
+
+        public double getGrabboxPos() {
+            return grabboxPos;
+        }
     }
 
     public ArmStages currentArmStage = ArmStages.IDLE;
-
-    public final StateMachine liftDeployment;
-    public final StateMachine liftRetraction;
-    private LiftDeploymentStages previousLiftDeploymentState = null;
-    private LiftRetractionStages previousLiftRetractionState = null;
 
     private final BatteryVoltageSensor batteryVoltageSensor;
 
@@ -120,63 +106,6 @@ public class Robot extends Drivetrain {
         droneLauncher = new PositionServo(hardwareMap, "droneLauncher", 0.15, 0.3, false);
 
         batteryVoltageSensor = new BatteryVoltageSensor(hardwareMap);
-
-
-        liftDeployment = new StateMachineBuilder()
-                .state(LiftDeploymentStages.FOLD_GRAB_BOX)
-                .onEnter(() -> {
-                    currentArmStage = ArmStages.FOLDED;
-                })
-                .transition(() -> (grabbox.getPosition() == ArmStages.FOLDED.grabboxPos && arm.getPosition() == ArmStages.FOLDED.armPos), LiftDeploymentStages.EXTEND_LIFT)
-
-                .state(LiftDeploymentStages.EXTEND_LIFT)
-                .onEnter(() -> {
-                    lift.setTargetPosition(liftPositions[1]);
-                })
-                .transition(lift::atTargetPosition, LiftDeploymentStages.DEPLOY_GRAB_BOX)
-
-                .state(LiftDeploymentStages.DEPLOY_GRAB_BOX)
-                .onEnter(() -> {
-                    currentArmStage = ArmStages.DEPLOYED;
-                })
-                .transition(() -> (grabbox.getPosition() == ArmStages.DEPLOYED.grabboxPos && arm.getPosition() == ArmStages.DEPLOYED.armPos), LiftDeploymentStages.IDLE)
-
-                .state(LiftDeploymentStages.IDLE)
-                .build();
-
-        liftRetraction = new StateMachineBuilder()
-                .state(LiftRetractionStages.FOLD_GRAB_BOX)
-                .onEnter(() -> {
-                    if (lift.getCurrentPosition() <= liftPositions[1] && lift.getCurrentPosition() >= liftPositions[1] / 2) lift.setTargetPosition(liftPositions[1]);
-                    currentArmStage = ArmStages.FOLDED;
-                })
-                .transition(() -> (grabbox.getPosition() == ArmStages.FOLDED.grabboxPos && arm.getPosition() == ArmStages.FOLDED.armPos /* and lift is high enough*/), LiftRetractionStages.RETRACT_LIFT)
-
-                .state(LiftRetractionStages.RETRACT_LIFT)
-                .onEnter(() -> {
-                    lift.setTargetPosition(liftPositions[0]);
-                })
-                .transition(lift::atTargetPosition, LiftRetractionStages.RELEASE_GRAB_BOX)
-
-                .state(LiftRetractionStages.RELEASE_GRAB_BOX)
-                .onEnter(() -> {
-                    currentArmStage = ArmStages.IDLE;
-                })
-                .transition(() -> (grabbox.getPosition() == ArmStages.IDLE.grabboxPos && arm.getPosition() == ArmStages.IDLE.armPos), LiftRetractionStages.IDLE)
-
-                .state(LiftRetractionStages.IDLE)
-                .build();
-    }
-
-    public void setLiftPosition(int position) {
-        if (!liftDeployment.isRunning() && !liftRetraction.isRunning()) {
-            if (position == liftPositions[0])
-                liftRetraction.start();
-            else if (lift.getCurrentPosition() > liftPositions[1] / 2)
-                lift.setTargetPosition(position);
-            else
-                liftDeployment.start();
-        }
     }
 
     public Robot initialize() {
@@ -196,8 +125,8 @@ public class Robot extends Drivetrain {
         if (updateDriveMotors) super.update();
 
         lift.update();
-//        if (lift.getPower() < 0) lift.setSpeedScale(0.2);
-//        else lift.setSpeedScale(1);
+        if (lift.getPower() < 0) lift.setSpeedScale(0.2);
+        else lift.setSpeedScale(1);
 
         intake.update();
         intakeFlippers.update();
@@ -211,22 +140,6 @@ public class Robot extends Drivetrain {
         droneLauncher.update();
 
         hangRelease.update(); //Added hangRelease update. By Cole
-
-        /*liftDeployment.update();
-        liftRetraction.update();
-
-        if (!liftDeployment.isRunning() && previousLiftDeploymentState != LiftDeploymentStages.IDLE) {
-            liftDeployment.reset();
-            liftDeployment.stop();
-        }
-
-        if (!liftRetraction.isRunning() && previousLiftRetractionState != LiftRetractionStages.IDLE) {
-            liftRetraction.reset();
-            liftRetraction.stop();
-        }
-
-        previousLiftDeploymentState = (LiftDeploymentStages) liftDeployment.getState();
-        previousLiftRetractionState = (LiftRetractionStages) liftRetraction.getState();*/
 
         return this;
     }
