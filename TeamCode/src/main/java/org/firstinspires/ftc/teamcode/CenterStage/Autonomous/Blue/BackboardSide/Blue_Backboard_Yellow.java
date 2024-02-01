@@ -23,58 +23,85 @@ public class Blue_Backboard_Yellow extends BaseAuto {
 
     public TrajectorySequence leftSequence(Pose2d startPos) {
         return drive.trajectorySequenceBuilder(startPos)
-                .setReversed(true)
-                .addTemporalMarker(0, () -> {
-                    //activate lift
+                //Extend lift
+                .addTemporalMarker(() -> {
+                    //Extend lift
                 })
-                .splineToSplineHeading(new Pose2d(36, 29, Math.toRadians(180)), Math.toRadians(0))
-                .addDisplacementMarker(() -> {
-                    //release yellow pixel
+                //Drive to backdrop
+                .setTangent(Math.toRadians(-70))
+                .splineToLinearHeading(new Pose2d(36, 40, Math.toRadians(180)), Math.toRadians(-90))
+
+                //Drop yellow pixel
+                .addTemporalMarker(() -> {
+                    robot.pixelClamp.setTargetPosition(0);
                 })
-                .waitSeconds(0.2)
-                .addDisplacementMarker(() -> {
-                    //lower lift
+                .waitSeconds(1)
+                //Retract lift
+                .addTemporalMarker(() -> {
+                    //Retract lift
                 })
-                .setTangent(Math.toRadians(45))
-                .splineToConstantHeading(new Vector2d(52, 60), Math.toRadians(45))
+
+                //Park
+                .lineToConstantHeading(new Vector2d(50, 60))
+                .addTemporalMarker(() -> {
+                    robot.intake.setTargetPower(0);
+                })
                 .build();
     }
 
     public TrajectorySequence centerSequence(Pose2d startPos) {
         return drive.trajectorySequenceBuilder(startPos)
-                .setReversed(true)
-                .addTemporalMarker(0, () -> {
-                    //activate lift
+                //Extend lift
+                .addTemporalMarker(() -> {
+                    //Extend lift
                 })
-                .splineToSplineHeading(new Pose2d(36, 36, Math.toRadians(180)), Math.toRadians(0))
-                .addDisplacementMarker(() -> {
-                    //release yellow pixel
+                //Drive to backdrop
+                .setTangent(Math.toRadians(-70))
+                .splineToLinearHeading(new Pose2d(36, 36, Math.toRadians(180)), Math.toRadians(-90))
+
+                //Drop yellow pixel
+                .addTemporalMarker(() -> {
+                    robot.pixelClamp.setTargetPosition(0);
                 })
-                .waitSeconds(0.2)
-                .addDisplacementMarker(() -> {
-                    //lower lift
+                .waitSeconds(1)
+                //Retract lift
+                .addTemporalMarker(() -> {
+                    //Retract lift
                 })
-                .setTangent(Math.toRadians(45))
-                .splineToConstantHeading(new Vector2d(52, 60), Math.toRadians(45))
+
+                //Park
+                .lineToConstantHeading(new Vector2d(50, 60))
+                .addTemporalMarker(() -> {
+                    robot.intake.setTargetPower(0);
+                })
                 .build();
     }
 
     public TrajectorySequence rightSequence(Pose2d startPos) {
         return drive.trajectorySequenceBuilder(startPos)
-                .setReversed(true)
-                .addTemporalMarker(0, () -> {
-                    //activate lift
+                //Extend lift
+                .addTemporalMarker(() -> {
+                    //Extend lift
                 })
-                .splineToSplineHeading(new Pose2d(36, 29, Math.toRadians(180)), Math.toRadians(0))
-                .addDisplacementMarker(() -> {
-                    //release yellow pixel
+                //Drive to backdrop
+                .setTangent(Math.toRadians(-70))
+                .splineToLinearHeading(new Pose2d(36, 32, Math.toRadians(180)), Math.toRadians(-90))
+
+                //Drop yellow pixel
+                .addTemporalMarker(() -> {
+                    robot.pixelClamp.setTargetPosition(0);
                 })
-                .waitSeconds(0.2)
-                .addDisplacementMarker(() -> {
-                    //lower lift
+                .waitSeconds(1)
+                //Retract lift
+                .addTemporalMarker(() -> {
+                    //Retract lift
                 })
-                .setTangent(Math.toRadians(45))
-                .splineToConstantHeading(new Vector2d(52, 60), Math.toRadians(45))
+
+                //Park
+                .lineToConstantHeading(new Vector2d(50, 60))
+                .addTemporalMarker(() -> {
+                    robot.intake.setTargetPower(0);
+                })
                 .build();
     }
 }

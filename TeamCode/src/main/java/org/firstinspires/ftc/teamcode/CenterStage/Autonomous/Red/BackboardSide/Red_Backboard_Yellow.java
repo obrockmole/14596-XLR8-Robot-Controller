@@ -9,6 +9,7 @@ import org.firstinspires.ftc.teamcode.CenterStage.Autonomous.BaseAuto;
 import org.firstinspires.ftc.teamcode.RoadRunner.TrajectorySequence.TrajectorySequence;
 import org.firstinspires.ftc.teamcode.Systems.Vision.VisionDetector;
 
+@Disabled
 @Autonomous(group = "Red", name = "Yellow - Red Backboard")
 public class Red_Backboard_Yellow extends BaseAuto {
     public void initVision() {

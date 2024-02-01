@@ -8,8 +8,8 @@ import org.firstinspires.ftc.teamcode.CenterStage.Autonomous.BaseAuto;
 import org.firstinspires.ftc.teamcode.RoadRunner.TrajectorySequence.TrajectorySequence;
 import org.firstinspires.ftc.teamcode.Systems.Vision.VisionDetector;
 
-@Autonomous(group = "Blue", name = "Park - Blue Stack")
-public class Blue_Stack_Park extends BaseAuto {
+@Autonomous(group = "Blue", name = "Park & Spit - Blue Stack")
+public class Blue_Stack_ParkSpit extends BaseAuto {
     public void initVision() {
         pipeline = getBluePipeline();
         contourDetector = new VisionDetector(hardwareMap, "Webcam", pipeline);
@@ -26,8 +26,17 @@ public class Blue_Stack_Park extends BaseAuto {
     public TrajectorySequence centerSequence(Pose2d startPos) {
         return drive.trajectorySequenceBuilder(startPos)
                 //Park
-                .lineToLinearHeading(new Pose2d(-36, 12, Math.toRadians(180)))
+                .lineToLinearHeading(new Pose2d(-36, 12, Math.toRadians(0)))
                 .lineToConstantHeading(new Vector2d(50, 12))
+
+                //Spit pixels
+                .addTemporalMarker(() -> {
+                    robot.intake.setTargetPower(-0.4);
+                })
+                .waitSeconds(2)
+                .addTemporalMarker(() -> {
+                    robot.intake.setTargetPower(0);
+                })
                 .build();
     }
 
