@@ -34,10 +34,7 @@ public abstract class BaseAuto extends OpMode implements DrawStrategy {
     private final int RIGHT_BOUNDS = 320;
 
     protected enum PropPositions {
-        LEFT,
-        RIGHT,
-        CENTER,
-        NULL
+        LEFT, RIGHT, CENTER, NULL
     }
     private final PropPositions DEFAULT_PROP_POSITION = PropPositions.CENTER; //This will be the default value if no detection is found
 

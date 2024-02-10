@@ -27,7 +27,7 @@ public class Red_Backboard_Purple extends BaseAuto {
 
                 //Place purple pixel
                 .addTemporalMarker(() -> {
-                    robot.intake.setTargetPower(-0.35);
+                    robot.intake.setTargetPower(-0.5);
                 })
                 .waitSeconds(1.5)
 
@@ -46,7 +46,7 @@ public class Red_Backboard_Purple extends BaseAuto {
 
                 //Place purple pixel
                 .addTemporalMarker(() -> {
-                    robot.intake.setTargetPower(-0.35);
+                    robot.intake.setTargetPower(-0.5);
                 })
                 .waitSeconds(1.5)
 
@@ -65,7 +65,7 @@ public class Red_Backboard_Purple extends BaseAuto {
 
                 //Place purple pixel
                 .addTemporalMarker(() -> {
-                    robot.intake.setTargetPower(-0.35);
+                    robot.intake.setTargetPower(-0.5);
                 })
                 .waitSeconds(1.5)
 

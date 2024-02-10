@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.CenterStage.TeleOp;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.CenterStage.Robot;
@@ -7,7 +8,7 @@ import org.firstinspires.ftc.teamcode.Systems.Gamepad.GamepadButtons.Button;
 import org.firstinspires.ftc.teamcode.Systems.Gamepad.GamepadButtons.Stick;
 import org.firstinspires.ftc.teamcode.Systems.Gamepad.GamepadButtons.Trigger;
 
-//@Disabled
+@Disabled
 @TeleOp(group = "TeleOp", name = "Testing TeleOp")
 public class TestingTeleOp extends BaseTele {
     public void loop() {
@@ -21,17 +22,15 @@ public class TestingTeleOp extends BaseTele {
 
 
         /* MANIPULATOR */
-        //Arm positions, left bumper = half deployed, right bumper = fully deployed, Y button = toggle folded and idle (TODO)
+        //Arm positions, left bumper = half deployed, right bumper = fully deployed
         manipulator.onPress(Button.LEFT_BUMPER, () -> robot.currentArmStage = Robot.ArmStages.HALF_DEPLOYED)
-                .onPress(Button.RIGHT_BUMPER, () -> robot.currentArmStage = Robot.ArmStages.DEPLOYED)
-                .onPress(Button.DPAD_DOWN, () -> robot.currentArmStage = Robot.ArmStages.IDLE);
-
+                .onPress(Button.RIGHT_BUMPER, () -> robot.currentArmStage = Robot.ArmStages.DEPLOYED);
 
         //Lift positions, Dpad left = half deployed, Dpad right = fully deployed, Dpad up = up, Dpad down = down (TODO)
-        manipulator.onPress(Button.DPAD_LEFT, () -> robot.currentArmStage = Robot.ArmStages.FOLDED)
-                .onPress(Button.DPAD_RIGHT, () -> robot.currentArmStage = Robot.ArmStages.DEPLOYED)
-                .onPress(Button.DPAD_UP, () -> robot.currentArmStage = Robot.ArmStages.DEPLOYED)
-                .onPress(Button.DPAD_DOWN, () -> robot.currentArmStage = Robot.ArmStages.IDLE);
+        manipulator.onPress(Button.DPAD_LEFT, () -> setLiftPosition(robot.liftPositions[1]))
+                .onPress(Button.DPAD_RIGHT, () -> setLiftPosition(robot.liftPositions[2]))
+                .onPress(Button.DPAD_UP, () -> setLiftPosition(robot.liftPositions[3]))
+                .onPress(Button.DPAD_DOWN, () -> setLiftPosition(robot.liftPositions[0]));
 
 
         //Lift power, right stick y = lift power

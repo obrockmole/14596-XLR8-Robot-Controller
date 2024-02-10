@@ -10,22 +10,12 @@ public class StateMachines {
     public StateMachine fullLiftDeployment;
     public StateMachine liftRetraction;
 
-    private LiftDeploymentStages previousHalfLiftDeploymentState = LiftDeploymentStages.IDLE;
-    private LiftDeploymentStages previousFullLiftDeploymentState = LiftDeploymentStages.IDLE;
-    private LiftRetractionStages previousLiftRetractionState = LiftRetractionStages.IDLE;
-
     private enum LiftDeploymentStages {
-        IDLE,
-        FOLD_GRAB_BOX,
-        EXTEND_LIFT,
-        DEPLOY_GRAB_BOX
+        FOLD_GRAB_BOX, EXTEND_LIFT, DEPLOY_GRAB_BOX, IDLE
     }
 
     private enum LiftRetractionStages {
-        IDLE,
-        FOLD_GRAB_BOX,
-        RETRACT_LIFT,
-        RELEASE_GRAB_BOX
+        FOLD_GRAB_BOX, RETRACT_LIFT, RELEASE_GRAB_BOX, IDLE
     }
 
     public StateMachines(Robot theRobot) {
@@ -76,8 +66,6 @@ public class StateMachines {
                 .build();
 
         liftRetraction = new StateMachineBuilder()
-                .state(LiftRetractionStages.IDLE)
-
                 .state(LiftRetractionStages.FOLD_GRAB_BOX)
                 .onEnter(() -> {
                     if (robot.lift.getCurrentPosition() <= robot.liftPositions[1] && robot.lift.getCurrentPosition() >= robot.liftPositions[1] / 2) robot.lift.setTargetPosition(robot.liftPositions[1]);
@@ -96,6 +84,8 @@ public class StateMachines {
                     robot.currentArmStage = Robot.ArmStages.IDLE;
                 })
                 .transition(() -> (robot.arm.getPosition() == Robot.ArmStages.IDLE.getArmPos() && robot.grabbox.getPosition() == Robot.ArmStages.IDLE.getGrabboxPos()), LiftRetractionStages.IDLE)
+
+                .state(LiftRetractionStages.IDLE)
                 .build();
     }
 
@@ -103,24 +93,5 @@ public class StateMachines {
         halfLiftDeployment.update();
         fullLiftDeployment.update();
         liftRetraction.update();
-
-        if (!halfLiftDeployment.isRunning() && previousHalfLiftDeploymentState != LiftDeploymentStages.IDLE) {
-            halfLiftDeployment.reset();
-            halfLiftDeployment.stop();
-        }
-
-        if (!fullLiftDeployment.isRunning() && previousFullLiftDeploymentState != LiftDeploymentStages.IDLE) {
-            fullLiftDeployment.reset();
-            fullLiftDeployment.stop();
-        }
-
-        if (!liftRetraction.isRunning() && previousLiftRetractionState != LiftRetractionStages.IDLE) {
-            liftRetraction.reset();
-            liftRetraction.stop();
-        }
-
-        previousHalfLiftDeploymentState = (LiftDeploymentStages) halfLiftDeployment.getState();
-        previousFullLiftDeploymentState = (LiftDeploymentStages) fullLiftDeployment.getState();
-        previousLiftRetractionState = (LiftRetractionStages) liftRetraction.getState();
     }
 }

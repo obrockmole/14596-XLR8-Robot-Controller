@@ -31,10 +31,10 @@ public class Robot extends Drivetrain {
     public final PositionServo droneLauncher;
 
     public enum ArmStages {
-        IDLE(0.14, 0.06),
-        FOLDED(0, 0.5),
-        HALF_DEPLOYED(0.5, 0.57),
-        DEPLOYED(1, 0.64);
+        FOLDED(0, 0.57),
+        IDLE(0.1, 0.37),
+        HALF_DEPLOYED(0.4, 0.65),
+        DEPLOYED(0.7, 0.65);
 
         private final double armPos, grabboxPos;
 
@@ -79,31 +79,31 @@ public class Robot extends Drivetrain {
         intake = new Motor(hardwareMap, "intake", MotorList.GOBILDA_435, Motor.Mode.POWER, true);
 
         arm = new PositionServoGroup(
-                new PositionServo(hardwareMap, "leftArm", 0.0, 0.7, false),
-                new PositionServo(hardwareMap, "rightArm", 0.3, 1, true)
+                new PositionServo(hardwareMap, "leftArm", 0, 1, true),
+                new PositionServo(hardwareMap, "rightArm", 0, 1, false)
         );
 
         grabbox = new PositionServoGroup(
-                new PositionServo(hardwareMap, "leftGrabbox", 0, 0.4, true),
-                new PositionServo(hardwareMap, "rightGrabbox", 0.6, 1, false)
+                new PositionServo(hardwareMap, "leftGrabbox", 0, 1, false),
+                new PositionServo(hardwareMap, "rightGrabbox", 0, 1, true)
         );
 
         pixelClamp = new PositionServoGroup(
-                new PositionServo(hardwareMap, "leftPixelClamp", 0.14, 0.28, false),
-                new PositionServo(hardwareMap, "rightPixelClamp", 0.06, 0.22, false)
+                new PositionServo(hardwareMap, "leftPixelClamp", 0.06, 0.25, false),
+                new PositionServo(hardwareMap, "rightPixelClamp", 0.14, 0.33, false)
         );
 
         intakeFlippers = new PositionServoGroup(
-                new PositionServo(hardwareMap, "leftIntakeFlipper", 0.14, 0.35, false),
-                new PositionServo(hardwareMap, "rightIntakeFlipper", 0.12, 0.35, true)
+                new PositionServo(hardwareMap, "leftIntakeFlipper", 0.14, 0.35, true),
+                new PositionServo(hardwareMap, "rightIntakeFlipper", 0.12, 0.35, false)
         );
 
         hangRelease = new PositionServoGroup(
-                new PositionServo(hardwareMap, "leftHangRelease", 0.29, 0.45, false),
-                new PositionServo(hardwareMap, "rightHangRelease", 0.29, 0.45, true)
+                new PositionServo(hardwareMap, "leftHangRelease", 0.26, 0.45, true),
+                new PositionServo(hardwareMap, "rightHangRelease", 0.26, 0.45, false)
         ); //Added hang release servo group. By Cole
 
-        droneLauncher = new PositionServo(hardwareMap, "droneLauncher", 0.15, 0.3, false);
+        droneLauncher = new PositionServo(hardwareMap, "droneLauncher", 0.1, 0.3, false);
 
         batteryVoltageSensor = new BatteryVoltageSensor(hardwareMap);
     }
@@ -112,7 +112,7 @@ public class Robot extends Drivetrain {
 //        lift.setTargetPosition(0);
         currentArmStage = ArmStages.IDLE;
         pixelClamp.setTargetPosition(0);
-        intakeFlippers.setTargetPosition(0);
+//        intakeFlippers.setTargetPosition(0);
         droneLauncher.setTargetPosition(0);
         hangRelease.setTargetPosition(0); //Added in by Cole
 
@@ -125,11 +125,11 @@ public class Robot extends Drivetrain {
         if (updateDriveMotors) super.update();
 
         lift.update();
-        if (lift.getPower() < 0) lift.setSpeedScale(0.2);
-        else lift.setSpeedScale(1);
+//        if (lift.getPower() < 0) lift.setSpeedScale(0.4);
+//        else lift.setSpeedScale(1);
 
         intake.update();
-        intakeFlippers.update();
+//        intakeFlippers.update();
 
         if (arm.getTargetPosition() != currentArmStage.armPos) arm.setTargetPosition(currentArmStage.armPos);
         if (grabbox.getTargetPosition() != currentArmStage.grabboxPos) grabbox.setTargetPosition(currentArmStage.grabboxPos);
@@ -157,20 +157,23 @@ public class Robot extends Drivetrain {
         telemetry.addData("Power", intake.getPower());
         telemetry.addLine();
 
-        telemetry.addLine("-----Intake Flippers-----");
-        telemetry.addData("Deployed", intakeFlippers.getTargetPosition() == 1);
-        telemetry.addLine();
+//        telemetry.addLine("-----Intake Flippers-----");
+//        telemetry.addData("Deployed", intakeFlippers.getTargetPosition() == 1);
+//        telemetry.addLine();
 
         telemetry.addLine("-----Arm-----");
         telemetry.addData("Stage", currentArmStage.toString());
         telemetry.addLine();
 
-        telemetry.addLine("-----Hang Release-----");
-        telemetry.addData("Released", hangRelease.getTargetPosition() == 1);
-        telemetry.addLine();
-
         telemetry.addLine("-----Pixel Clamp-----");
         telemetry.addData("Clamped", pixelClamp.getTargetPosition() == 1);
+        telemetry.addLine();
+
+        telemetry.addLine("-----Drone Launcher-----");
+        telemetry.addData("Launched", droneLauncher.getTargetPosition() == 1);
+
+        telemetry.addLine("-----Hang Release-----");
+        telemetry.addData("Released", hangRelease.getTargetPosition() == 1);
         telemetry.addLine();
 
         telemetry.addLine("-----Battery Voltage-----");
