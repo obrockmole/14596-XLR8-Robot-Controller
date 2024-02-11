@@ -26,9 +26,9 @@ public class Blue_Backboard_Purple extends BaseAuto {
 
                 //Place purple pixel
                 .addTemporalMarker(() -> {
-                    robot.intake.setTargetPower(-0.5);
+                    robot.intake.setTargetPower(-0.3);
                 })
-                .waitSeconds(1.5)
+                .waitSeconds(2)
 
                 //Park
                 .lineToConstantHeading(new Vector2d(50, 60))
@@ -45,9 +45,9 @@ public class Blue_Backboard_Purple extends BaseAuto {
 
                 //Place purple pixel
                 .addTemporalMarker(() -> {
-                    robot.intake.setTargetPower(-0.5);
+                    robot.intake.setTargetPower(-0.3);
                 })
-                .waitSeconds(1.5)
+                .waitSeconds(2)
 
                 //Park
                 .lineToConstantHeading(new Vector2d(50, 60))
@@ -65,9 +65,9 @@ public class Blue_Backboard_Purple extends BaseAuto {
 
                 //Place purple pixel
                 .addTemporalMarker(() -> {
-                    robot.intake.setTargetPower(-0.5);
+                    robot.intake.setTargetPower(-0.3);
                 })
-                .waitSeconds(1.5)
+                .waitSeconds(2)
 
                 //Park
                 .lineToConstantHeading(new Vector2d(50, 60))
