@@ -17,6 +17,7 @@ import com.acmerobotics.roadrunner.trajectory.constraints.ProfileAccelerationCon
 import com.acmerobotics.roadrunner.trajectory.constraints.TrajectoryAccelerationConstraint;
 import com.acmerobotics.roadrunner.trajectory.constraints.TrajectoryVelocityConstraint;
 import com.qualcomm.hardware.lynx.LynxModule;
+import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
@@ -26,6 +27,7 @@ import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 import com.qualcomm.robotcore.hardware.VoltageSensor;
 import com.qualcomm.robotcore.hardware.configuration.typecontainers.MotorConfigurationType;
 
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.RoadRunner.TrajectorySequence.TrajectorySequence;
 import org.firstinspires.ftc.teamcode.RoadRunner.TrajectorySequence.TrajectorySequenceBuilder;
 import org.firstinspires.ftc.teamcode.RoadRunner.TrajectorySequence.TrajectorySequenceRunner;
@@ -91,6 +93,10 @@ public class MecanumDrive extends com.acmerobotics.roadrunner.drive.MecanumDrive
             module.setBulkCachingMode(LynxModule.BulkCachingMode.AUTO);
         }
 
+        imu = hardwareMap.get(IMU.class, "imu");
+        IMU.Parameters parameters = new IMU.Parameters(new RevHubOrientationOnRobot(DriveConstants.LOGO_FACING_DIR, DriveConstants.USB_FACING_DIR));
+        imu.initialize(parameters);
+
         leftFront = hardwareMap.get(DcMotorEx.class, "frontLeft");
         leftRear = hardwareMap.get(DcMotorEx.class, "backLeft");
         rightRear = hardwareMap.get(DcMotorEx.class, "backRight");
@@ -120,7 +126,8 @@ public class MecanumDrive extends com.acmerobotics.roadrunner.drive.MecanumDrive
         List<Integer> lastTrackingEncPositions = new ArrayList<>();
         List<Integer> lastTrackingEncVels = new ArrayList<>();
 
-        setLocalizer(new ThreeWheelTrackingLocalizer(hardwareMap, lastTrackingEncPositions, lastTrackingEncVels));
+//        setLocalizer(new ThreeWheelTrackingLocalizer(hardwareMap, lastTrackingEncPositions, lastTrackingEncVels));
+        setLocalizer(new TwoWheelTrackingLocalizer(hardwareMap, this));
 
         trajectorySequenceRunner = new TrajectorySequenceRunner(
                 follower, HEADING_PID, batteryVoltageSensor,
@@ -282,12 +289,12 @@ public class MecanumDrive extends com.acmerobotics.roadrunner.drive.MecanumDrive
 
     @Override
     public double getRawExternalHeading() {
-        return 0.0;
+        return imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);
     }
 
     @Override
     public Double getExternalHeadingVelocity() {
-        return 0.0;
+        return (double) imu.getRobotAngularVelocity(AngleUnit.RADIANS).xRotationRate;
     }
 
     public static TrajectoryVelocityConstraint getVelocityConstraint(double maxVel, double maxAngularVel, double trackWidth) {
