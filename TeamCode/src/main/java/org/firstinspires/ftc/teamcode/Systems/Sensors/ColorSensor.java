@@ -1,16 +1,20 @@
 package org.firstinspires.ftc.teamcode.Systems.Sensors;
 
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.NormalizedColorSensor;
+import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.NormalizedRGBA;
+import com.qualcomm.robotcore.hardware.SwitchableLight;
 import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 
 /**
  * Class representing a Color Sensor.
  */
 public class ColorSensor {
-    private com.qualcomm.robotcore.hardware.NormalizedColorSensor sensor;
+    private NormalizedColorSensor sensor;
     private int[] rgbaValues = new int[4];
     private double[] hsvValues = new double[3];
 
@@ -20,8 +24,11 @@ public class ColorSensor {
      * @param sensor The NormalizedColorSensor object that this ColorSensor will use.
      * @param gain The gain to set for the NormalizedColorSensor.
      */
-    public ColorSensor(com.qualcomm.robotcore.hardware.NormalizedColorSensor sensor, float gain) {
+    public ColorSensor(NormalizedColorSensor sensor, float gain) {
         sensor.setGain(gain);
+        if (sensor instanceof SwitchableLight) {
+            ((SwitchableLight)sensor).enableLight(true);
+        }
         this.sensor = sensor;
     }
 
@@ -30,7 +37,7 @@ public class ColorSensor {
      *
      * @param sensor The NormalizedColorSensor object that this ColorSensor will use.
      */
-    public ColorSensor(com.qualcomm.robotcore.hardware.NormalizedColorSensor sensor) {
+    public ColorSensor(NormalizedColorSensor sensor) {
         this(sensor, 1);
     }
 
@@ -41,7 +48,7 @@ public class ColorSensor {
      * @param name The name of the NormalizedColorSensor object in the HardwareMap.
      */
     public ColorSensor(HardwareMap hardwareMap, String name) {
-        this(hardwareMap.get(com.qualcomm.robotcore.hardware.NormalizedColorSensor.class, name), 1);
+        this(hardwareMap.get(NormalizedColorSensor.class, name), 1);
     }
 
     /**
@@ -52,7 +59,7 @@ public class ColorSensor {
      * @param gain The gain to set for the NormalizedColorSensor.
      */
     public ColorSensor(HardwareMap hardwareMap, String name, float gain) {
-        this(hardwareMap.get(com.qualcomm.robotcore.hardware.NormalizedColorSensor.class, name), gain);
+        this(hardwareMap.get(NormalizedColorSensor.class, name), gain);
     }
 
     /**
@@ -60,7 +67,7 @@ public class ColorSensor {
      *
      * @return The NormalizedColorSensor object that this ColorSensor uses.
      */
-    public com.qualcomm.robotcore.hardware.NormalizedColorSensor getSensor() {
+    public NormalizedColorSensor getSensor() {
         return sensor;
     }
 
@@ -70,7 +77,7 @@ public class ColorSensor {
      * @param sensor The NormalizedColorSensor object to use.
      * @return The current ColorSensor instance.
      */
-    public ColorSensor setSensor(com.qualcomm.robotcore.hardware.NormalizedColorSensor sensor) {
+    public ColorSensor setSensor(NormalizedColorSensor sensor) {
         this.sensor = sensor;
         return this;
     }
@@ -83,7 +90,56 @@ public class ColorSensor {
      * @return The current ColorSensor instance.
      */
     public ColorSensor setSensor(HardwareMap hardwareMap, String name) {
-        return setSensor(hardwareMap.get(com.qualcomm.robotcore.hardware.NormalizedColorSensor.class, name));
+        return setSensor(hardwareMap.get(NormalizedColorSensor.class, name));
+    }
+
+    /**
+     * Returns the gain of the ColorSensor.
+     *
+     * @return The gain of the ColorSensor.
+     */
+    public float getGain() {
+        return sensor.getGain();
+    }
+
+    /**
+     * Sets the gain of the ColorSensor.
+     *
+     * @param gain The gain to set for the ColorSensor.
+     * @return The current ColorSensor instance.
+     */
+    public ColorSensor setGain(float gain) {
+        sensor.setGain(gain);
+        return this;
+    }
+
+    /**
+     * Increases the gain of the ColorSensor.
+     *
+     * @param gainIncrease The amount to increase the gain by.
+     * @return The current ColorSensor instance.
+     */
+    public ColorSensor increaseGain(float gainIncrease) {
+        sensor.setGain(getGain() + gainIncrease);
+        return this;
+    }
+
+    /**
+     * Returns the RGBA values of the ColorSensor.
+     *
+     * @return The RGBA values of the ColorSensor.
+     */
+    public int[] getRGBA() {
+        return rgbaValues;
+    }
+
+    /**
+     * Returns the RGB values of the ColorSensor.
+     *
+     * @return The RGB values of the ColorSensor.
+     */
+    public int[] getRGB() {
+        return new int[] {getRed(), getGreen(), getBlue()};
     }
 
     /**
@@ -120,6 +176,15 @@ public class ColorSensor {
      */
     public int getAlpha() {
         return rgbaValues[3];
+    }
+
+    /**
+     * Returns the HSV values of the ColorSensor.
+     *
+     * @return The HSV values of the ColorSensor.
+     */
+    public double[] getHSV() {
+        return hsvValues;
     }
 
     /**
@@ -192,12 +257,91 @@ public class ColorSensor {
     }
 
     /**
+     * Returns the distance measured by the ColorSensor if it is capable, otherwise returns -1.
+     *
+     * @param distanceUnit The unit of measurement for the distance.
+     * @return The distance measured by the ColorSensor.
+     */
+    public double getDistance(DistanceUnit distanceUnit) {
+        if (sensor instanceof DistanceSensor) {
+            return !outOfRange() ? ((DistanceSensor) sensor).getDistance(distanceUnit) : -1;
+        }
+        return -1;
+    }
+
+    /**
+     * Returns the distance measured by the ColorSensor in millimeters if it is capable, otherwise returns -1.
+     *
+     * @return The distance measured by the ColorSensor in millimeters.
+     */
+    public double getDistanceMM() {
+        return getDistance(DistanceUnit.MM);
+    }
+
+    /**
+     * Returns the distance measured by the ColorSensor in centimeters if it is capable, otherwise returns -1.
+     *
+     * @return The distance measured by the ColorSensor in centimeters.
+     */
+    public double getDistanceCM() {
+        return getDistance(DistanceUnit.CM);
+    }
+
+    /**
+     * Returns the distance measured by the ColorSensor in meters if it is capable, otherwise returns -1.
+     *
+     * @return The distance measured by the ColorSensor in meters.
+     */
+    public double getDistanceM() {
+        return getDistance(DistanceUnit.METER);
+    }
+
+    /**
+     * Returns the distance measured by the ColorSensor in inches if it is capable, otherwise returns -1.
+     *
+     * @return The distance measured by the ColorSensor in inches.
+     */
+    public double getDistanceIN() {
+        return getDistance(DistanceUnit.INCH);
+    }
+
+    /**
+     * Returns the distance measured by the ColorSensor in feet if it is capable, otherwise returns -1.
+     *
+     * @return The distance measured by the ColorSensor in feet.
+     */
+    public double getDistanceFT() {
+        return getDistance(DistanceUnit.INCH) / 12;
+    }
+
+    /**
+     * Returns the distance measured by the ColorSensor in yards if it is capable, otherwise returns -1.
+     *
+     * @return The distance measured by the ColorSensor in yards.
+     */
+    public double getDistanceYD() {
+        return getDistance(DistanceUnit.INCH) / 36;
+    }
+
+    /**
+     * Returns whether the ColorSensor is out of range if it is capable, otherwise returns true.
+     *
+     * @return Whether the ColorSensor is out of range.
+     */
+    public boolean outOfRange() {
+        if (sensor instanceof DistanceSensor) {
+            return ((DistanceSensor) sensor).getDistance(DistanceUnit.CM) == DistanceUnit.infinity;
+        }
+        return true;
+    }
+
+    /**
      * Returns the CSV header for the ColorSensor's data.
      *
      * @return The CSV header as a string.
      */
     public String getCSVHeader() {
-        return "Red,Green,Blue,Alpha";
+        return "Red,Green,Blue,Alpha,Distance(cm)";
     }
 
     /**
@@ -206,7 +350,7 @@ public class ColorSensor {
      * @return The CSV data as a string.
      */
     public String getCSVData() {
-        return String.format("%s,%s,%s,%s", getRed(), getGreen(), getBlue(), getAlpha());
+        return String.format("%s,%s,%s,%s,%s", getRed(), getGreen(), getBlue(), getAlpha(), getDistanceCM());
     }
 
     /**
@@ -218,10 +362,10 @@ public class ColorSensor {
         NormalizedRGBA colors = sensor.getNormalizedColors();
 
         rgbaValues = new int[] {
-                Range.clip((int)(colors.red * 256), 0, 1),
-                Range.clip((int)(colors.green * 256), 0, 1),
-                Range.clip((int)(colors.blue * 256), 0, 1),
-                Range.clip((int)(colors.alpha * 256), 0, 1)
+                Range.clip((int)(colors.red * 256), 0, 255),
+                Range.clip((int)(colors.green * 256), 0, 255),
+                Range.clip((int)(colors.blue * 256), 0, 255),
+                Range.clip((int)(colors.alpha * 256), 0, 255)
         };
 
         hsvValues = rgbToHSV(colors.red, colors.green, colors.blue);
@@ -239,6 +383,7 @@ public class ColorSensor {
         telemetry.addData("Sensor", hardwareMap.getNamesOf(sensor).toArray()[0]);
         telemetry.addData("RGBA", "%d, %d, %d, %d", getRed(), getGreen(), getBlue(), getAlpha());
         telemetry.addData("HSV", "%.2f, %.2f, %.2f", getHue(), getSaturation(), getValue());
+        telemetry.addData("Distance (cm)", getDistanceCM());
         return this;
     }
 }

@@ -68,7 +68,7 @@ public class DistanceSensor {
      * @return The distance measured by the DistanceSensor.
      */
     public double getDistance(DistanceUnit distanceUnit) {
-        return sensor.getDistance(distanceUnit);
+        return !outOfRange() ? sensor.getDistance(distanceUnit) : -1;
     }
 
     /**
@@ -77,7 +77,7 @@ public class DistanceSensor {
      * @return The distance measured by the DistanceSensor in millimeters.
      */
     public double getDistanceMM() {
-        return (!outOfRange()) ? sensor.getDistance(DistanceUnit.MM) : -1;
+        return getDistance(DistanceUnit.MM);
     }
 
     /**
@@ -86,7 +86,7 @@ public class DistanceSensor {
      * @return The distance measured by the DistanceSensor in centimeters.
      */
     public double getDistanceCM() {
-        return (!outOfRange()) ? sensor.getDistance(DistanceUnit.CM) : -1;
+        return getDistance(DistanceUnit.CM);
     }
 
     /**
@@ -95,7 +95,7 @@ public class DistanceSensor {
      * @return The distance measured by the DistanceSensor in meters.
      */
     public double getDistanceM() {
-        return (!outOfRange()) ? sensor.getDistance(DistanceUnit.METER) : -1;
+        return getDistance(DistanceUnit.METER);
     }
 
     /**
@@ -104,7 +104,7 @@ public class DistanceSensor {
      * @return The distance measured by the DistanceSensor in inches.
      */
     public double getDistanceIN() {
-        return (!outOfRange()) ? sensor.getDistance(DistanceUnit.INCH) : -1;
+        return getDistance(DistanceUnit.INCH);
     }
 
     /**
@@ -113,7 +113,7 @@ public class DistanceSensor {
      * @return The distance measured by the DistanceSensor in feet.
      */
     public double getDistanceFT() {
-        return (!outOfRange()) ? sensor.getDistance(DistanceUnit.INCH) / 12 : -1;
+        return getDistance(DistanceUnit.INCH) / 12;
     }
 
     /**
@@ -122,7 +122,7 @@ public class DistanceSensor {
      * @return The distance measured by the DistanceSensor in yards.
      */
     public double getDistanceYD() {
-        return (!outOfRange()) ? sensor.getDistance(DistanceUnit.INCH) / 36 : -1;
+        return getDistance(DistanceUnit.INCH) / 36;
     }
 
     /**
@@ -131,7 +131,7 @@ public class DistanceSensor {
      * @return True if the DistanceSensor is out of range, false otherwise.
      */
     public boolean outOfRange() {
-        return getDistanceM() == DistanceUnit.infinity;
+        return sensor.getDistance(DistanceUnit.CM) == DistanceUnit.infinity;
     }
 
     /**
@@ -140,7 +140,7 @@ public class DistanceSensor {
      * @return The CSV header as a string.
      */
     public String getCSVHeader() {
-        return "Distance";
+        return "Distance(cm)";
     }
 
     /**
@@ -161,6 +161,7 @@ public class DistanceSensor {
      */
     public DistanceSensor log(Telemetry telemetry, HardwareMap hardwareMap) {
         telemetry.addData("Sensor", hardwareMap.getNamesOf(sensor).toArray()[0]);
+        telemetry.addData("Out of Range", outOfRange());
         telemetry.addData("Distance (cm)", getDistanceCM());
         telemetry.addData("Distance (in)", getDistanceIN());
         return this;
