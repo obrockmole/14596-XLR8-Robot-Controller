@@ -7,7 +7,6 @@ import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.Systems.DataFilters.KalmanFilter;
 import org.firstinspires.ftc.teamcode.Systems.DataFilters.MovingAverageFilter;
 
-/* WARNING: UNTESTED, MAY NOT WORK */
 public class AdvancedDistanceSensor {
     private final com.qualcomm.robotcore.hardware.DistanceSensor sensor;
 
@@ -21,11 +20,11 @@ public class AdvancedDistanceSensor {
     }
 
     public double getDistance() {
-        return (!outOfRange()) ? sensor.getDistance(DistanceUnit.CM) : -1;
+        return (!outOfRange()) ? sensor.getDistance(DistanceUnit.MM) : -1;
     }
 
     public boolean outOfRange() {
-        return getDistance() == DistanceUnit.infinity;
+        return sensor.getDistance(DistanceUnit.MM) == DistanceUnit.infinity;
     }
 
     public AdvancedDistanceSensor update() {

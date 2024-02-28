@@ -1,6 +1,5 @@
 package org.firstinspires.ftc.teamcode.CenterStage.TeleOp;
 
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.CenterStage.Robot;
@@ -8,7 +7,7 @@ import org.firstinspires.ftc.teamcode.Systems.Gamepad.GamepadButtons.Button;
 import org.firstinspires.ftc.teamcode.Systems.Gamepad.GamepadButtons.Stick;
 import org.firstinspires.ftc.teamcode.Systems.Gamepad.GamepadButtons.Trigger;
 
-@Disabled
+//@Disabled
 @TeleOp(group = "TeleOp", name = "Testing TeleOp")
 public class TestingTeleOp extends BaseTele {
     public void loop() {
@@ -22,19 +21,20 @@ public class TestingTeleOp extends BaseTele {
 
 
         /* MANIPULATOR */
-        //Arm positions, left bumper = half deployed, right bumper = fully deployed
-        manipulator.onPress(Button.LEFT_BUMPER, () -> robot.currentArmStage = Robot.ArmStages.HALF_DEPLOYED)
-                .onPress(Button.RIGHT_BUMPER, () -> robot.currentArmStage = Robot.ArmStages.DEPLOYED);
+        //Arm positions, left bumper = low, right bumper = high, B = idle, Y = folded
+        manipulator.onPress(Button.LEFT_BUMPER, () -> robot.currentArmStage = Robot.ArmStages.DEPLOYED)
+                .onPress(Button.RIGHT_BUMPER, () -> robot.currentArmStage = Robot.ArmStages.DEPLOYED_LOW)
+                .onPress(Button.B, () -> robot.currentArmStage = Robot.ArmStages.IDLE)
+                .onPress(Button.Y, () -> robot.currentArmStage = Robot.ArmStages.FOLDED);
 
-        //Lift positions, Dpad left = half deployed, Dpad right = fully deployed, Dpad up = up, Dpad down = down (TODO)
-        manipulator.onPress(Button.DPAD_LEFT, () -> setLiftPosition(robot.liftPositions[1]))
-                .onPress(Button.DPAD_RIGHT, () -> setLiftPosition(robot.liftPositions[2]))
-                .onPress(Button.DPAD_UP, () -> setLiftPosition(robot.liftPositions[3]))
-                .onPress(Button.DPAD_DOWN, () -> setLiftPosition(robot.liftPositions[0]));
-
+        //Lift positions, Dpad left = just out, Dpad right = fully up, Dpad up = halfway up, Dpad down = down
+        manipulator.onPress(Button.DPAD_LEFT, () -> robot.setLiftPosition(robot.liftPositions[1]))
+                .onPress(Button.DPAD_RIGHT, () -> robot.setLiftPosition(robot.liftPositions[3]))
+                .onPress(Button.DPAD_UP, () -> robot.setLiftPosition(robot.liftPositions[2]))
+                .onPress(Button.DPAD_DOWN, () -> robot.setLiftPosition(robot.liftPositions[0]));
 
         //Lift power, right stick y = lift power
-        if (Math.abs(manipulator.getStickY(Stick.RIGHT_STICK)) > 0.1) setLiftPower(-manipulator.getStickY(Stick.RIGHT_STICK));
+        if (Math.abs(manipulator.getStickY(Stick.RIGHT_STICK)) > 0.1) robot.setLiftPower(-manipulator.getStickY(Stick.RIGHT_STICK));
 
         //Intake, left trigger = intake, right trigger = outtake
         robot.intake.setTargetPower(manipulator.getTrigger(Trigger.LEFT_TRIGGER) - manipulator.getTrigger(Trigger.RIGHT_TRIGGER) / 2.5);
@@ -52,7 +52,7 @@ public class TestingTeleOp extends BaseTele {
             robot.hangRelease.setTargetPosition(1);
         }
 
-        update();
+        super.loop();
         log();
     }
 }

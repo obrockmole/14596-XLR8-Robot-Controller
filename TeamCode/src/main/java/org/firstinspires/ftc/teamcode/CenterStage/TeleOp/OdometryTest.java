@@ -17,7 +17,7 @@ public class OdometryTest extends OpMode {
         odometry = new Odometry(
                 new OdometryPod(new Encoder(hardwareMap, "frontLeft", Encoder.Direction.REVERSE)),
                 new OdometryPod(new Encoder(hardwareMap, "backRight", Encoder.Direction.REVERSE)),
-                new OdometryPod(new Encoder(hardwareMap, "intake", Encoder.Direction.FORWARD))
+                new OdometryPod(new Encoder(hardwareMap, "intake1", Encoder.Direction.FORWARD))
         );
     }
 

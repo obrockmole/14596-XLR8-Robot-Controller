@@ -11,7 +11,7 @@ import org.firstinspires.ftc.teamcode.Systems.Motors.Motor;
 import org.firstinspires.ftc.teamcode.Systems.Motors.MotorGroup;
 import org.firstinspires.ftc.teamcode.Systems.Motors.MotorList;
 
-@Disabled
+//@Disabled
 @Config
 @TeleOp(group = "Tuning")
 public class PowerTuner_MotorGroup extends OpMode {

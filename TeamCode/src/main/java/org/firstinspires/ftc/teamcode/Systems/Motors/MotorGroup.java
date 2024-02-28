@@ -263,6 +263,16 @@ public class MotorGroup extends ArrayList<Motor> {
     }
 
     /**
+     * Checks if the motor at the specified index in the MotorGroup is at its target position.
+     *
+     * @param motor The index of the motor to check
+     * @return True if the motor is at its target position, false otherwise.
+     */
+    public boolean atTargetPosition(int motor) {
+        return get(motor).atTargetPosition();
+    }
+
+    /**
      * Returns the position error of the motor at the specified index in the MotorGroup.
      *
      * @param motor The index of the motor to return the position error.

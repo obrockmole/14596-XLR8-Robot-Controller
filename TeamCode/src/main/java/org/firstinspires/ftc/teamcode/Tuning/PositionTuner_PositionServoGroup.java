@@ -10,7 +10,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import org.firstinspires.ftc.teamcode.Systems.Servos.PositionServo;
 import org.firstinspires.ftc.teamcode.Systems.Servos.PositionServoGroup;
 
-@Disabled
+//@Disabled
 @Config
 @TeleOp(group = "Tuning")
 public class PositionTuner_PositionServoGroup extends OpMode {
