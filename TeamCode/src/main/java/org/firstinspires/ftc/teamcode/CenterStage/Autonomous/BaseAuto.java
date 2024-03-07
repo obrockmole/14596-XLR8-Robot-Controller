@@ -1,12 +1,11 @@
 package org.firstinspires.ftc.teamcode.CenterStage.Autonomous;
 
-import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.arcrobotics.ftclib.geometry.Vector2d;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
 import org.firstinspires.ftc.teamcode.CenterStage.Robot;
-import org.firstinspires.ftc.teamcode.RoadRunner.Drive.MecanumDrive;
-import org.firstinspires.ftc.teamcode.RoadRunner.TrajectorySequence.TrajectorySequence;
+import org.firstinspires.ftc.teamcode.CenterStage.StateMachines;
+import org.firstinspires.ftc.teamcode.Systems.Movement.MovementSequence;
 import org.firstinspires.ftc.teamcode.Systems.Vision.ContourDetectionPipeline;
 import org.firstinspires.ftc.teamcode.Systems.Vision.DrawStrategy;
 import org.firstinspires.ftc.teamcode.Systems.Vision.VisionDetector;
@@ -23,9 +22,9 @@ import java.util.Map;
 
 public abstract class BaseAuto extends OpMode implements DrawStrategy {
     protected Robot robot;
+    protected StateMachines stateMachines;
 
-    protected MecanumDrive drive;
-    protected TrajectorySequence leftSequence, centerSequence, rightSequence;
+    protected MovementSequence movementSequence;
 
     protected VisionDetector contourDetector;
     protected ContourDetectionPipeline pipeline;
@@ -45,19 +44,16 @@ public abstract class BaseAuto extends OpMode implements DrawStrategy {
 
     public void init() {
         robot = new Robot(hardwareMap);
-        drive = new MecanumDrive(hardwareMap);
-
         robot.initialize();
-        robot.pixelClamp.setTargetPosition(1);
+
+        stateMachines = new StateMachines(robot);
 
         initVision();
         contourDetector.start();
         for (PropPositions position : PropPositions.values())
             propPositionsCount.put(position, 0);
 
-        leftSequence = leftSequence(startPos());
-        centerSequence = centerSequence(startPos());
-        rightSequence = rightSequence(startPos());
+        movementSequence = new MovementSequence(robot);
     }
 
     public void init_loop() {
@@ -90,23 +86,26 @@ public abstract class BaseAuto extends OpMode implements DrawStrategy {
 
     public void start() {
         contourDetector.stop();
-        drive.setPoseEstimate(startPos());
 
         switch (finalPropPosition) {
             case LEFT:
-                drive.followTrajectorySequenceAsync(leftSequence);
+                movementSequence.addSequence(leftSequence());
                 break;
             case CENTER:
-                drive.followTrajectorySequenceAsync(centerSequence);
+                movementSequence.addSequence(centerSequence());
                 break;
             case RIGHT:
-                drive.followTrajectorySequenceAsync(rightSequence);
+                movementSequence.addSequence(rightSequence());
                 break;
         }
+
+        movementSequence.start();
     }
 
     public void loop() {
-        drive.update();
+        movementSequence.update();
+
+        stateMachines.update();
         robot.update(false);
         robot.log(telemetry, true, false);
 
@@ -139,10 +138,9 @@ public abstract class BaseAuto extends OpMode implements DrawStrategy {
     }
 
     public abstract void initVision();
-    public abstract Pose2d startPos();
-    public abstract TrajectorySequence leftSequence(Pose2d startPos);
-    public abstract TrajectorySequence centerSequence(Pose2d startPos);
-    public abstract TrajectorySequence rightSequence(Pose2d startPos);
+    public abstract MovementSequence leftSequence();
+    public abstract MovementSequence centerSequence();
+    public abstract MovementSequence rightSequence();
 
     public void drawOnFrame(Mat frame) {
         MatOfPoint detection = contourDetector.getDetection();

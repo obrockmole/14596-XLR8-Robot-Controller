@@ -43,7 +43,7 @@ public class CompetitionTeleOp extends BaseTele {
         //Drone launch and hang release, Guide = launch and release
         if (driver.isDown(Button.TOUCHPAD) && manipulator.isDown(Button.TOUCHPAD)) {
             robot.droneLauncher.setTargetPosition(1);
-            robot.hangRelease.setTargetPosition(1);
+//            robot.hangRelease.setTargetPosition(1);
         }
 
         super.loop();

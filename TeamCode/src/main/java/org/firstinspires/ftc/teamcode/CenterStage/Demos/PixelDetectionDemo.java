@@ -38,13 +38,19 @@ public class PixelDetectionDemo extends OpMode {
     private Pixels previousLeftPixel = Pixels.NONE;
     private Pixels previousRightPixel = Pixels.NONE;
 
-    private final ColorSensor leftPixelSensor = new ColorSensor(hardwareMap, "leftPixelSensor", 4.8f);
-    private final ColorSensor rightPixelSensor = new ColorSensor(hardwareMap, "rightPixelSensor", 4.8f);
+    private ColorSensor leftPixelSensor;
+    private ColorSensor rightPixelSensor;
 
-    private final BlinkinLEDDriver leftBlinkin = new BlinkinLEDDriver(hardwareMap, "leftBlinkin");
-    private final BlinkinLEDDriver rightBlinkin = new BlinkinLEDDriver(hardwareMap, "rightBlinkin");
+    private BlinkinLEDDriver leftBlinkin;
+    private BlinkinLEDDriver rightBlinkin;
 
     public void init() {
+        leftPixelSensor = new ColorSensor(hardwareMap, "leftPixelSensor", 4.8f);
+        rightPixelSensor = new ColorSensor(hardwareMap, "rightPixelSensor", 4.8f);
+
+        leftBlinkin = new BlinkinLEDDriver(hardwareMap, "leftBlinkin");
+        rightBlinkin = new BlinkinLEDDriver(hardwareMap, "rightBlinkin");
+
         leftBlinkin.setPattern(BlinkinLEDDriver.Pattern.OCEAN_PALETTE_WAVES);
         rightBlinkin.setPattern(BlinkinLEDDriver.Pattern.OCEAN_PALETTE_WAVES);
     }

@@ -11,20 +11,20 @@ import org.firstinspires.ftc.teamcode.Systems.Gamepad.GamepadButtons.Stick;
 @TeleOp(group = "Demo", name = "Finite State Machine Demo")
 public class FSMDemo extends BaseTele {
     public void loop() {
-        /* MANIPULATOR */
-        //Arm positions, left bumper = low, right bumper = high, B = idle
+        //Arm positions, left bumper = low, right bumper = high, Y = idle, B = folded
         manipulator.onPress(Button.LEFT_BUMPER, () -> robot.currentArmStage = Robot.ArmStages.DEPLOYED)
                 .onPress(Button.RIGHT_BUMPER, () -> robot.currentArmStage = Robot.ArmStages.DEPLOYED_LOW)
-                .onPress(Button.B, () -> robot.currentArmStage = Robot.ArmStages.IDLE);
+                .onPress(Button.Y, () -> robot.currentArmStage = Robot.ArmStages.FOLDED)
+                .onPress(Button.A, () -> robot.currentArmStage = Robot.ArmStages.IDLE);
 
-        //Lift positions, Dpad left = fast deployment FSM, Dpad up = slow deployment FSM, X = fast retraction FSM, Y = slow retraction FSM
-        manipulator.onPress(Button.DPAD_LEFT, () -> stateMachines.fastDeployment.start())
-                .onPress(Button.DPAD_UP, () -> stateMachines.slowDeployment.start())
-                .onPress(Button.X, () -> stateMachines.fastRetraction.start())
-                .onPress(Button.Y, () -> stateMachines.slowRetraction.start());
+        //Lift positions, Dpad left = normal deployment FSM, Dpad right = normal deployment FSM, X = slow deployment FSM, B = slow retraction FSM
+        manipulator.onPress(Button.DPAD_LEFT, () -> stateMachines.deployment.start())
+                .onPress(Button.DPAD_RIGHT, () -> stateMachines.retraction.start())
+                .onPress(Button.X, () -> stateMachines.slowDeployment.start())
+                .onPress(Button.B, () -> stateMachines.slowRetraction.start());
 
         //Lift power, right stick y = lift power
-        if (Math.abs(manipulator.getStickY(Stick.RIGHT_STICK)) > 0.1) robot.setLiftPower(-manipulator.getStickY(Stick.RIGHT_STICK));
+        if (Math.abs(manipulator.getStickY(Stick.RIGHT_STICK)) > 0.1) robot.setLiftPower(-manipulator.getStickY(Stick.RIGHT_STICK) * 0.8);
 
         super.loop();
         log();

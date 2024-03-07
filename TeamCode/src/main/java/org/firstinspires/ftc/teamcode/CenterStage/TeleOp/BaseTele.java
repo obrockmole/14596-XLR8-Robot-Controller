@@ -94,48 +94,9 @@ public class BaseTele extends OpMode {
         driver.update();
         manipulator.update();
 
-        robot.update(true);
         stateMachines.update();
+        robot.update(true);
     }
-
-    /*public void update() {
-        int[] leftColor = robot.leftPixelSensor.getRGB();
-        int[] rightColor = robot.rightPixelSensor.getRGB();
-
-        Pixels currentLeftPixel = getClosestColor(leftColor[0], leftColor[1], leftColor[2]);
-        Pixels currentRightPixel = getClosestColor(rightColor[0], rightColor[1], rightColor[2]);
-
-        if (!endgameWarning && getRuntime() >= 90 && getRuntime() <= 92) {
-            endgameWarning = true;
-            robot.leftBlinkin.setPattern(BlinkinLEDDriver.Pattern.RED_HEARTBEAT);
-            robot.rightBlinkin.setPattern(BlinkinLEDDriver.Pattern.RED_HEARTBEAT);
-        } else if (endgameWarning && getRuntime() > 93) {
-            endgameWarning = false;
-            updateLeftColor(currentLeftPixel);
-            updateRightColor(currentRightPixel);
-        } else {
-            if (currentLeftPixel != previousLeftPixel)
-                updateLeftColor(currentLeftPixel);
-
-            if (currentRightPixel != previousRightPixel)
-                updateRightColor(currentRightPixel);
-        }
-
-        previousLeftPixel = currentLeftPixel;
-        previousRightPixel = currentRightPixel;
-
-        double leftDistance = robot.leftPixelSensor.getDistance(DistanceUnit.MM);
-        double rightDistance = robot.rightPixelSensor.getDistance(DistanceUnit.MM);
-
-        driver.rumble(((leftDistance < 7 && leftDistance >= 0) ? 0.3 : 0), ((rightDistance < 7 && rightDistance >= 0) ? 0.3 : 0), -1);
-        manipulator.rumble(((leftDistance < 7 && leftDistance >= 0) ? 0.3 : 0), ((rightDistance < 7 && rightDistance >= 0) ? 0.3 : 0), -1);
-
-        driver.update();
-        manipulator.update();
-
-        robot.update(true);
-        stateMachines.update();
-    }*/
 
     public void stop() {
         robot.leftBlinkin.setPattern(BlinkinLEDDriver.Pattern.OCEAN_PALETTE_WAVES);
@@ -200,6 +161,19 @@ public class BaseTele extends OpMode {
             case PURPLE:
                 robot.rightBlinkin.setPattern(BlinkinLEDDriver.Pattern.PURPLE);
                 break;
+        }
+    }
+
+    public void setLiftPosition(int position) {
+        if (robot.lift.getMode() == Motor.Mode.POWER) robot.lift.setMode(Motor.Mode.POSITION);
+
+        if (position == robot.liftPositions[0] && !robot.atLiftPosition(robot.liftPositions[0])) {
+            stateMachines.retraction.start();
+        } else {
+            if (robot.atLiftPosition(robot.liftPositions[0]))
+                stateMachines.deployment.start();
+            else
+                robot.setLiftPosition(position);
         }
     }
 }

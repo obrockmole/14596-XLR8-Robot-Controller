@@ -1,11 +1,9 @@
 package org.firstinspires.ftc.teamcode.CenterStage.Autonomous.Red.BackboardSide;
 
-import com.acmerobotics.roadrunner.geometry.Pose2d;
-import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
 import org.firstinspires.ftc.teamcode.CenterStage.Autonomous.BaseAuto;
-import org.firstinspires.ftc.teamcode.RoadRunner.TrajectorySequence.TrajectorySequence;
+import org.firstinspires.ftc.teamcode.Systems.Movement.MovementSequence;
 import org.firstinspires.ftc.teamcode.Systems.Vision.VisionDetector;
 
 @Autonomous(group = "Red", name = "Purple - Red Backboard")
@@ -15,65 +13,33 @@ public class Red_Backboard_Purple extends BaseAuto {
         contourDetector = new VisionDetector(hardwareMap, "Webcam", pipeline);
     }
 
-    public Pose2d startPos() {
-        return new Pose2d(12, -64, Math.toRadians(-90));
+    public MovementSequence leftSequence() {
+        return new MovementSequence(robot)
+                .odometryDrive(-28, -24, 0.8, 0)
+                .odometryTurn(90,0.6, 100)
+                .afterMoving(() -> robot.intake.setTargetPower(-0.4))
+                .waitSeconds(1.5)
+                .odometryDrive(-10, -28, 0.7, 0)
+                .afterMoving(() -> robot.intake.setTargetPower(0));
     }
 
-    public TrajectorySequence leftSequence(Pose2d startPos) {
-        return drive.trajectorySequenceBuilder(startPos)
-                //Drive to spike mark
-                .setTangent(Math.toRadians(70))
-                .splineToLinearHeading(new Pose2d(10, -31, Math.toRadians(180)), Math.toRadians(180))
-
-                //Place purple pixel
-                .addTemporalMarker(() -> {
-                    robot.intake.setTargetPower(-0.3);
-                })
-                .waitSeconds(2)
-
-                //Park
-                .lineToConstantHeading(new Vector2d(50, -60))
-                .addTemporalMarker(() -> {
-                    robot.intake.setTargetPower(0);
-                })
-                .build();
+    public MovementSequence centerSequence() {
+        return new MovementSequence(robot)
+                .odometryDrive(-42, -12, 0.8, 0)
+                .odometryTurn(90,0.6, 100)
+                .afterMoving(() -> robot.intake.setTargetPower(-0.4))
+                .waitSeconds(1.5)
+                .odometryDrive(-22, -42, 0.7, 0)
+                .afterMoving(() -> robot.intake.setTargetPower(0));
     }
 
-    public TrajectorySequence centerSequence(Pose2d startPos) {
-        return drive.trajectorySequenceBuilder(startPos)
-                //Drive to spike mark
-                .lineToLinearHeading(new Pose2d(24, -25, Math.toRadians(180)))
-
-                //Place purple pixel
-                .addTemporalMarker(() -> {
-                    robot.intake.setTargetPower(-0.3);
-                })
-                .waitSeconds(2)
-
-                //Park
-                .lineToConstantHeading(new Vector2d(50, -60))
-                .addTemporalMarker(() -> {
-                    robot.intake.setTargetPower(0);
-                })
-                .build();
-    }
-
-    public TrajectorySequence rightSequence(Pose2d startPos) {
-        return drive.trajectorySequenceBuilder(startPos)
-                //Drive to spike mark
-                .lineToLinearHeading(new Pose2d(33, -30, Math.toRadians(180)))
-
-                //Place purple pixel
-                .addTemporalMarker(() -> {
-                    robot.intake.setTargetPower(-0.3);
-                })
-                .waitSeconds(2)
-
-                //Park
-                .lineToConstantHeading(new Vector2d(50, -60))
-                .addTemporalMarker(() -> {
-                    robot.intake.setTargetPower(0);
-                })
-                .build();
+    public MovementSequence rightSequence() {
+        return new MovementSequence(robot)
+                .odometryDrive(-28, 0, 0.8, 0)
+                .odometryTurn(90,0.6, 100)
+                .afterMoving(() -> robot.intake.setTargetPower(-0.4))
+                .waitSeconds(1.5)
+                .odometryDrive(-34, -28, 0.7, 0)
+                .afterMoving(() -> robot.intake.setTargetPower(0));
     }
 }

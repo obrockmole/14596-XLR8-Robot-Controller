@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.CenterStage;
 
+import com.qualcomm.hardware.lynx.LynxModule;
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot.LogoFacingDirection;
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot.UsbFacingDirection;
@@ -21,6 +22,8 @@ import org.firstinspires.ftc.teamcode.Systems.Sensors.IMU;
 import org.firstinspires.ftc.teamcode.Systems.Servos.PositionServo;
 import org.firstinspires.ftc.teamcode.Systems.Servos.PositionServoGroup;
 
+import java.util.List;
+
 public class Robot extends Drivetrain {
     public final MotorGroup lift;
     public final MotorGroup intake;
@@ -28,16 +31,18 @@ public class Robot extends Drivetrain {
     public final PositionServoGroup grabbox;
     public final PositionServoGroup arm;
     public final PositionServoGroup intakeFlippers;
-    public final PositionServoGroup hangRelease; //Added in By Cole
+//    public final PositionServoGroup hangRelease; //Added in By Cole
+    public final PositionServo leftHangRelease;
+    public final PositionServo rightHangRelease;
 
     public final PositionServo pixelClamp;
     public final PositionServo droneLauncher;
 
     public enum ArmStages {
-        FOLDED(0.1, 0),
-        IDLE(0, 0),
-        DEPLOYED(0.7, 1),
-        DEPLOYED_LOW(0.9, 1);
+        FOLDED(0, 0.15),
+        IDLE(0.05, 0),
+        DEPLOYED(0.65, 0.25),
+        DEPLOYED_LOW(0.45, 0.25);
 
         private final double armPos, grabboxPos;
 
@@ -64,13 +69,13 @@ public class Robot extends Drivetrain {
 
     private final BatteryVoltageSensor batteryVoltageSensor;
 
-    public final int[] liftPositions = {0, 100, 500, 1000}; //TODO: find actual positions for lift (down, out, middle, max)
+    public final int[] liftPositions = {0, 700, 900, 1150};
 
     public Robot(HardwareMap hardwareMap) {
-        super(new Motor(hardwareMap, "frontLeft", MotorList.GOBILDA_435, Motor.Mode.POWER, false),
-                new Motor(hardwareMap, "backLeft", MotorList.GOBILDA_435, Motor.Mode.POWER, false),
-                new Motor(hardwareMap, "frontRight", MotorList.GOBILDA_435, Motor.Mode.POWER, false),
-                new Motor(hardwareMap, "backRight", MotorList.GOBILDA_435, Motor.Mode.POWER, false),
+        super(new Motor(hardwareMap, "frontLeft", MotorList.GOBILDA_435, Motor.Mode.POWER, true),
+                new Motor(hardwareMap, "backLeft", MotorList.GOBILDA_435, Motor.Mode.POWER, true),
+                new Motor(hardwareMap, "frontRight", MotorList.GOBILDA_435, Motor.Mode.POWER, true),
+                new Motor(hardwareMap, "backRight", MotorList.GOBILDA_435, Motor.Mode.POWER, true),
 
                 new Odometry(
                         new OdometryPod(new Encoder(hardwareMap, "frontLeft", Encoder.Direction.FORWARD)),
@@ -78,14 +83,19 @@ public class Robot extends Drivetrain {
                         new OdometryPod(new Encoder(hardwareMap, "intake1", Encoder.Direction.FORWARD))
                 ),
 
-                new IMU(hardwareMap, "imu", new Parameters(new RevHubOrientationOnRobot(LogoFacingDirection.UP, UsbFacingDirection.FORWARD)))
+                new IMU(hardwareMap, "imu", new Parameters(new RevHubOrientationOnRobot(LogoFacingDirection.BACKWARD, UsbFacingDirection.UP)))
        );
 
+        List<LynxModule> allHubs = hardwareMap.getAll(LynxModule.class);
+        for (LynxModule module : allHubs) {
+            module.setBulkCachingMode(LynxModule.BulkCachingMode.AUTO);
+        }
+
         lift = new MotorGroup(
-                new Motor(hardwareMap, "leftLift", MotorList.GOBILDA_435, Motor.Mode.POWER, false),
-                new Motor(hardwareMap, "rightLift", MotorList.GOBILDA_435, Motor.Mode.POWER, true)
+                new Motor(hardwareMap, "leftLift", MotorList.GOBILDA_312, Motor.Mode.POSITION, 20, false),
+                new Motor(hardwareMap, "rightLift", MotorList.GOBILDA_312, Motor.Mode.POSITION, 20, true)
         );
-//        lift.setPIDF(0.01, 0, 0, 0);
+        lift.setPIDF(0.01, 0, 0, 0);
 
         intake = new MotorGroup(
                 new Motor(hardwareMap, "intake1", MotorList.GOBILDA_435, Motor.Mode.POWER, true),
@@ -99,8 +109,8 @@ public class Robot extends Drivetrain {
         );
 
         grabbox = new PositionServoGroup(
-                new PositionServo(hardwareMap, "leftGrabbox", 0, 1, true),
-                new PositionServo(hardwareMap, "rightGrabbox", 0, 1, false)
+                new PositionServo(hardwareMap, "leftGrabbox", 0, 1, false),
+                new PositionServo(hardwareMap, "rightGrabbox", 0, 1, true)
         );
 
         intakeFlippers = new PositionServoGroup(
@@ -108,14 +118,16 @@ public class Robot extends Drivetrain {
                 new PositionServo(hardwareMap, "rightIntakeFlipper", 0.6, 1, true)
         );
 
-        hangRelease = new PositionServoGroup(
-                new PositionServo(hardwareMap, "leftHangRelease", 0.26, 0.45, true),
-                new PositionServo(hardwareMap, "rightHangRelease", 0.26, 0.45, false)
-        ); //Added hang release servo group. By Cole
+//        hangRelease = new PositionServoGroup(
+//                new PositionServo(hardwareMap, "leftHangRelease", 0, 1, false),
+//                new PositionServo(hardwareMap, "rightHangRelease", 0, 1, true)
+//        ); //Added hang release servo group. By Cole
+        leftHangRelease = new PositionServo(hardwareMap, "leftHangRelease", 0, 1, false);
+        rightHangRelease = new PositionServo(hardwareMap, "rightHangRelease", 0, 1, false);
 
         pixelClamp = new PositionServo(hardwareMap, "pixelClamp", 0.2, 1, true);
 
-        droneLauncher = new PositionServo(hardwareMap, "droneLauncher", 0.1, 0.3, false);
+        droneLauncher = new PositionServo(hardwareMap, "droneLauncher", 0.15, 0.3, false);
 
         leftPixelSensor = new ColorSensor(hardwareMap, "leftPixelSensor", 4.8f);
         rightPixelSensor = new ColorSensor(hardwareMap, "rightPixelSensor", 4.8f);
@@ -127,13 +139,14 @@ public class Robot extends Drivetrain {
     }
 
     public Robot initialize() {
-//        lift.setTargetPosition(0);
         currentArmStage = ArmStages.IDLE;
         pixelClamp.setTargetPosition(0);
 
         intakeFlippers.setTargetPosition(0);
 
-        hangRelease.setTargetPosition(0); //Added in by Cole
+//        hangRelease.setTargetPosition(0); //Added in by Cole
+        leftHangRelease.setTargetPosition(0);
+        rightHangRelease.setTargetPosition(0.5);
         droneLauncher.setTargetPosition(0);
 
         leftBlinkin.setPattern(BlinkinLEDDriver.Pattern.OCEAN_PALETTE_WAVES);
@@ -148,8 +161,6 @@ public class Robot extends Drivetrain {
         if (updateDriveMotors) super.update();
 
         lift.update();
-        if (lift.getPower() < 0) lift.setSpeedScale(0.4);
-        else lift.setSpeedScale(1);
 
         intake.update();
         intakeFlippers.update();
@@ -162,32 +173,27 @@ public class Robot extends Drivetrain {
 
         droneLauncher.update();
 
-        hangRelease.update(); //Added hangRelease update. By Cole
+//        hangRelease.update(); //Added hangRelease update. By Cole
+        leftHangRelease.update();
+        rightHangRelease.update();
 
         return this;
     }
 
     public void setLiftPosition(int position) {
-        if (lift.getMode() == Motor.Mode.POWER) {
-            lift.setMode(Motor.Mode.POSITION);
-            lift.setSpeedScale(2);
-        }
-
-        if (position == liftPositions[0])
-            currentArmStage = ArmStages.IDLE;
-        else if (currentArmStage == ArmStages.IDLE || currentArmStage == ArmStages.FOLDED)
-            currentArmStage = ArmStages.DEPLOYED;
+        if (lift.getMode() == Motor.Mode.POWER) lift.setMode(Motor.Mode.POSITION);
 
         lift.setTargetPosition(position);
     }
 
     public void setLiftPower(double power) {
-        if (lift.getMode() == Motor.Mode.POSITION) {
-            lift.setMode(Motor.Mode.POWER);
-            lift.setSpeedScale(1);
-        }
+        if (lift.getMode() == Motor.Mode.POSITION) lift.setMode(Motor.Mode.POWER);
 
         lift.setTargetPower(power);
+    }
+
+    public boolean atLiftPosition(int position) {
+        return lift.atTargetPosition(0) && lift.atTargetPosition(1) && lift.getTargetPosition() == position;
     }
 
     public Robot log(Telemetry telemetry, boolean logOdometry, boolean logIMU) {
@@ -220,7 +226,7 @@ public class Robot extends Drivetrain {
         telemetry.addData("Launched", droneLauncher.getTargetPosition() == 1);
 
         telemetry.addLine("-----Hang Release-----");
-        telemetry.addData("Released", hangRelease.getTargetPosition() == 1);
+        telemetry.addData("Released", rightHangRelease.getTargetPosition() == 0.3);
         telemetry.addLine();
 
         telemetry.addLine("-----Battery Voltage-----");

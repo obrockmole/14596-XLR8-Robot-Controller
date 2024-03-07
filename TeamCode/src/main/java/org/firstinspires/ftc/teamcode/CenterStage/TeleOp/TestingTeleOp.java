@@ -13,7 +13,7 @@ public class TestingTeleOp extends BaseTele {
     public void loop() {
         /* DRIVER */
         //Driving
-        robot.standardDrive(driver.getStickY(Stick.LEFT_STICK), driver.getStickX(Stick.LEFT_STICK), driver.getStickX(Stick.RIGHT_STICK));
+        robot.standardDrive(-driver.getStickY(Stick.LEFT_STICK), -driver.getStickX(Stick.LEFT_STICK), -driver.getStickX(Stick.RIGHT_STICK));
 
         //Driving speed, left bumper = slow
         if (driver.isDown(Button.LEFT_BUMPER)) robot.setSpeedScale(0.4);
@@ -21,20 +21,20 @@ public class TestingTeleOp extends BaseTele {
 
 
         /* MANIPULATOR */
-        //Arm positions, left bumper = low, right bumper = high, B = idle, Y = folded
+        //Arm positions, left bumper = low, right bumper = high, Y = idle, B = folded
         manipulator.onPress(Button.LEFT_BUMPER, () -> robot.currentArmStage = Robot.ArmStages.DEPLOYED)
                 .onPress(Button.RIGHT_BUMPER, () -> robot.currentArmStage = Robot.ArmStages.DEPLOYED_LOW)
-                .onPress(Button.B, () -> robot.currentArmStage = Robot.ArmStages.IDLE)
-                .onPress(Button.Y, () -> robot.currentArmStage = Robot.ArmStages.FOLDED);
+                .onPress(Button.B, () -> robot.currentArmStage = Robot.ArmStages.FOLDED)
+                .onPress(Button.Y, () -> robot.currentArmStage = Robot.ArmStages.IDLE);
 
-        //Lift positions, Dpad left = just out, Dpad right = fully up, Dpad up = halfway up, Dpad down = down
-        manipulator.onPress(Button.DPAD_LEFT, () -> robot.setLiftPosition(robot.liftPositions[1]))
-                .onPress(Button.DPAD_RIGHT, () -> robot.setLiftPosition(robot.liftPositions[3]))
-                .onPress(Button.DPAD_UP, () -> robot.setLiftPosition(robot.liftPositions[2]))
-                .onPress(Button.DPAD_DOWN, () -> robot.setLiftPosition(robot.liftPositions[0]));
+        //Lift positions, Dpad left = just out, Dpad up = halfway up, Dpad right = fully up, Dpad down = down
+        manipulator.onPress(Button.DPAD_LEFT, () -> setLiftPosition(robot.liftPositions[1]))
+                .onPress(Button.DPAD_UP, () -> setLiftPosition(robot.liftPositions[2]))
+                .onPress(Button.DPAD_RIGHT, () -> setLiftPosition(robot.liftPositions[3]))
+                .onPress(Button.DPAD_DOWN, () -> setLiftPosition(robot.liftPositions[0]));
 
         //Lift power, right stick y = lift power
-        if (Math.abs(manipulator.getStickY(Stick.RIGHT_STICK)) > 0.1) robot.setLiftPower(-manipulator.getStickY(Stick.RIGHT_STICK));
+        if (Math.abs(manipulator.getStickY(Stick.RIGHT_STICK)) > 0.1) robot.setLiftPower(-manipulator.getStickY(Stick.RIGHT_STICK) * 0.8);
 
         //Intake, left trigger = intake, right trigger = outtake
         robot.intake.setTargetPower(manipulator.getTrigger(Trigger.LEFT_TRIGGER) - manipulator.getTrigger(Trigger.RIGHT_TRIGGER) / 2.5);
@@ -49,7 +49,8 @@ public class TestingTeleOp extends BaseTele {
         //Drone launch and hang release, Guide = launch and release
         if (driver.isDown(Button.TOUCHPAD) && manipulator.isDown(Button.TOUCHPAD)) {
             robot.droneLauncher.setTargetPosition(1);
-            robot.hangRelease.setTargetPosition(1);
+            robot.leftHangRelease.setTargetPosition(0.35);
+            robot.rightHangRelease.setTargetPosition(0.3);
         }
 
         super.loop();
