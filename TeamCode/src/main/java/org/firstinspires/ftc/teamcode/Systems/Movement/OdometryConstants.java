@@ -6,19 +6,19 @@ import com.qualcomm.robotcore.util.Range;
 public class OdometryConstants {
     public static final double ODOM_INCHES_PER_COUNT = 0.002969;
 
-    public static final double DRIVE_GAIN = 0.03;
+    public static final double DRIVE_GAIN = 0.033;
     public static final double DRIVE_ACCEL = 1.0;
     public static final double DRIVE_TOLERANCE = 1;
     public static final double DRIVE_DEADBAND = 0.2;
     public static final double DRIVE_MAX_AUTO = 0.6;
 
-    public static final double STRAFE_GAIN = 0.03;
+    public static final double STRAFE_GAIN = 0.15;
     public static final double STRAFE_ACCEL = 1;
     public static final double STRAFE_TOLERANCE = 1;
     public static final double STRAFE_DEADBAND = 0.2;
     public static final double STRAFE_MAX_AUTO = 0.6;
 
-    public static final double YAW_GAIN = 0.018;
+    public static final double YAW_GAIN = 0.026;
     public static final double YAW_ACCEL  = 2.0;
     public static final double YAW_TOLERANCE = 3.0;
     public static final double YAW_DEADBAND = 0.25;

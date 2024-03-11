@@ -132,7 +132,7 @@ public class OdometryDrive extends Movement {
         readOdometry();
         readHeading();
 
-        drivetrain.standardDrive(driveController.getOutput(distanceDriven), strafeController.getOutput(distanceStrafed), yawController.getOutput(heading));
+        drivetrain.standardDrive(driveController.getOutput(distanceDriven), -strafeController.getOutput(distanceStrafed), yawController.getOutput(heading));
 
         if (driveController.inPosition() && strafeController.inPosition() && yawController.inPosition()) {
             return holdTimer.time() > holdTime;

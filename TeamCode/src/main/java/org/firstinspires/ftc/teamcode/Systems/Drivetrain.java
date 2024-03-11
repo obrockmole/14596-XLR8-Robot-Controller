@@ -19,7 +19,7 @@ public class Drivetrain {
     private Odometry odometry;
     private IMU imu;
 
-    private double speedScale = 0.8;
+    private double speedScale = 1.5;
 
     public Drivetrain(Motor frontLeft, Motor backLeft, Motor frontRight, Motor backRight, Odometry odometry, IMU imu) {
         this.frontLeft = frontLeft;

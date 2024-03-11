@@ -46,6 +46,9 @@ public abstract class BaseAuto extends OpMode implements DrawStrategy {
         robot = new Robot(hardwareMap);
         robot.initialize();
 
+        robot.pixelClamp.setTargetPosition(1);
+        robot.update(false);
+
         stateMachines = new StateMachines(robot);
 
         initVision();
@@ -53,7 +56,7 @@ public abstract class BaseAuto extends OpMode implements DrawStrategy {
         for (PropPositions position : PropPositions.values())
             propPositionsCount.put(position, 0);
 
-        movementSequence = new MovementSequence(robot);
+//        movementSequence = new MovementSequence(robot);
     }
 
     public void init_loop() {
@@ -89,13 +92,13 @@ public abstract class BaseAuto extends OpMode implements DrawStrategy {
 
         switch (finalPropPosition) {
             case LEFT:
-                movementSequence.addSequence(leftSequence());
+                movementSequence = leftSequence();
                 break;
             case CENTER:
-                movementSequence.addSequence(centerSequence());
+                movementSequence = centerSequence();
                 break;
             case RIGHT:
-                movementSequence.addSequence(rightSequence());
+                movementSequence = rightSequence();
                 break;
         }
 
@@ -104,9 +107,10 @@ public abstract class BaseAuto extends OpMode implements DrawStrategy {
 
     public void loop() {
         movementSequence.update();
+        movementSequence.logMovement(telemetry);
 
         stateMachines.update();
-        robot.update(false);
+        robot.update(true);
         robot.log(telemetry, true, false);
 
         telemetry.addLine("-----Other-----");

@@ -6,6 +6,7 @@ import org.firstinspires.ftc.teamcode.CenterStage.Robot;
 import org.firstinspires.ftc.teamcode.Systems.Gamepad.GamepadButtons.Button;
 import org.firstinspires.ftc.teamcode.Systems.Gamepad.GamepadButtons.Stick;
 import org.firstinspires.ftc.teamcode.Systems.Gamepad.GamepadButtons.Trigger;
+import org.firstinspires.ftc.teamcode.Systems.Motors.Motor;
 
 //@Disabled
 @TeleOp(group = "TeleOp", name = "Testing TeleOp")
@@ -35,6 +36,7 @@ public class TestingTeleOp extends BaseTele {
 
         //Lift power, right stick y = lift power
         if (Math.abs(manipulator.getStickY(Stick.RIGHT_STICK)) > 0.1) robot.setLiftPower(-manipulator.getStickY(Stick.RIGHT_STICK) * 0.8);
+        else if (robot.lift.getMode() == Motor.Mode.POWER) robot.setLiftPower(0);
 
         //Intake, left trigger = intake, right trigger = outtake
         robot.intake.setTargetPower(manipulator.getTrigger(Trigger.LEFT_TRIGGER) - manipulator.getTrigger(Trigger.RIGHT_TRIGGER) / 2.5);

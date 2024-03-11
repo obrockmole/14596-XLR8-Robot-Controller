@@ -39,8 +39,8 @@ public class Robot extends Drivetrain {
     public final PositionServo droneLauncher;
 
     public enum ArmStages {
-        FOLDED(0, 0.15),
-        IDLE(0.05, 0),
+        FOLDED(0, 0),
+        IDLE(0.1, 0),
         DEPLOYED(0.65, 0.25),
         DEPLOYED_LOW(0.45, 0.25);
 
@@ -80,7 +80,7 @@ public class Robot extends Drivetrain {
                 new Odometry(
                         new OdometryPod(new Encoder(hardwareMap, "frontLeft", Encoder.Direction.FORWARD)),
                         new OdometryPod(new Encoder(hardwareMap, "backRight", Encoder.Direction.FORWARD)),
-                        new OdometryPod(new Encoder(hardwareMap, "intake1", Encoder.Direction.FORWARD))
+                        new OdometryPod(new Encoder(hardwareMap, "intake1", Encoder.Direction.REVERSE))
                 ),
 
                 new IMU(hardwareMap, "imu", new Parameters(new RevHubOrientationOnRobot(LogoFacingDirection.BACKWARD, UsbFacingDirection.UP)))

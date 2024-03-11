@@ -89,7 +89,7 @@ public class StateMachines {
                     robot.currentArmStage = Robot.ArmStages.FOLDED;
                     stopwatch.restart();
                 })
-                .transition(() -> (stopwatch.getTimeSeconds() >= 1 && robot.arm.getPosition() == Robot.ArmStages.FOLDED.getArmPos() && robot.grabbox.getPosition() == Robot.ArmStages.FOLDED.getGrabboxPos()), LiftRetractionStages.RETRACT_LIFT)
+                .transition(() -> (stopwatch.getTimeSeconds() >= 2 && robot.arm.getPosition() == Robot.ArmStages.FOLDED.getArmPos() && robot.grabbox.getPosition() == Robot.ArmStages.FOLDED.getGrabboxPos()), LiftRetractionStages.RETRACT_LIFT)
 
                 .state(LiftRetractionStages.RETRACT_LIFT)
                 .onEnter(() -> {
@@ -113,7 +113,7 @@ public class StateMachines {
                     if (robot.lift.getCurrentPosition(0) < robot.liftPositions[1] && !robot.atLiftPosition(robot.liftPositions[1])) robot.setLiftPosition(robot.liftPositions[1]);
                     stopwatch.restart();
                 })
-                .transition(() -> (stopwatch.getTimeSeconds() >= 2 && (robot.lift.atTargetPosition(0) || robot.lift.atTargetPosition(1))), LiftDeploymentStages.FOLD_GRAB_BOX)
+                .transition(() -> (stopwatch.getTimeSeconds() >= 2.5 && (robot.lift.atTargetPosition(0) || robot.lift.atTargetPosition(1))), LiftDeploymentStages.FOLD_GRAB_BOX)
 
                 .state(LiftRetractionStages.FOLD_GRAB_BOX)
                 .onEnter(() -> {

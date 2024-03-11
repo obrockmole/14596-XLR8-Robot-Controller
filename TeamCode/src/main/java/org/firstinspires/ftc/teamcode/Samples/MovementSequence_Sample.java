@@ -6,6 +6,7 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
 import org.firstinspires.ftc.teamcode.CenterStage.Robot;
 import org.firstinspires.ftc.teamcode.Systems.Movement.MovementSequence;
+import org.firstinspires.ftc.teamcode.Systems.Movement.OdometryDrive;
 
 @Disabled
 @Autonomous(group = "Samples", name = "Movement Sequence Sample")
@@ -20,7 +21,7 @@ public class MovementSequence_Sample extends OpMode {
 
         /*
             Drive distances and rotation are relative from the robots starting position at the beginning of each individual movement.
-                +Forward, +Rightward, +Clockwise.
+                +Forward, +Rightward, +Counter-Clockwise.
             The sequence will run through each movement in order, and will not move to the next movement until the current movement is complete.
             Add movements through the addMovement(movement) method, or individual methods, e.g. .odometryDrive(driveDistance, strafeDistance, power, holdTime) or .waitSeconds(seconds).
                 Modify each movements before moving, while moving, and after moving actions through the .beforeMoving(), .whileMoving(), and .afterMoving() methods.
