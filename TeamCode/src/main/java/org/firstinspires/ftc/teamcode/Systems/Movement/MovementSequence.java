@@ -4,23 +4,30 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.Systems.Drivetrain;
 import org.firstinspires.ftc.teamcode.Systems.Events.Event;
 import org.firstinspires.ftc.teamcode.Systems.Events.TimedEvent;
+import org.firstinspires.ftc.teamcode.Systems.Odometry.Localizer;
 
 import java.util.ArrayList;
 import java.util.concurrent.Callable;
 
 public class MovementSequence extends ArrayList<Movement> {
-    private Drivetrain drivetrain;
+    private final Drivetrain drivetrain;
+    private final Localizer localizer;
 
     private Movement currentMovement;
     private int currentMovementIndex = 0;
 
-    private ArrayList<Event> events = new ArrayList<>();
+    private final ArrayList<Event> events = new ArrayList<>();
 
     private boolean running = false;
 
-    public MovementSequence(Drivetrain drivetrain) {
+    private final double defaultPowerLimit = 1;
+    private final int defaultHoldTime = 100; //Milliseconds
+    private final int defaultTimout = 5000; //Milliseconds
+
+    public MovementSequence(Drivetrain drivetrain, Localizer localizer) {
         super();
         this.drivetrain = drivetrain;
+        this.localizer = localizer;
     }
 
     public MovementSequence addSequence(MovementSequence sequence) {
@@ -28,13 +35,12 @@ public class MovementSequence extends ArrayList<Movement> {
         return this;
     }
 
-    public MovementSequence addMovement(Movement movement) {
-        if (movement instanceof OdometryDrive)
+    public void addMovement(Movement movement) {
+        if (movement instanceof OdometryDrive) {
             ((OdometryDrive) movement).setDrivetrain(drivetrain);
-        else if (movement instanceof OdometryTurn)
-            ((OdometryTurn) movement).setDrivetrain(drivetrain);
+            ((OdometryDrive) movement).setLocalizer(localizer);
+        }
         add(movement);
-        return this;
     }
 
     public MovementSequence blank() {
@@ -47,13 +53,63 @@ public class MovementSequence extends ArrayList<Movement> {
         return this;
     }
 
-    public MovementSequence odometryDrive(double driveDistance, double strafeDistance, double power, double holdTime) {
-        addMovement(new OdometryDrive(driveDistance, strafeDistance, power, holdTime));
+    public MovementSequence lineTo(double driveDistance, double strafeDistance, double powerLimit, double holdTime, double timeoutTime) {
+        addMovement(new OdometryDrive(driveDistance, strafeDistance, 0, powerLimit, holdTime, timeoutTime));
         return this;
     }
 
-    public MovementSequence odometryTurn(double turnDegrees, double power, double holdTime) {
-        addMovement(new OdometryTurn(turnDegrees, power, holdTime));
+    public MovementSequence lineTo(double driveDistance, double strafeDistance, double holdTime, double timeoutTime) {
+        lineTo(driveDistance, strafeDistance, defaultPowerLimit, holdTime, timeoutTime);
+        return this;
+    }
+
+    public MovementSequence lineTo(double driveDistance, double strafeDistance, double holdTime) {
+        lineTo(driveDistance, strafeDistance, defaultPowerLimit, holdTime, defaultTimout);
+        return this;
+    }
+
+    public MovementSequence lineTo(double driveDistance, double strafeDistance) {
+        lineTo(driveDistance, strafeDistance, defaultPowerLimit, defaultHoldTime, defaultTimout);
+        return this;
+    }
+
+    public MovementSequence lineToHeading(double driveDistance, double strafeDistance, double heading, double powerLimit, double holdTime, double timeoutTime) {
+        addMovement(new OdometryDrive(driveDistance, strafeDistance, heading, powerLimit, holdTime, timeoutTime));
+        return this;
+    }
+
+    public MovementSequence lineToHeading(double driveDistance, double strafeDistance, double heading, double holdTime, double timeoutTime) {
+        lineToHeading(driveDistance, strafeDistance, heading, defaultPowerLimit, holdTime, timeoutTime);
+        return this;
+    }
+
+    public MovementSequence lineToHeading(double driveDistance, double strafeDistance, double heading, double holdTime) {
+        lineToHeading(driveDistance, strafeDistance, heading, defaultPowerLimit, holdTime, defaultTimout);
+        return this;
+    }
+
+    public MovementSequence lineToHeading(double driveDistance, double strafeDistance, double heading) {
+        lineToHeading(driveDistance, strafeDistance, heading, defaultPowerLimit, defaultHoldTime, defaultTimout);
+        return this;
+    }
+
+    public MovementSequence turn(double turnDegrees, double powerLimit, double holdTime, double timeoutTime) {
+        addMovement(new OdometryDrive(0, 0, turnDegrees, powerLimit, holdTime, timeoutTime));
+        return this;
+    }
+
+    public MovementSequence turn(double turnDegrees, double holdTime, double timeoutTime) {
+        turn(turnDegrees, defaultPowerLimit, holdTime, timeoutTime);
+        return this;
+    }
+
+    public MovementSequence turn(double turnDegrees, double holdTime) {
+        turn(turnDegrees, defaultPowerLimit, holdTime, defaultTimout);
+        return this;
+    }
+
+    public MovementSequence turn(double turnDegrees) {
+        turn(turnDegrees, defaultPowerLimit, defaultHoldTime, defaultTimout);
         return this;
     }
 
@@ -100,9 +156,8 @@ public class MovementSequence extends ArrayList<Movement> {
         return this;
     }
 
-    public MovementSequence addEvent(Event event) {
+    public void addEvent(Event event) {
         events.add(event);
-        return this;
     }
 
     public MovementSequence event(Callable<Boolean> condition, Runnable action) {
@@ -173,8 +228,8 @@ public class MovementSequence extends ArrayList<Movement> {
 
     public void logMovement(Telemetry telemetry) {
         telemetry.addData("Current Movement", (currentMovementIndex + 1) + "/" + size());
-        telemetry.addData("Running Status", currentMovement.isRunning());
-        telemetry.addData("Completion Status", currentMovement.isComplete());
+        telemetry.addData("Running", currentMovement.isRunning());
+        telemetry.addData("Completed", currentMovement.isComplete());
         telemetry.addLine();
         currentMovement.log(telemetry);
     }

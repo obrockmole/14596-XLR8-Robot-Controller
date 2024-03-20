@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.CenterStage.Autonomous;
+package org.firstinspires.ftc.teamcode.Runnable.Autonomous;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
@@ -13,17 +13,17 @@ public class Backboard_Park extends BaseAuto {
     }
 
     public MovementSequence leftSequence() {
-        return new MovementSequence(robot)
-                .odometryDrive(-36, 0, 0.8, 0);
+        return new MovementSequence(robot, robot.getLocalizer());
+//                .odometryDrive(-36, 0, 0.8, 0);
     }
 
     public MovementSequence centerSequence() {
-        return new MovementSequence(robot)
-                .odometryDrive(-36, 0, 0.8, 0);
+        return new MovementSequence(robot, robot.getLocalizer());
+//                .odometryDrive(-36, 0, 0.8, 0);
     }
 
     public MovementSequence rightSequence() {
-        return new MovementSequence(robot)
-                .odometryDrive(-36, 0, 0.8, 0);
+        return new MovementSequence(robot, robot.getLocalizer());
+//                .odometryDrive(-36, 0, 0.8, 0);
     }
 }

@@ -102,4 +102,3 @@ public abstract class Movement {
     abstract void stop();
     abstract boolean move();
 }
-

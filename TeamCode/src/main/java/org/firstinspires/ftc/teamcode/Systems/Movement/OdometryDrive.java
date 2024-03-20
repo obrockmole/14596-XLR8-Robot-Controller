@@ -1,67 +1,58 @@
 package org.firstinspires.ftc.teamcode.Systems.Movement;
 
-import static org.firstinspires.ftc.teamcode.Systems.Movement.OdometryConstants.DRIVE_ACCEL;
-import static org.firstinspires.ftc.teamcode.Systems.Movement.OdometryConstants.DRIVE_DEADBAND;
-import static org.firstinspires.ftc.teamcode.Systems.Movement.OdometryConstants.DRIVE_GAIN;
-import static org.firstinspires.ftc.teamcode.Systems.Movement.OdometryConstants.DRIVE_MAX_AUTO;
-import static org.firstinspires.ftc.teamcode.Systems.Movement.OdometryConstants.DRIVE_TOLERANCE;
-import static org.firstinspires.ftc.teamcode.Systems.Movement.OdometryConstants.ODOM_INCHES_PER_COUNT;
-import static org.firstinspires.ftc.teamcode.Systems.Movement.OdometryConstants.STRAFE_ACCEL;
-import static org.firstinspires.ftc.teamcode.Systems.Movement.OdometryConstants.STRAFE_DEADBAND;
-import static org.firstinspires.ftc.teamcode.Systems.Movement.OdometryConstants.STRAFE_GAIN;
-import static org.firstinspires.ftc.teamcode.Systems.Movement.OdometryConstants.STRAFE_MAX_AUTO;
-import static org.firstinspires.ftc.teamcode.Systems.Movement.OdometryConstants.STRAFE_TOLERANCE;
-import static org.firstinspires.ftc.teamcode.Systems.Movement.OdometryConstants.YAW_ACCEL;
-import static org.firstinspires.ftc.teamcode.Systems.Movement.OdometryConstants.YAW_DEADBAND;
-import static org.firstinspires.ftc.teamcode.Systems.Movement.OdometryConstants.YAW_GAIN;
-import static org.firstinspires.ftc.teamcode.Systems.Movement.OdometryConstants.YAW_MAX_AUTO;
-import static org.firstinspires.ftc.teamcode.Systems.Movement.OdometryConstants.YAW_TOLERANCE;
+import static org.firstinspires.ftc.teamcode.Systems.Movement.OdometryConstants.*;
 
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
-import org.firstinspires.ftc.robotcore.external.navigation.AngularVelocity;
-import org.firstinspires.ftc.robotcore.external.navigation.YawPitchRollAngles;
 import org.firstinspires.ftc.teamcode.Systems.Drivetrain;
 import org.firstinspires.ftc.teamcode.Systems.Movement.OdometryConstants.ProportionalControl;
+import org.firstinspires.ftc.teamcode.Systems.Odometry.Localizer;
 
 public class OdometryDrive extends Movement {
+    private Drivetrain drivetrain;
+    private Localizer localizer;
+
     private double driveDistance;
     private double strafeDistance;
-    private double power;
+    public double turnDegrees;
     private double holdTime;
-
-    private Drivetrain drivetrain;
+    private double timeoutTime;
 
     private double distanceDriven = 0;
     private double distanceStrafed = 0;
     private double heading = 0;
-    private ElapsedTime holdTimer = new ElapsedTime(ElapsedTime.Resolution.MILLISECONDS);
 
-    private int rawDriveOdometer = 0;
-    private int driveOdometerOffset = 0;
-    private int rawStrafeOdometer = 0;
-    private int strafeOdometerOffset = 0;
+    private double rawDriveDistance = 0;
+    private double driveDistanceOffset = 0;
+    private double rawStrafeDistance = 0;
+    private double strafeDistanceOffset = 0;
     private double rawHeading = 0;
     private double headingOffset = 0;
 
-    private double turnRate = 0;
+    private final ElapsedTime holdTimer = new ElapsedTime(ElapsedTime.Resolution.MILLISECONDS);
+    private final ElapsedTime timeoutTimer = new ElapsedTime(ElapsedTime.Resolution.MILLISECONDS);
 
+    private final ProportionalControl driveController = new ProportionalControl(DRIVE_GAIN, DRIVE_ACCEL, 0, DRIVE_TOLERANCE);
+    private final ProportionalControl strafeController = new ProportionalControl(STRAFE_GAIN, STRAFE_ACCEL, 0, STRAFE_TOLERANCE);
+    private final ProportionalControl yawController = new ProportionalControl(YAW_GAIN, YAW_ACCEL, 0, YAW_TOLERANCE);
 
-    private ProportionalControl driveController = new ProportionalControl(DRIVE_GAIN, DRIVE_ACCEL, DRIVE_MAX_AUTO, DRIVE_TOLERANCE, DRIVE_DEADBAND, false);
-    private ProportionalControl strafeController = new ProportionalControl(STRAFE_GAIN, STRAFE_ACCEL, STRAFE_MAX_AUTO, STRAFE_TOLERANCE, STRAFE_DEADBAND, false);
-    private ProportionalControl yawController = new ProportionalControl(YAW_GAIN, YAW_ACCEL, YAW_MAX_AUTO, YAW_TOLERANCE,YAW_DEADBAND, true);
-
-    public OdometryDrive(double driveDistance, double strafeDistance, double power, double holdTime) {
+    public OdometryDrive(double driveDistance, double strafeDistance, double turnDegrees, double outputLimit, double holdTime, double timeoutTime) {
         this.driveDistance = driveDistance;
         this.strafeDistance = strafeDistance;
-        this.power = power;
+        this.turnDegrees = turnDegrees;
         this.holdTime = holdTime;
+        this.timeoutTime = timeoutTime;
+
+        setOutputLimit(outputLimit);
     }
 
     public void setDrivetrain(Drivetrain drivetrain) {
         this.drivetrain = drivetrain;
+    }
+
+    public void setLocalizer(Localizer localizer) {
+        this.localizer = localizer;
     }
 
     public void setDriveDistance(double driveDistance) {
@@ -72,43 +63,45 @@ public class OdometryDrive extends Movement {
         this.strafeDistance = strafeDistance;
     }
 
-    public void setPower(double power) {
-        this.power = power;
+    public void setTurnDegrees(double turnDegrees) {
+        this.turnDegrees = turnDegrees;
+    }
+
+    public void setOutputLimit(double outputLimit) {
+        driveController.setOutputLimit(outputLimit);
+        strafeController.setOutputLimit(outputLimit);
+        yawController.setOutputLimit(outputLimit);
     }
 
     public void setHoldTime(double holdTime) {
         this.holdTime = holdTime;
     }
 
+    public void setTimeoutTime(double timeoutTime) {
+        this.timeoutTime = timeoutTime;
+    }
+
     public void readOdometry() {
-        rawDriveOdometer = drivetrain.getOdometry().getEncoder(0).getCurrentPosition();
-        rawStrafeOdometer =  drivetrain.getOdometry().getEncoder(2).getCurrentPosition();
-        distanceDriven = (rawDriveOdometer - driveOdometerOffset) * ODOM_INCHES_PER_COUNT;
-        distanceStrafed = (rawStrafeOdometer - strafeOdometerOffset) * ODOM_INCHES_PER_COUNT;
+        rawDriveDistance = localizer.getXEstimate();
+        rawStrafeDistance = localizer.getYEstimate();
+        rawHeading = Math.toDegrees(localizer.getHeadingEstimate());
+
+        distanceDriven = rawDriveDistance - driveDistanceOffset;
+        distanceStrafed = rawStrafeDistance - strafeDistanceOffset;
+        heading = rawHeading - headingOffset;
     }
 
     public void resetOdometry() {
         readOdometry();
-        driveOdometerOffset = rawDriveOdometer;
+
+        driveDistanceOffset = rawDriveDistance;
         distanceDriven = 0.0;
         driveController.reset(0);
 
-        strafeOdometerOffset = rawStrafeOdometer;
+        strafeDistanceOffset = rawStrafeDistance;
         distanceStrafed = 0.0;
         strafeController.reset(0);
-    }
 
-    public void readHeading() {
-        YawPitchRollAngles orientation = drivetrain.getIMU().getYawPitchRoll();
-        AngularVelocity angularVelocity = drivetrain.getIMU().getAngularVelocity(AngleUnit.DEGREES);
-
-        rawHeading = orientation.getYaw(AngleUnit.DEGREES);
-        heading = rawHeading - headingOffset;
-        turnRate = angularVelocity.zRotationRate;
-    }
-
-    public void resetHeading() {
-        readHeading();
         headingOffset = rawHeading;
         yawController.reset(0);
         heading = 0;
@@ -116,36 +109,36 @@ public class OdometryDrive extends Movement {
 
     public void init() {
         resetOdometry();
-        resetHeading();
 
-        driveController.reset(driveDistance, power);
-        strafeController.reset(strafeDistance, power);
-        yawController.reset();
+        driveController.reset(driveDistance);
+        strafeController.reset(strafeDistance);
+        yawController.reset(turnDegrees);
         holdTimer.reset();
+        timeoutTimer.reset();
     }
 
     public void stop() {
-        drivetrain.standardDrive(0, 0, 0);
+        drivetrain.fieldCentricDrive(0, 0, 0);
     }
 
     public boolean move() {
         readOdometry();
-        readHeading();
 
-        drivetrain.standardDrive(driveController.getOutput(distanceDriven), -strafeController.getOutput(distanceStrafed), yawController.getOutput(heading));
+        drivetrain.fieldCentricDrive(driveController.getOutput(distanceDriven), strafeController.getOutput(distanceStrafed), yawController.getOutput(heading));
 
-        if (driveController.inPosition() && strafeController.inPosition() && yawController.inPosition()) {
+        if (driveController.inPosition() && strafeController.inPosition() && yawController.inPosition())
             return holdTimer.time() > holdTime;
-        } else {
+        else
             holdTimer.reset();
-        }
-        return false;
+
+        return timeoutTimer.time() > timeoutTime;
     }
 
     public void log(Telemetry telemetry) {
         telemetry.addLine("-----Odometry Drive-----");
         telemetry.addData("Drive Distance", driveDistance);
         telemetry.addData("Strafe Distance", strafeDistance);
+        telemetry.addData("Turn Degrees", turnDegrees);
         telemetry.addData("Hold Time", holdTime);
         telemetry.addLine("------------------------");
         telemetry.addData("Distance Driven", distanceDriven);

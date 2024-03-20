@@ -1,10 +1,10 @@
-package org.firstinspires.ftc.teamcode.CenterStage.Autonomous;
+package org.firstinspires.ftc.teamcode.Runnable.Autonomous;
 
 import com.arcrobotics.ftclib.geometry.Vector2d;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
-import org.firstinspires.ftc.teamcode.CenterStage.Robot;
-import org.firstinspires.ftc.teamcode.CenterStage.StateMachines;
+import org.firstinspires.ftc.teamcode.Runnable.Robot;
+import org.firstinspires.ftc.teamcode.Runnable.StateMachines;
 import org.firstinspires.ftc.teamcode.Systems.Movement.MovementSequence;
 import org.firstinspires.ftc.teamcode.Systems.Vision.ContourDetectionPipeline;
 import org.firstinspires.ftc.teamcode.Systems.Vision.DrawStrategy;

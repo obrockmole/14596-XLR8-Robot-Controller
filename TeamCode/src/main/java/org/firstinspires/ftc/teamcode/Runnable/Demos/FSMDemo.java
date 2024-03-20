@@ -1,9 +1,9 @@
-package org.firstinspires.ftc.teamcode.CenterStage.Demos;
+package org.firstinspires.ftc.teamcode.Runnable.Demos;
 
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-import org.firstinspires.ftc.teamcode.CenterStage.Robot;
-import org.firstinspires.ftc.teamcode.CenterStage.TeleOp.BaseTele;
+import org.firstinspires.ftc.teamcode.Runnable.Robot;
+import org.firstinspires.ftc.teamcode.Runnable.TeleOp.BaseTele;
 import org.firstinspires.ftc.teamcode.Systems.Gamepad.GamepadButtons.Button;
 import org.firstinspires.ftc.teamcode.Systems.Gamepad.GamepadButtons.Stick;
 

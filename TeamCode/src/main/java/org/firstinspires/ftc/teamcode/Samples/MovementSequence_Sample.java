@@ -4,9 +4,8 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
-import org.firstinspires.ftc.teamcode.CenterStage.Robot;
+import org.firstinspires.ftc.teamcode.Runnable.Robot;
 import org.firstinspires.ftc.teamcode.Systems.Movement.MovementSequence;
-import org.firstinspires.ftc.teamcode.Systems.Movement.OdometryDrive;
 
 @Disabled
 @Autonomous(group = "Samples", name = "Movement Sequence Sample")
@@ -17,8 +16,9 @@ public class MovementSequence_Sample extends OpMode {
     public void init() {
         robot = new Robot(hardwareMap);
 
-        movementSequence = new MovementSequence(robot);
+        movementSequence = new MovementSequence(robot, robot.getLocalizer());
 
+        //FIXME: this documentation is outdated so don't rely on it
         /*
             Drive distances and rotation are relative from the robots starting position at the beginning of each individual movement.
                 +Forward, +Rightward, +Counter-Clockwise.
@@ -50,12 +50,12 @@ public class MovementSequence_Sample extends OpMode {
                 - TimedEvent (.timedEvent(int milliseconds, Runnable action)): A timed event that runs a set action after a set amount of time in milliseconds from the sequence start.
         */
 
-        movementSequence.odometryDrive(-28, 0, 0.8, 0)
-                .odometryTurn(90,0.6, 100)
+        movementSequence.lineTo(28, 0)
+                .turn(90)
                 .waitSeconds(2)
-                .odometryDrive(-26, 0, 0.8, 1000)
+                .lineToHeading(26, 0, -90, 1000)
                 .waitSeconds(1)
-                .odometryDrive(-8, -28, 0.7, 0);
+                .lineTo(8, 28, 0.5, 100, 5000);
     }
 
     public void start() {

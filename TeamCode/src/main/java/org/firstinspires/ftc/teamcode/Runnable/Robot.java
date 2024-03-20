@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.CenterStage;
+package org.firstinspires.ftc.teamcode.Runnable;
 
 import com.qualcomm.hardware.lynx.LynxModule;
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
@@ -13,8 +13,10 @@ import org.firstinspires.ftc.teamcode.Systems.Drivetrain;
 import org.firstinspires.ftc.teamcode.Systems.Motors.Motor;
 import org.firstinspires.ftc.teamcode.Systems.Motors.MotorGroup;
 import org.firstinspires.ftc.teamcode.Systems.Motors.MotorList;
+import org.firstinspires.ftc.teamcode.Systems.Odometry.Localizer;
 import org.firstinspires.ftc.teamcode.Systems.Odometry.Odometry;
 import org.firstinspires.ftc.teamcode.Systems.Odometry.OdometryPod;
+import org.firstinspires.ftc.teamcode.Systems.Odometry.ThreeWheelLocalizer;
 import org.firstinspires.ftc.teamcode.Systems.Sensors.BatteryVoltageSensor;
 import org.firstinspires.ftc.teamcode.Systems.Sensors.ColorSensor;
 import org.firstinspires.ftc.teamcode.Systems.Sensors.Encoder;
@@ -25,6 +27,8 @@ import org.firstinspires.ftc.teamcode.Systems.Servos.PositionServoGroup;
 import java.util.List;
 
 public class Robot extends Drivetrain {
+    private final Localizer localizer;
+
     public final MotorGroup lift;
     public final MotorGroup intake;
 
@@ -91,6 +95,8 @@ public class Robot extends Drivetrain {
             module.setBulkCachingMode(LynxModule.BulkCachingMode.AUTO);
         }
 
+        localizer = new ThreeWheelLocalizer(this.getOdometry());
+
         lift = new MotorGroup(
                 new Motor(hardwareMap, "leftLift", MotorList.GOBILDA_312, Motor.Mode.POSITION, 20, false),
                 new Motor(hardwareMap, "rightLift", MotorList.GOBILDA_312, Motor.Mode.POSITION, 20, true)
@@ -136,6 +142,10 @@ public class Robot extends Drivetrain {
         rightBlinkin = new BlinkinLEDDriver(hardwareMap, "rightBlinkin");
 
         batteryVoltageSensor = new BatteryVoltageSensor(hardwareMap);
+    }
+
+    public Localizer getLocalizer() {
+        return localizer;
     }
 
     public Robot initialize() {

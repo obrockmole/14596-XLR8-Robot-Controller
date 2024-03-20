@@ -1,74 +1,59 @@
 package org.firstinspires.ftc.teamcode.Systems.Movement;
 
+import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
+@Config
 public class OdometryConstants {
-    public static final double ODOM_INCHES_PER_COUNT = 0.002969;
+    public static final double TICKS_PER_REV = 2000;
+    public static final double WHEEL_RADIUS = 0.9448819; //Inches
+    public static final double INCHES_PER_TICK = (2 * WHEEL_RADIUS * Math.PI) / TICKS_PER_REV; //0.00296843403555
 
-    public static final double DRIVE_GAIN = 0.033;
+    public static final double DRIVE_GAIN = 0.03;
     public static final double DRIVE_ACCEL = 1.0;
-    public static final double DRIVE_TOLERANCE = 1;
-    public static final double DRIVE_DEADBAND = 0.2;
-    public static final double DRIVE_MAX_AUTO = 0.6;
+    public static final double DRIVE_TOLERANCE = 0.5; //Inches
 
-    public static final double STRAFE_GAIN = 0.15;
+    public static final double STRAFE_GAIN = 0.03;
     public static final double STRAFE_ACCEL = 1;
-    public static final double STRAFE_TOLERANCE = 1;
-    public static final double STRAFE_DEADBAND = 0.2;
-    public static final double STRAFE_MAX_AUTO = 0.6;
+    public static final double STRAFE_TOLERANCE = 0.5; //Inches
 
-    public static final double YAW_GAIN = 0.026;
+    public static final double YAW_GAIN = 0.02;
     public static final double YAW_ACCEL  = 2.0;
-    public static final double YAW_TOLERANCE = 3.0;
-    public static final double YAW_DEADBAND = 0.25;
-    public static final double YAW_MAX_AUTO = 0.6;
+    public static final double YAW_TOLERANCE = 2.0; //Degrees
 
     static class ProportionalControl {
+        double target = 0;
         double lastOutput = 0;
         double gain;
         double accelLimit;
-        double defaultOutputLimit;
-        double liveOutputLimit;
-        double setPoint = 0;
+        double outputLimit;
         double tolerance;
-        double deadband;
-        boolean circular;
         boolean inPosition = false;
         ElapsedTime cycleTime = new ElapsedTime();
 
-        public ProportionalControl(double gain, double accelLimit, double outputLimit, double tolerance, double deadband, boolean circular) {
+        public ProportionalControl(double gain, double accelLimit, double outputLimit, double tolerance) {
             this.gain = gain;
             this.accelLimit = accelLimit;
-            this.defaultOutputLimit = outputLimit;
-            this.liveOutputLimit = outputLimit;
+            this.outputLimit = outputLimit;
             this.tolerance = tolerance;
-            this.deadband = deadband;
-            this.circular = circular;
             reset(0.0);
         }
 
         public double getOutput(double input) {
-            double error = setPoint - input;
+            double error = target - input;
             double dV = cycleTime.seconds() * accelLimit;
             double output;
 
-            if (circular)
-                error = ((error + 180) % 360) - 180;
-
             inPosition = Math.abs(error) < tolerance;
 
-            if (Math.abs(error) <= deadband) {
-                output = 0;
-            } else {
-                output = error * gain;
-                output = Range.clip(output, -liveOutputLimit, liveOutputLimit);
+            output = error * gain;
+            output = Range.clip(output, -outputLimit, outputLimit);
 
-                if ((output - lastOutput) > dV) {
-                    output = lastOutput + dV;
-                } else if ((output - lastOutput) < -dV) {
-                    output = lastOutput - dV;
-                }
+            if ((output - lastOutput) > dV) {
+                output = lastOutput + dV;
+            } else if ((output - lastOutput) < -dV) {
+                output = lastOutput - dV;
             }
 
             lastOutput = output;
@@ -80,19 +65,12 @@ public class OdometryConstants {
             return inPosition;
         }
 
-        public double getSetpoint() {
-            return setPoint;
-        }
-
-        public void reset(double setPoint, double powerLimit) {
-            liveOutputLimit = Math.abs(powerLimit);
-            this.setPoint = setPoint;
-            reset();
+        public void setOutputLimit(double outputLimit) {
+            this.outputLimit = outputLimit;
         }
 
         public void reset(double setPoint) {
-            liveOutputLimit = defaultOutputLimit;
-            this.setPoint = setPoint;
+            this.target = setPoint;
             reset();
         }
 
