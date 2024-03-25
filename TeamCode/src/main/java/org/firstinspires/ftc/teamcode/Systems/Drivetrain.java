@@ -6,9 +6,12 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.robotcore.external.navigation.Quaternion;
+import org.firstinspires.ftc.teamcode.Systems.Geometry.Pose2d;
 import org.firstinspires.ftc.teamcode.Systems.Motors.Motor;
+import org.firstinspires.ftc.teamcode.Systems.Odometry.Localizer;
 import org.firstinspires.ftc.teamcode.Systems.Odometry.Odometry;
 import org.firstinspires.ftc.teamcode.Systems.Odometry.OdometryPod;
+import org.firstinspires.ftc.teamcode.Systems.Odometry.ThreeWheelLocalizer;
 import org.firstinspires.ftc.teamcode.Systems.Sensors.IMU;
 
 import java.util.ArrayList;
@@ -19,7 +22,9 @@ public class Drivetrain {
     private Odometry odometry;
     private IMU imu;
 
-    private double speedScale = 1.5;
+    private Localizer localizer = null;
+
+    private double speedScale = 1;
 
     public Drivetrain(Motor frontLeft, Motor backLeft, Motor frontRight, Motor backRight, Odometry odometry, IMU imu) {
         this.frontLeft = frontLeft;
@@ -31,6 +36,8 @@ public class Drivetrain {
 
         this.imu = imu;
         resetIMUYaw();
+
+        if (odometry != null) localizer = new ThreeWheelLocalizer(odometry);
     }
 
     public Drivetrain(Motor frontLeft, Motor backLeft, Motor frontRight, Motor backRight, IMU imu) {
@@ -106,6 +113,57 @@ public class Drivetrain {
     public Drivetrain setOdometryPods(OdometryPod... pods) {
         odometry = new Odometry(pods);
         return this;
+    }
+
+    public Localizer getLocalizer() {
+        return localizer;
+    }
+
+    public Drivetrain setLocalizer(Localizer localizer) {
+        this.localizer = localizer;
+        return this;
+    }
+
+    public Pose2d getPoseEstimate() {
+        if (localizer != null)
+            return localizer.getPoseEstimate();
+        return new Pose2d();
+    }
+
+    public double getXEstimate() {
+        if (localizer != null)
+            return localizer.getXEstimate();
+        return 0;
+    }
+
+    public double getYEstimate() {
+        if (localizer != null)
+            return localizer.getYEstimate();
+        return 0;
+    }
+
+    public double getHeadingEstimate() {
+        if (localizer != null)
+            return localizer.getHeadingEstimate();
+        return 0;
+    }
+
+    public double getForwardVelocity() {
+        if (localizer != null)
+            return localizer.getForwardVelocity();
+        return 0;
+    }
+
+    public double getLateralVelocity() {
+        if (localizer != null)
+            return localizer.getLateralVelocity();
+        return 0;
+    }
+
+    public double getAngularVelocity() {
+        if (localizer != null)
+            return localizer.getAngularVelocity();
+        return 0;
     }
 
     public double getSpeedScale() {
@@ -197,30 +255,27 @@ public class Drivetrain {
         frontRight.update();
         backRight.update();
 
+        if (localizer != null)
+            localizer.update();
+
         return this;
     }
 
-    public Drivetrain log(Telemetry telemetry, boolean logOdometry, boolean logIMU) {
+    public Drivetrain log(Telemetry telemetry) {
         telemetry.addLine("-----Drive Motor Powers-----");
         telemetry.addData("Front Left Power", frontLeft.getPower());
         telemetry.addData("Back Left Power", backLeft.getPower());
         telemetry.addData("Front Right Power", frontRight.getPower());
         telemetry.addData("Back Right Power", backRight.getPower());
 
-        if (odometry != null && logOdometry) {
-            telemetry.addLine();
-            telemetry.addLine("-----Odometry Pod Positions-----");
-            telemetry.addData("Left Pod Position", odometry.getCurrentPosition(0));
-            telemetry.addData("Right Pod Position", odometry.getCurrentPosition(1));
-            telemetry.addData("Center Pod Position", odometry.getCurrentPosition(2));
-        }
-
-        if (logIMU) {
-            telemetry.addLine();
-            telemetry.addLine("-----IMU Headings-----");
-            telemetry.addData("Yaw", imu.getYawDegrees());
-            telemetry.addData("Pitch", imu.getPitchDegrees());
-            telemetry.addData("Roll", imu.getRollDegrees());
+        if (localizer != null) {
+            telemetry.addLine("-----Localizer Estimates-----");
+            telemetry.addData("X", getXEstimate());
+            telemetry.addData("Y", getYEstimate());
+            telemetry.addData("Heading", getHeadingEstimate());
+            telemetry.addData("Forward Velocity", getForwardVelocity());
+            telemetry.addData("Lateral Velocity", getLateralVelocity());
+            telemetry.addData("Angular Velocity", getAngularVelocity());
         }
 
         telemetry.addLine();

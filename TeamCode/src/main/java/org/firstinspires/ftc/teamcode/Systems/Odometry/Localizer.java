@@ -51,4 +51,9 @@ public interface Localizer {
      * @return The angular velocity of the robot.
      */
     double getAngularVelocity();
+
+    /**
+     * Updates the localizer position and velocity.
+     */
+    void update();
 }

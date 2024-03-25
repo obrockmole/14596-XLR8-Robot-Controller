@@ -104,7 +104,7 @@ public class BaseTele extends OpMode {
     }
 
     public void log() {
-        robot.log(telemetry, false, false);
+        robot.log(telemetry);
 
         telemetry.addLine("-----Other-----");
         telemetry.addData("Runtime", getRuntime());

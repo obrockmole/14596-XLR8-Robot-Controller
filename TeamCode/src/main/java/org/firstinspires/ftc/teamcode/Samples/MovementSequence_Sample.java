@@ -67,6 +67,6 @@ public class MovementSequence_Sample extends OpMode {
         movementSequence.logMovement(telemetry);
 
         robot.update(true)
-                .log(telemetry, true, true);
+                .log(telemetry);
     }
 }

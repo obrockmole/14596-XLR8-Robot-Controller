@@ -49,7 +49,7 @@ public class DriveFieldCentric_Sample extends OpMode {
           This is controlled with the fieldCentricDrive() method and joystick values.
          */
         drivetrain.fieldCentricDrive(driver.getStickY(Stick.LEFT_STICK), driver.getStickX(Stick.LEFT_STICK), driver.getStickX(Stick.RIGHT_STICK))
-                .log(telemetry, true, true) //Log drivetrain data to the telemetry
+                .log(telemetry) //Log drivetrain data to the telemetry
                 .update(); //Update the object.
     }
 }
